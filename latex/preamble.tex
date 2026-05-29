@@ -10,6 +10,7 @@
 \usepackage{array,booktabs,longtable}
 \usepackage{xcolor}
 \usepackage[most]{tcolorbox}
+\usepackage{etoolbox}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
 \usepackage{hyperref}
@@ -54,11 +55,11 @@
 
 % --- Boîtes ---
 \newtcolorbox{recette}[1][]{colback=vertlight,colframe=vert,
-  fonttitle=\bfseries,title={Recette d'examen},#1}
+  fonttitle=\bfseries,title={Recette d'examen\ifblank{#1}{}{ --- #1}}}
 \newtcolorbox{attention}[1][]{colback=orangelight,colframe=orange,
-  fonttitle=\bfseries,title={Attention},#1}
+  fonttitle=\bfseries,title={Attention\ifblank{#1}{}{ --- #1}}}
 \newtcolorbox{rappel}[1][]{colback=insealight,colframe=insea,
-  fonttitle=\bfseries,title={Rappel de cours},#1}
+  fonttitle=\bfseries,title={Rappel de cours\ifblank{#1}{}{ --- #1}}}
 \newtcolorbox{reponse}[1][]{colback=vertlight,colframe=vert!70!black,
   left=2mm,right=2mm,top=1mm,bottom=1mm,boxrule=0.8pt,#1}
 

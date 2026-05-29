@@ -1,0 +1,567 @@
+\documentclass[11pt]{report}
+\input{preamble.tex}
+\usepackage{amsfonts}
+
+% report.cls : ajuster les en-têtes
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+
+\titleformat{\chapter}[display]
+{\normalfont\huge\bfseries\color{insea}}{\chaptertitlename\ \thechapter}{12pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-20pt}{18pt}
+
+\title{\vspace{-1.5cm}\textbf{\color{insea}Séries Chronologiques}\\[3mm]
+\large Cours complet, structuré et rigoureux\\[1mm]
+\normalsize orienté vers la résolution des exercices d'examen\\[2mm]
+\normalsize\itshape d'après le cours de Fadoua BADAOUI (INSEA)}
+\author{Préparation au module}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{tcolorbox}[colback=insealight,colframe=insea,title={Comment utiliser ce cours}]
+Ce document \textbf{réorganise et détaille} le cours de Séries Chronologiques. Chaque notion
+est accompagnée de \textbf{définitions rigoureuses}, de \textbf{théorèmes démontrés}
+lorsqu'utile, et d'encadrés \textbf{\color{vert}Recette d'examen} reliant la théorie aux
+questions du recueil (références $\to$ Q\,A.x, Q\,B.x, \dots de \emph{Questions\_SC.pdf}).
+
+\smallskip\noindent\textbf{Notations.} $(X_t)_{t\in\Z}$ série/processus ; $B$ opérateur retard
+($B^kX_t=X_{t-k}$) ; $a_t$ (ou $\eps_t$) bruit blanc $\BB(0,\sigma^2)$ ;
+$\gamma(k)$ autocovariance, $\rho(k)$ autocorrélation, $P(k)$ autocorrélation partielle (FAP).
+\end{tcolorbox}
+
+\tableofcontents
+
+% ====================================================================
+\chapter{Introduction et décomposition des séries chronologiques}
+
+\section{Qu'est-ce qu'une série chronologique ?}
+\begin{definition}[Série chronologique]
+Une \emph{série chronologique} (ou série temporelle) est une suite d'observations
+$X_{t_1},X_{t_2},\dots,X_{t_N}$ d'une grandeur, ordonnées dans le temps et généralement
+relevées à intervalle fixe $h$. On la note $X_1,\dots,X_N$ et on étudie les couples
+$(t,X_t)$.
+\end{definition}
+L'objectif de l'analyse est de \emph{caractériser la dépendance temporelle} de la série, afin
+de la comprendre, de la décrire et surtout d'en \textbf{prévoir} les valeurs futures
+$X_{T+h}$, $h=1,2,\dots$ à partir du passé $X_1,\dots,X_T$.
+
+On distingue trois approches historiques : la représentation graphique, les méthodes
+\emph{déterministes} (décomposition tendance/saisonnalité), et les méthodes
+\emph{stochastiques} (modèles ARMA), qui font l'objet des chapitres suivants.
+
+\section{Les trois composantes d'une série}
+\begin{definition}[Composantes]
+On décompose usuellement une série en trois composantes :
+\begin{itemize}[leftmargin=*]
+\item la \emph{tendance} $T_t$ : évolution moyenne à long terme ;
+\item la \emph{composante saisonnière} $S_t$ : fluctuation périodique de période $p$
+(\,$S_{t+p}=S_t$\,), liée au calendrier ;
+\item la \emph{composante résiduelle} $E_t$ : ce qui n'est expliqué ni par $T$ ni par $S$
+(aléa).
+\end{itemize}
+\end{definition}
+\begin{definition}[Modèles additif et multiplicatif]
+\[
+\text{Additif : } X_t=T_t+S_t+E_t,\qquad\text{Multiplicatif : } X_t=T_t\cdot S_t\cdot E_t .
+\]
+Dans le modèle additif, l'amplitude des oscillations saisonnières est \emph{constante} ; dans
+le modèle multiplicatif, elle \emph{croît avec le niveau} de la série.
+\end{definition}
+\begin{methode}[Choix additif / multiplicatif]
+On trace les droites passant par les maxima et par les minima : si elles sont
+\emph{parallèles}, le modèle est additif ; sinon, multiplicatif. Le \emph{test de
+Buys--Ballot} le confirme : on régresse l'écart-type annuel $\sigma_i$ sur la moyenne annuelle
+$\bar x_i$ ($\sigma_i=a_1\bar x_i+a_0+\epsilon_i$) ; si $a_1$ n'est pas significativement
+$\ne0$ (test de Student), le schéma est additif, sinon multiplicatif.
+\end{methode}
+
+\section{Estimation de la tendance par moyennes mobiles}
+\begin{definition}[Moyenne mobile]
+Une \emph{moyenne mobile} est un \textbf{filtre linéaire}
+\[
+M(X)_t=\sum_{i=-m_1}^{m_2}\lambda_i\,X_{t-i}.
+\]
+Elle est \emph{centrée} si $m_1=m_2$, \emph{symétrique} si $\lambda_{-i}=\lambda_i$,
+\emph{normalisée} si $\sum_i\lambda_i=1$.
+\end{definition}
+\begin{attention}
+Une moyenne mobile est \emph{par définition} un filtre linéaire ; elle n'est \emph{pas}
+nécessairement centrée, ni symétrique, ni normalisée (ce sont des propriétés
+\emph{supplémentaires}). $\to$ \textbf{Q\,A.2}.
+\end{attention}
+\begin{definition}[MM centrée d'ordre $p$]
+Pour une série de période saisonnière $p$ :
+\begin{itemize}[leftmargin=*]
+\item si $p$ est \emph{impair} : $\mathrm{MM}_p(X)_t=\dfrac1p\sum_{i=-(p-1)/2}^{(p-1)/2}X_{t-i}$ ;
+\item si $p$ est \emph{pair} (ex.\ $p=4$ ou $12$) : on \emph{centre} en pondérant les
+extrémités par $\tfrac12$ :
+\[
+\mathrm{MM}_4(X)_t=\tfrac18X_{t-2}+\tfrac14X_{t-1}+\tfrac14X_t+\tfrac14X_{t+1}+\tfrac18X_{t+2}.
+\]
+\end{itemize}
+\end{definition}
+\begin{theoreme}[Propriétés fondamentales d'une MM d'ordre $p$]
+La moyenne mobile centrée d'ordre $p$ :
+\begin{enumerate}[label=(\roman*)]
+\item \emph{laisse invariante} (conserve) une tendance \emph{affine} $T_t=a+bt$ ;
+\item \emph{absorbe} (annule) une composante saisonnière de période $p$ ;
+\item \emph{atténue} la variance du bruit (lissage).
+\end{enumerate}
+\end{theoreme}
+\begin{proof}[Idée]
+(i) Pour $T_t=a+bt$, la moyenne symétrique des $p$ valeurs voisines vaut $a+bt$ (les écarts
+$\pm i$ se compensent). (ii) Pour $S_t$ de période $p$ avec $\sum_{j}S_j=0$, la somme sur une
+fenêtre complète d'une période est nulle. (iii) La moyenne de $p$ variables réduit la variance
+d'un facteur $\sim1/p$.
+\end{proof}
+\begin{recette}[Questions sur la MM4]
+La \textbf{MM4} \emph{conserve} les tendances linéaires et \emph{absorbe} les saisonnalités de
+période 4. $\to$ \textbf{Q\,A.3}. Plus généralement, pour extraire la tendance d'une série de
+période $p$, on lisse par $\mathrm{MM}_p$.
+\end{recette}
+
+\section{Calcul des coefficients saisonniers et désaisonnalisation}
+\begin{methode}[Coefficients saisonniers (modèle additif)]
+\begin{enumerate}[leftmargin=*]
+\item Estimer la tendance $T_t$ (par MM d'ordre $p$ ou par régression).
+\item Calculer les \emph{données sans tendance} $Y_t-T_t$ (additif) ou $Y_t/T_t$
+(multiplicatif).
+\item Pour chaque saison $j=1,\dots,p$, faire la \emph{moyenne} des données sans tendance :
+$S_j=\frac1n\sum_i (Y_{ij}-T_{ij})$ (additif).
+\item \emph{Corriger} (principe de conservation des aires) : la moyenne des $S_j$ doit être
+\emph{nulle} (additif) ou \emph{égale à 1} (multiplicatif). On pose
+$S_j'=S_j-\bar S$ (additif) ou $S_j'=S_j/\bar S$ (multiplicatif).
+\end{enumerate}
+\end{methode}
+\begin{definition}[Série corrigée des variations saisonnières (CVS)]
+$\text{CVS}_t=Y_t-S'_{j(t)}$ (additif) ou $Y_t/S'_{j(t)}$ (multiplicatif). La prévision
+combine extrapolation de la tendance et coefficient saisonnier :
+$\widehat X_t=\widehat T_t+S'_{j(t)}$ (additif) ou $\widehat T_t\cdot S'_{j(t)}$
+(multiplicatif).
+\end{definition}
+\begin{recette}[Exercices de décomposition]
+Schéma type ($\to$ \textbf{Q\,H.1--H.4}) : (1) tracer ; (2) tendance (MCO $\hat a,\hat b$ ou
+MM$_p$) ; (3) coefficients saisonniers (moyenne des écarts/rapports, puis recentrage) ;
+(4) prévisions $\widehat T_t+S'_j$ ; (5) CVS. \emph{Régression MCO} :
+$\hat a=\dfrac{n\sum tY-\sum t\sum Y}{n\sum t^2-(\sum t)^2}$, $\hat b=\bar Y-\hat a\bar t$.
+\end{recette}
+
+\section{Élimination de la tendance par différenciation}
+\begin{definition}[Opérateur de différence]
+$\Delta X_t=(1-B)X_t=X_t-X_{t-1}$, et $\Delta^2X_t=(1-B)^2X_t$.
+\end{definition}
+\begin{proposition}
+Si $T_t=a+bt$ (tendance linéaire), alors $\Delta X_t=b+\Delta e_t$ (élimine la tendance et
+laisse une constante). Si $T_t=a+bt+ct^2$, alors $\Delta^2X_t=2c+\Delta^2e_t$.
+\end{proposition}
+La différenciation est l'outil pour stationnariser une série à \emph{tendance stochastique}
+(cf.\ chapitre 2) ; on n'y recourt qu'après diagnostic (test de racine unité).
+
+% ====================================================================
+\chapter{Processus stationnaires au sens large}
+
+\section{Définition et fonction d'autocorrélation}
+\begin{definition}[Stationnarité au sens large (SSL)]
+Un processus $(X_t)$ est \emph{stationnaire au sens large} (ou du second ordre) si :
+\begin{enumerate}[label=(\roman*)]
+\item $\E(X_t)=m$ constante (indépendante de $t$) ;
+\item $\E(X_t^2)<\infty$ ;
+\item la fonction d'autocovariance
+$\gamma(k)=\Cov(X_t,X_{t+k})=\E\big[(X_t-m)(X_{t+k}-m)\big]$ ne dépend que de $k$ (pas de $t$).
+\end{enumerate}
+On a $\gamma(0)=\Var(X_t)$ et la \emph{fonction d'autocorrélation} (ACF)
+$\rho(k)=\dfrac{\gamma(k)}{\gamma(0)}$.
+\end{definition}
+\begin{propriete}
+$\gamma$ est paire ($\gamma(-k)=\gamma(k)$), $|\gamma(k)|\le\gamma(0)$, $\rho(0)=1$,
+$|\rho(k)|\le1$, et $\gamma$ est de type positif.
+\end{propriete}
+\begin{definition}[Stationnarité stricte]
+$(X_t)$ est \emph{strictement stationnaire} si la loi de $(X_{t_1},\dots,X_{t_n})$ est
+invariante par translation temporelle. Si de plus $\E(X_t^2)<\infty$, alors strict
+$\Rightarrow$ SSL. $\to$ \textbf{Q\,A.15--A.16}.
+\end{definition}
+
+\section{Le bruit blanc}
+\begin{definition}[Bruit blanc]
+$(a_t)\sim\BB(0,\sigma^2)$ si $\E(a_t)=0$, $\Var(a_t)=\sigma^2$ et
+$\gamma(k)=0$ pour $k\ne0$. C'est le processus SSL « sans mémoire ».
+\begin{itemize}[leftmargin=*]
+\item \emph{Bruit blanc fort} : les $a_t$ sont i.i.d. ; \emph{faible} : seulement non
+corrélés. \emph{Gaussien} : $a_t\sim$ i.i.d.\ $N(0,\sigma^2)$.
+\end{itemize}
+\end{definition}
+\begin{exemple}
+$X_t=a_t-a_{t-1}$ : $\E(X_t)=0$, $\gamma(0)=2\sigma^2$, $\gamma(1)=-\sigma^2$, $\gamma(k)=0$
+($k\ge2$) : indépendant de $t$, donc SSL.
+\end{exemple}
+\begin{exemple}[$X_t=(-1)^tz$ ; $\to$ \textbf{Q\,B.1}]
+Si $\E(z)=0$, $\Var(z)=1$ : $\E(X_t)=0$ et
+$\gamma(k)=(-1)^t(-1)^{t+k}\E(z^2)=(-1)^k$, indépendant de $t$. Le processus est donc
+\emph{SSL} (même s'il n'est pas ergodique).
+\end{exemple}
+
+\section{Non-stationnarité : processus TS et DS}
+\begin{definition}[Processus TS (\emph{trend stationary})]
+$(X_t)$ est TS s'il s'écrit $X_t=f(t)+Z_t$ avec $f$ déterministe (ex.\ $f(t)=a+bt$) et $Z_t$
+stationnaire. On le stationnarise en \emph{retirant la tendance} : $X_t-f(t)=Z_t$.
+\emph{Non-stationnarité déterministe} (le moment d'ordre 1 dépend de $t$).
+\end{definition}
+\begin{definition}[Processus DS (\emph{difference stationary}), intégration]
+$(X_t)$ est DS (intégré d'ordre 1, $X_t\sim I(1)$) si $(1-B)X_t$ est stationnaire. Plus
+généralement $X_t\sim I(d)$ si $(1-B)^dX_t$ est stationnaire et $d$ est le plus petit tel
+entier. \emph{Non-stationnarité stochastique} (les moments d'ordre 2 dépendent de $t$).
+\end{definition}
+\begin{exemple}[Marche aléatoire]
+$X_t=X_{t-1}+a_t$, soit $(1-B)X_t=a_t$ : $X_t=X_0+\sum_{j=1}^t a_j$, $\Var(X_t)=t\sigma^2$
+croît avec $t$ : non stationnaire, $I(1)$.
+\end{exemple}
+\begin{attention}[Distinguer TS et DS]
+On stationnarise un \emph{TS} en retirant la tendance ($X_t-\hat f(t)$), un \emph{DS} en
+\emph{différenciant}. Différencier un TS (ou sur-différencier) introduit une racine MA unité
+et \emph{augmente} la variance. $\to$ \textbf{Q\,F.4(e)}.
+\end{attention}
+\begin{rappel}[Stationnaire $\ne$ bruit blanc]
+Un processus stationnaire peut être fortement autocorrélé (AR(1)). Le test de Ljung--Box
+(« autocorrélations nulles ») n'est donc pas accepté pour une série stationnaire quelconque ;
+il s'applique aux \emph{résidus} d'un modèle. $\to$ \textbf{Q\,A.14}.
+\end{rappel}
+
+% ====================================================================
+\chapter{Modèles ARMA}
+
+\section{Opérateur retard et écriture polynomiale}
+Le modèle linéaire général s'écrit
+\[
+X_t=\mu+\phi_1X_{t-1}+\dots+\phi_pX_{t-p}+a_t-\theta_1a_{t-1}-\dots-\theta_qa_{t-q},
+\]
+soit $\Phi_p(B)X_t=\mu+\Theta_q(B)a_t$ avec
+$\Phi_p(B)=1-\phi_1B-\dots-\phi_pB^p$ et $\Theta_q(B)=1-\theta_1B-\dots-\theta_qB^q$.
+
+\section{Processus moyenne mobile MA(q)}
+\begin{definition}[MA(q)]
+$X_t=\mu+a_t+\theta_1a_{t-1}+\dots+\theta_qa_{t-q}$, $a_t\sim\BB(0,\sigma^2)$.
+\end{definition}
+\begin{theoreme}[Moments du MA(q)]
+$\E(X_t)=\mu$, et
+\[
+\gamma(k)=\begin{cases}
+\big(1+\theta_1^2+\dots+\theta_q^2\big)\sigma^2 & k=0,\\[1mm]
+\sigma^2\big(\theta_k+\sum_{j=1}^{q-k}\theta_j\theta_{k+j}\big) & 1\le k\le q,\\[1mm]
+0 & k>q.
+\end{cases}
+\]
+\emph{Tout MA$(q)$ est SSL} (somme finie de bruits blancs).
+\end{theoreme}
+\begin{corollaire}[ACF du MA(q)]
+$\rho(k)\ne0$ pour $0\le k\le q$ et $\rho(k)=0$ pour $k>q$ : \textbf{l'ACF d'un MA$(q)$ coupe à
+l'ordre $q$}. C'est l'outil d'identification de l'ordre $q$.
+\end{corollaire}
+\begin{exemple}[MA(1)]
+$X_t=\mu+a_t+\theta a_{t-1}$ : $\gamma(0)=(1+\theta^2)\sigma^2$, $\gamma(1)=\theta\sigma^2$,
+$\rho(1)=\dfrac{\theta}{1+\theta^2}$, $\rho(k)=0$ ($k\ge2$). $\to$ \textbf{Q\,J.9}.
+\end{exemple}
+
+\section{Inversibilité d'un MA et représentation AR$(\infty)$}
+\begin{definition}[Inversibilité]
+Un MA$(q)$ est \emph{inversible} si les racines de $\Theta_q(B)=0$ sont de module $>1$.
+On peut alors écrire $a_t=\Theta_q(B)^{-1}X_t$, soit un $\mathrm{AR}(\infty)$.
+\end{definition}
+\begin{exemple}[MA(1) inversible]
+$X_t=a_t-\theta a_{t-1}=(1-\theta B)a_t$ : si $|\theta|<1$,
+$a_t=(1-\theta B)^{-1}X_t=\sum_{i\ge0}\theta^iX_{t-i}$ (AR$(\infty)$).
+\end{exemple}
+\begin{attention}[$\to$ \textbf{Q\,A.12}]
+Tout MA est \emph{stationnaire}, mais n'admet une représentation AR que s'il est
+\emph{inversible}. Contre-exemple : $X_t=a_t-a_{t-1}$ (racine $B=1$) n'est pas inversible.
+\end{attention}
+
+\section{Processus autorégressif AR(p)}
+\begin{definition}[AR(p)]
+$X_t=\mu+\phi_1X_{t-1}+\dots+\phi_pX_{t-p}+a_t$, $\phi_p\ne0$, $a_t\sim\BB(0,\sigma^2)$.
+\end{definition}
+\begin{theoreme}[Stationnarité et causalité de l'AR(p)]
+L'AR$(p)$ $\Phi_p(B)X_t=\mu+a_t$ est SSL et \emph{causal} si et seulement si toutes les
+racines de $\Phi_p(B)=0$ sont de module \textbf{strictement supérieur à 1}. Il admet alors la
+représentation causale ($\mathrm{MA}(\infty)$)
+\[
+X_t=\frac{\mu}{1-\phi_1-\dots-\phi_p}+\sum_{j\ge0}\psi_j a_{t-j},\qquad\psi_0=1,\
+\sum_j\psi_j^2<\infty.
+\]
+\end{theoreme}
+\begin{proof}[Cas AR(1)]
+Pour $X_t=\mu+\phi X_{t-1}+a_t$, on écrit $(1-\phi B)X_t=\mu+a_t$. Si $|\phi|<1$,
+$(1-\phi B)^{-1}=\sum_{k\ge0}\phi^kB^k$ converge et
+\[
+X_t=\frac{\mu}{1-\phi}+\sum_{k\ge0}\phi^k a_{t-k}.
+\]
+Réciproquement, si $\phi=1$ : $X_t=t\mu+X_0+\sum_{j=1}^t a_j$, $\Var(X_t)=t\sigma^2\to\infty$,
+donc non SSL. La racine de $1-\phi B$ est $B=1/\phi$, de module $>1$ ssi $|\phi|<1$.
+\end{proof}
+\begin{corollaire}[Moments de l'AR(1) causal, $|\phi|<1$]
+\[
+\E(X_t)=\frac{\mu}{1-\phi},\quad \Var(X_t)=\frac{\sigma^2}{1-\phi^2},\quad
+\gamma(k)=\frac{\sigma^2}{1-\phi^2}\,\phi^{|k|},\quad \rho(k)=\phi^{|k|}.
+\]
+\end{corollaire}
+\begin{proof}
+$\Var(X_t)=\phi^2\Var(X_{t-1})+\sigma^2$ (car $\Cov(a_t,X_{t-1})=0$ par causalité), d'où
+$\Var=\sigma^2/(1-\phi^2)$. Puis $\gamma(k)=\Cov(X_t,\phi X_{t+k-1}+\mu+a_{t+k})
+=\phi\gamma(k-1)$ pour $k\ge1$, donc $\gamma(k)=\phi^k\gamma(0)$.
+\end{proof}
+\begin{recette}[Tester la stationnarité d'un AR]
+Écrire $\Phi(B)$, calculer ses racines, vérifier $|B_i|>1$. Pour un AR(2)
+$1-\phi_1B-\phi_2B^2$, conditions équivalentes : $\phi_1+\phi_2<1$, $\phi_2-\phi_1<1$,
+$|\phi_2|<1$. \textbf{Astuce racine unité} : si $\Phi(1)=0$ (c.-à-d.\ $\sum\phi_i=1$), il y a
+une racine $B=1$ $\Rightarrow$ non stationnaire / intégré. $\to$ \textbf{Q\,B.2, B.4, F.1--F.3}.
+\end{recette}
+
+\section{Équations de Yule--Walker}
+\begin{theoreme}[Yule--Walker]
+Pour un AR$(p)$ SSL causal,
+\[
+\rho(k)=\sum_{j=1}^p\phi_j\,\rho(k-j)\quad(k\ge1),\qquad
+\gamma(0)=\frac{\sigma^2}{1-\sum_{j=1}^p\phi_j\rho(j)}.
+\]
+En particulier, pour l'AR(2) :
+$\rho(1)=\dfrac{\phi_1}{1-\phi_2}$, $\rho(2)=\phi_1\rho(1)+\phi_2$.
+\end{theoreme}
+\begin{proof}
+$\gamma(k)=\Cov(X_t,X_{t+k})=\Cov\big(X_t,\sum_j\phi_jX_{t+k-j}+\mu+a_{t+k}\big)
+=\sum_j\phi_j\gamma(k-j)$ pour $k\ge1$ (car $\Cov(X_t,a_{t+k})=0$). On divise par $\gamma(0)$.
+Pour $k=0$ : $\gamma(0)=\sum_j\phi_j\gamma(j)+\sigma^2$.
+\end{proof}
+\begin{recette}[Estimation par Yule--Walker]
+On inverse le système $\boldsymbol\rho=R\boldsymbol\phi$ :
+$\boldsymbol\phi=R^{-1}\boldsymbol\rho$, où $R=[\rho(|i-j|)]$. Pour l'AR(1) :
+$\hat\phi=\rhohat(1)$. Pour l'AR(2) :
+$\hat\phi_1=\dfrac{\rho_1(1-\rho_2)}{1-\rho_1^2}$, $\hat\phi_2=\dfrac{\rho_2-\rho_1^2}{1-\rho_1^2}$.
+$\to$ \textbf{Q\,G.1--G.3, J.16}.
+\end{recette}
+
+\section{Fonction d'autocorrélation partielle (FAP)}
+\begin{definition}[FAP]
+L'autocorrélation partielle $P(k)$ d'ordre $k$ est la corrélation entre $X_t$ et $X_{t+k}$ une
+fois retiré l'effet linéaire des variables intermédiaires $X_{t+1},\dots,X_{t+k-1}$.
+On a $P(1)=\rho(1)$ et
+\[
+P(2)=\frac{\rho(2)-\rho(1)^2}{1-\rho(1)^2}.
+\]
+\end{definition}
+\begin{theoreme}[FAP d'un AR(p)]
+Pour un AR$(p)$ : $P(k)=0$ pour tout $k>p$, et $P(p)=\phi_p$. \textbf{La FAP d'un AR$(p)$
+coupe à l'ordre $p$.}
+\end{theoreme}
+\begin{theoreme}[Dualité AR / MA]
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+& \textbf{ACF} (simple) & \textbf{FAP} (partielle)\\
+\midrule
+\textbf{AR(p)} & décroît (exp.\ /sinus amortie) & \textbf{nulle pour $k>p$}\\
+\textbf{MA(q)} & \textbf{nulle pour $k>q$} & décroît\\
+\textbf{ARMA(p,q)} & décroît & décroît\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{theoreme}
+\begin{recette}[Identifier $p$ et $q$]
+ACF coupe à $q$ et FAP décroît $\Rightarrow$ MA$(q)$. FAP coupe à $p$ et ACF décroît
+$\Rightarrow$ AR$(p)$. Les deux décroissent $\Rightarrow$ ARMA. Bande de significativité
+$\approx\pm2/\sqrt n$. $\to$ \textbf{Q\,A.9--A.10, D.5, I.2--I.3}.
+\end{recette}
+
+\section{Modèle ARMA(p,q) et représentations infinies}
+\begin{definition}[ARMA(p,q)]
+$\Phi_p(B)X_t=\mu+\Theta_q(B)a_t$. Il est \emph{stationnaire/causal} ssi les racines de
+$\Phi_p$ sont de module $>1$, \emph{inversible} ssi les racines de $\Theta_q$ le sont. Alors
+$\E(X_t)=\dfrac{\mu}{1-\phi_1-\dots-\phi_p}$.
+\end{definition}
+\begin{methode}[Calcul des coefficients $\psi_k$ (MA$\infty$) et $\pi_k$ (AR$\infty$)]
+\begin{itemize}[leftmargin=*]
+\item \textbf{MA$(\infty)$} $X_t=\Psi(B)a_t$ : identifier $\Phi(B)\Psi(B)=\Theta(B)$, d'où la
+récurrence $\psi_k=\theta_k^{\Theta}+\sum_{j=1}^{k}\phi_j\,\psi_{k-j}$ ($\psi_0=1$),
+où $\theta_k^\Theta$ est le coefficient de $B^k$ dans $\Theta$.
+\item \textbf{AR$(\infty)$} $\Pi(B)X_t=a_t$ : identifier $\Theta(B)\Pi(B)=\Phi(B)$, d'où
+$\pi_k=\phi_k^{\Phi}-\sum_{j=1}^{k}\theta_j^{\Theta}\,\pi_{k-j}$ ($\pi_0=1$, attention aux
+signes : $\Phi=1-\phi_1B-\dots$ donne $\phi_1^\Phi=-\phi_1$, etc.).
+\end{itemize}
+\end{methode}
+\begin{exemple}[$\to$ \textbf{Q\,C.1}]
+AR(2) $X_t-0.9X_{t-1}+0.2X_{t-2}=a_t$ : $\psi_k=0.9\psi_{k-1}-0.2\psi_{k-2}$, $\psi_0=1$ :
+$\psi_1=0.9$, $\psi_2=0.61$, $\psi_3=0.369$, et $\psi_k=5(0.5)^k-4(0.4)^k$ (racines $0.5,0.4$
+des inverses).
+\end{exemple}
+\begin{exemple}[$\to$ \textbf{Q\,C.3}]
+$(1-0.8B)X_t=(1+0.4B)a_t$ : MA$(\infty)$ $\psi_k=0.8\psi_{k-1}$ ($\psi_1=1.2$), soit
+$\psi_k=1.2(0.8)^{k-1}$ ; AR$(\infty)$ $\pi_k=-0.4\pi_{k-1}$ ($\pi_1=-1.2$).
+\end{exemple}
+\begin{attention}[Racines communes]
+Si $\Phi$ et $\Theta$ ont une \emph{racine commune}, on simplifie avant de conclure ! Ex.\
+$(1-1.66B+0.66B^2)X_t=(1-B)a_t=(1-B)(1-0.66B)X_t=(1-B)a_t$ se réduit à
+$(1-0.66B)X_t=a_t$ (AR(1) fini). $\to$ \textbf{Q\,B.3, J.3}.
+\end{attention}
+\begin{proposition}[Somme de processus indépendants]
+La somme d'un ARMA$(p_1,q_1)$ et d'un ARMA$(p_2,q_2)$ indépendants est un
+ARMA$(p_1+p_2,\max(p_1+q_2,p_2+q_1))$. En particulier AR(1)+MA(1) $=$ ARMA(1,1) après
+réduction (et AR(1)+bruit blanc $=$ ARMA(1,1)). $\to$ \textbf{Q\,D.6, J.18--J.19}.
+\end{proposition}
+
+% ====================================================================
+\chapter{Box--Jenkins : intégration, ARIMA, SARIMA, validation}
+
+\section{Détection de la non-stationnarité}
+Méthodes : examen visuel ; comparaison moyenne/variance sur sous-échantillons ; décroissance
+de l'ACF (lente $\approx1$ $\Rightarrow$ non stationnaire) ; \emph{tests de racine unité}.
+
+\section{Tests de Dickey--Fuller}
+\begin{definition}[Test DF simple]
+On teste la présence d'une racine unité dans un AR(1). Trois modèles :
+\[
+\text{(1) }X_t-\phi X_{t-1}=\alpha+\beta t+a_t,\quad
+\text{(2) }X_t-\phi X_{t-1}=\alpha+a_t,\quad
+\text{(3) }X_t-\phi X_{t-1}=a_t .
+\]
+$H_0:\phi=1$ (racine unité, non stationnaire) contre $H_1:\phi<1$ (AR(1) stationnaire).
+Statistique $t_\phi=\dfrac{\phihat-1}{\widehat\sigma_{\phihat}}$, comparée aux valeurs
+critiques de la table de Dickey--Fuller (\emph{non} celles de Student).
+\end{definition}
+\begin{methode}[Stratégie séquentielle]
+Étudier (1) : si $\beta$ non significatif, passer à (2) ; si $\alpha$ non significatif, passer à
+(3). \textbf{Règle de décision} : si $t_\phi$ est \emph{supérieur} (moins négatif) que la
+valeur critique, on \emph{ne rejette pas} $H_0$ $\Rightarrow$ racine unité, série non
+stationnaire $\Rightarrow$ différencier.
+\end{methode}
+\begin{exemple}[$\to$ \textbf{Q\,F.4}]
+$\phihat=0.996$, $\widehat\sigma_{\phihat}=0.0061$, $t_\phi=-0.645>-2.89$ : on ne rejette pas
+$H_0$ $\Rightarrow$ $I(1)$. Après différenciation, $\rhohat(1)\approx0$ $\Rightarrow$ marche
+aléatoire, modèle ARIMA$(0,1,0)$.
+\end{exemple}
+Le \emph{test DF augmenté (ADF)} étend ceci aux AR$(p)$ en ajoutant des termes
+$\sum_{j}\phi_j\Delta X_{t-j}$.
+
+\section{Processus ARIMA et SARIMA}
+\begin{definition}[ARIMA(p,d,q)]
+Si $X_t\sim I(d)$ et $Y_t=(1-B)^dX_t$ est un ARMA$(p,q)$ stationnaire, alors $X_t$ est un
+ARIMA$(p,d,q)$ :
+\[
+\Phi_p(B)\,(1-B)^d X_t=\Theta_q(B)\,a_t .
+\]
+Cas particuliers : ARIMA$(p,0,q)=$ARMA$(p,q)$ ; ARIMA$(0,1,0)$ $=$ marche aléatoire.
+\end{definition}
+\begin{recette}[Déterminer ARIMA(p,d,q)]
+\textbf{1.} Tester $\Phi(1)=0$ et factoriser $(1-B)$ autant de fois que possible $\to$ ordre
+$d$. \textbf{2.} Le polynôme stationnaire restant donne $p$ ; le polynôme MA donne $q$.
+Ex.\ ($\to$ \textbf{Q\,F.1}) : $1-2.65B+2.3B^2-0.65B^3=(1-B)^2(1-0.65B)$ $\Rightarrow$ $I(2)$,
+ARIMA$(1,2,0)$.
+\end{recette}
+\begin{definition}[SARIMA]
+$\Phi_p(B)\Phi_P(B^s)(1-B)^d(1-B^s)^D X_t=\Theta_q(B)\Theta_Q(B^s)a_t$ : combine parties
+régulière et saisonnière (période $s$). Il modélise \emph{tendance et/ou saisonnalité}.
+$\to$ \textbf{Q\,A.11, I.3}.
+\end{definition}
+
+\section{Détection de la saisonnalité}
+Outils : représentation graphique et tableau de \emph{Buys--Ballot} ; \emph{test de Fisher}
+(ANOVA : effet « période » significatif $\Rightarrow$ saisonnalité ; effet « année »
+$\Rightarrow$ tendance) ; \emph{ACF} (pics aux multiples de la période $s$).
+
+\section{Validation d'un modèle : test de Ljung--Box}
+\begin{definition}[Statistique de Ljung--Box]
+Après ajustement d'un ARMA$(p,q)$, on teste la blancheur des \emph{résidus} :
+\[
+\mathrm{LB}=n(n+2)\sum_{k=1}^{K}\frac{\rhohat_k^2}{n-k}\ \xrightarrow{H_0}\ \chi^2_{K-p-q}.
+\]
+$H_0$ : « résidus $=$ bruit blanc ». On rejette $H_0$ si $\mathrm{LB}>\chi^2_{K-p-q,\,1-\alpha}$.
+\end{definition}
+\begin{exemple}[$\to$ \textbf{Q\,J.21}]
+ARMA(1,1), $K=14$, $\mathrm{LB}=18.386$ : ddl $=14-1-1=12$, seuil $\chi^2_{12,0.95}=21.03$.
+Comme $18.386<21.03$, on \emph{ne rejette pas} $H_0$ : résidus compatibles avec un bruit
+blanc, modèle validé.
+\end{exemple}
+\begin{recette}[Validation complète]
+(i) significativité des paramètres (Student) ; (ii) \textbf{blancheur des résidus}
+(Ljung--Box, ACF/PACF des résidus) ; (iii) normalité (Jarque--Bera, pour les IC). Sélection
+entre modèles candidats : \textbf{AIC} $=-2\ln L+2k$, \textbf{BIC} $=-2\ln L+k\ln n$
+(minimiser). $\to$ \textbf{Q\,A.13, A.19--A.21}.
+\end{recette}
+
+% ====================================================================
+\chapter{Prévision}
+
+\section{Prévision optimale}
+\begin{definition}[Prévision optimale]
+La meilleure prévision (au sens de l'erreur quadratique moyenne) de $X_{n+h}$ connaissant
+$X_1,\dots,X_n$ est l'espérance conditionnelle $\widehat X_{n+h}=\E[X_{n+h}\mid\mathcal F_n]$.
+\end{definition}
+\begin{methode}[Règles de calcul]
+Dans l'équation du modèle écrite à la date $n+h$ : remplacer les chocs \emph{futurs}
+$a_{n+j}$ ($j\ge1$) par $0$, les chocs \emph{passés} par les résidus estimés, et les $X$
+futurs par leurs prévisions déjà calculées.
+\end{methode}
+
+\section{Prévision d'un AR(p)}
+\begin{theoreme}
+Pour $X_t=\mu+\sum_{j=1}^p\phi_jX_{t-j}+a_t$ :
+$\widehat X_{n+1}=\mu+\sum_{j=1}^p\phi_jX_{n+1-j}$, et plus généralement
+$\widehat X_{n+h}=\mu+\sum_{j=1}^p\phi_j\widehat X_{n+h-j}$ (avec $\widehat X_{n+i}=X_{n+i}$
+pour $i\le0$).
+\end{theoreme}
+\begin{corollaire}[AR(1)]
+$\widehat X_{n+h}=\phi^hX_n+\mu\sum_{j=0}^{h-1}\phi^j$. Quand $h\to\infty$,
+$\widehat X_{n+h}\to\dfrac{\mu}{1-\phi}=\E(X)$. $\to$ \textbf{Q\,E.2, E.6, E.7, G.3, J.2, J.17}.
+\end{corollaire}
+
+\section{Prévision d'un MA(1)}
+\begin{theoreme}
+Pour $X_t=\mu+a_t+\theta a_{t-1}$ : $\widehat X_{n+1}=\mu+\theta a_n$ et
+$\widehat X_{n+h}=\mu$ pour $h\ge2$. (Au-delà de l'horizon $q$, un MA$(q)$ prévoit la moyenne.)
+$\to$ \textbf{Q\,E.1, E.3, E.4}.
+\end{theoreme}
+
+\section{Erreur de prévision et intervalle de confiance}
+\begin{theoreme}[Erreur de prévision]
+Via la forme $\mathrm{MA}(\infty)$ $X_t=\mu+\sum_j\psi_j a_{t-j}$, l'erreur à horizon $h$ est
+\[
+\Delta_h=X_{n+h}-\widehat X_{n+h}=\sum_{j=0}^{h-1}\psi_j a_{n+h-j},\qquad
+\Var(\Delta_h)=\sigma^2\sum_{j=0}^{h-1}\psi_j^2 .
+\]
+\end{theoreme}
+\begin{corollaire}[Cas usuels]
+\begin{itemize}[leftmargin=*]
+\item AR(1) : $\Var(\Delta_h)=\sigma^2\big(1+\phi^2+\dots+\phi^{2(h-1)}\big)$.
+\item MA(1) : $\Var(\Delta_1)=\sigma^2$, $\Var(\Delta_h)=(1+\theta^2)\sigma^2$ pour $h\ge2$.
+\end{itemize}
+\end{corollaire}
+\begin{theoreme}[Intervalle de confiance]
+Sous $a_t\sim N(0,\sigma^2)$ i.i.d., $\Delta_h\sim N\big(0,\sigma^2\sum_{j=0}^{h-1}\psi_j^2\big)$
+et un IC à $1-\alpha$ pour $X_{n+h}$ est
+\[
+\boxed{\ \widehat X_{n+h}\ \pm\ z_{1-\alpha/2}\,\sigma\sqrt{\textstyle\sum_{j=0}^{h-1}\psi_j^2}\ }
+\qquad(z_{0.975}=1.96).
+\]
+\end{theoreme}
+\begin{recette}[Prévision $+$ IC, méthode d'examen]
+\textbf{1.} Identifier le modèle et sa forme. \textbf{2.} Calculer $\widehat X_{n+h}$
+(remplacer futurs $a=0$). \textbf{3.} Calculer les $\psi_j$ et $\Var(\Delta_h)$. \textbf{4.}
+IC $=\widehat X_{n+h}\pm1.96\,\sigma\sqrt{\sum\psi_j^2}$. $\to$ \textbf{Q\,E.1--E.7, J.2}.
+\end{recette}
+\begin{exemple}[$\to$ \textbf{Q\,E.1}]
+MA(1) $X_t=2+a_t+0.8a_{t-1}$, $\sigma^2=2$, $a_t=1.6$ :
+$\widehat X_{t+1}=2+0.8(1.6)=3.28$, IC $=3.28\pm1.96\sqrt2$ ;
+$\widehat X_{t+2}=2$, IC $=2\pm1.96\sqrt{(1+0.64)\cdot2}=2\pm1.96\sqrt{3.28}$.
+\end{exemple}
+
+\section{Évaluation des prévisions}
+Critères hors échantillon : RMSE $=\sqrt{\frac1h\sum_{i=1}^h(X_{n+i}-\widehat X_{n+i})^2}$,
+MAE, MAPE. Le choix d'une méthode dépend du contexte, de la qualité/quantité des données, du
+degré d'urgence et des ressources disponibles.
+
+\vfill
+\begin{center}\small\color{gris}
+Cours réécrit pour la préparation au module --- d'après F.~BADAOUI (INSEA).
+\end{center}
+
+\end{document}

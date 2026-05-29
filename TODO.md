@@ -36,25 +36,25 @@
 ### Phase 1 — Infrastructure + Document des QUESTIONS  ✅ cible
 - [x] Installer chaîne LaTeX + pymupdf ; extraire texte/figures des PDF.
 - [x] Analyser cours + sc.txt en détail ; cataloguer/ dédoublonner les questions.
-- [ ] Créer préambule LaTeX commun (`preamble.tex`).
-- [ ] Rédiger `Questions_SC.tex` (toutes les questions, par catégories, sans doublons).
-- [ ] Compiler `Questions_SC.pdf`. Commit + push.
+- [x] Créer préambule LaTeX commun (`preamble.tex`).
+- [x] Rédiger `Questions_SC.tex` (toutes les questions, par catégories, sans doublons).
+- [x] Compiler `Questions_SC.pdf`. Commit + push. (10 pages)
 
 ### Phase 2 — SOLUTIONS (partie 1 : théorie + algèbre des processus)
-- [ ] Corrigés : A (QCM), B (stationnarité/causalité/inversibilité),
+- [x] Corrigés : A (QCM), B (stationnarité/causalité/inversibilité),
       C (représentations MA∞/AR∞).
-- [ ] Compiler une première version de `Solutions_SC.pdf`. Commit + push.
+- [x] Compiler une première version de `Solutions_SC.pdf`. Commit + push.
 
 ### Phase 3 — SOLUTIONS (partie 2 : ACF/PACF, prévision, ARIMA, décomposition, hors-prog)
-- [ ] Corrigés : D (ACF/PACF), E (prévision+IC), F (ARIMA/Dickey-Fuller),
+- [x] Corrigés : D (ACF/PACF), E (prévision+IC), F (ARIMA/Dickey-Fuller),
       G (Yule-Walker), H (décomposition), I (identification), J (synthèse).
-- [ ] Section **Hors programme** (Z) clairement isolée.
-- [ ] Compiler `Solutions_SC.pdf` complet. Commit + push.
+- [x] Section **Hors programme** (Z) clairement isolée.
+- [x] Compiler `Solutions_SC.pdf` complet. Commit + push. (17 pages)
 
 ### Phase 4 — COURS réécrit (rigoureux, orienté questions)
-- [ ] Rédiger `Cours_SC.tex` : définitions, théorèmes (avec preuves clés),
+- [x] Rédiger `Cours_SC.tex` : définitions, théorèmes (avec preuves clés),
       méthodes pas-à-pas, encadrés « recette d'examen » reliés aux questions.
-- [ ] Compiler `Cours_SC.pdf`. Commit + push.
+- [x] Compiler `Cours_SC.pdf`. Commit + push. (14 pages, 5 chapitres)
 
 ### Phase 5 — Revue finale & cohérence
 - [ ] Relecture croisée (questions ↔ solutions ↔ cours), vérif. numérique des calculs.
