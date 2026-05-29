@@ -57,9 +57,9 @@
 - [x] Compiler `Cours_SC.pdf`. Commit + push. (14 pages, 5 chapitres)
 
 ### Phase 5 — Revue finale & cohérence
-- [ ] Relecture croisée (questions ↔ solutions ↔ cours), vérif. numérique des calculs.
-- [ ] Corrections, harmonisation typographique, table des matières/index.
-- [ ] Recompilation des 3 PDF + commit + push final.
+- [x] Relecture croisée (questions ↔ solutions ↔ cours), vérif. numérique des calculs.
+- [x] Corrections, harmonisation typographique, table des matières/index.
+- [x] Recompilation des 3 PDF + commit + push final.
 
 ## Conventions retenues
 - Langue : **français** (cours et questions sont en français).
