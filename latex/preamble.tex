@@ -1,0 +1,84 @@
+% ===== Préambule commun aux documents Séries Chronologiques =====
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\geometry{a4paper,margin=2.3cm}
+\usepackage{enumitem}
+\usepackage{array,booktabs,longtable}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,
+  citecolor=blue!55!black,bookmarksopen=true}
+\usepackage{bookmark}
+
+% --- Couleurs ---
+\definecolor{insea}{RGB}{0,76,128}
+\definecolor{insealight}{RGB}{232,240,247}
+\definecolor{vert}{RGB}{0,120,70}
+\definecolor{vertlight}{RGB}{232,245,238}
+\definecolor{orange}{RGB}{190,90,0}
+\definecolor{orangelight}{RGB}{252,242,228}
+\definecolor{gris}{RGB}{90,90,90}
+
+% --- En-têtes / pieds ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{gris}\leftmark}
+\fancyhead[R]{\small\color{gris}Séries Chronologiques}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% --- Titres de section colorés ---
+\titleformat{\section}{\Large\bfseries\color{insea}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{insea!85!black}}{\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}{\bfseries\color{gris}}{\thesubsubsection.}{0.6em}{}
+
+% --- Théorèmes (pour le cours) ---
+\theoremstyle{definition}
+\newtheorem{definition}{Définition}[section]
+\newtheorem{exemple}{Exemple}[section]
+\newtheorem{remarque}{Remarque}[section]
+\newtheorem{methode}{Méthode}[section]
+\theoremstyle{plain}
+\newtheorem{theoreme}{Théorème}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollaire}{Corollaire}[section]
+\newtheorem{propriete}{Propriété}[section]
+
+% --- Boîtes ---
+\newtcolorbox{recette}[1][]{colback=vertlight,colframe=vert,
+  fonttitle=\bfseries,title={Recette d'examen},#1}
+\newtcolorbox{attention}[1][]{colback=orangelight,colframe=orange,
+  fonttitle=\bfseries,title={Attention},#1}
+\newtcolorbox{rappel}[1][]{colback=insealight,colframe=insea,
+  fonttitle=\bfseries,title={Rappel de cours},#1}
+\newtcolorbox{reponse}[1][]{colback=vertlight,colframe=vert!70!black,
+  left=2mm,right=2mm,top=1mm,bottom=1mm,boxrule=0.8pt,#1}
+
+% --- Notations Séries Chronologiques ---
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\cor}{\operatorname{cor}}
+\newcommand{\BB}{\operatorname{BB}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Xhat}{\widehat{X}}
+\newcommand{\phihat}{\widehat{\phi}}
+\newcommand{\rhohat}{\widehat{\rho}}
+\newcommand{\gammahat}{\widehat{\gamma}}
+\newcommand{\eps}{\varepsilon}
+\DeclareMathOperator{\sgn}{sgn}
+
+% Étiquette « bonne réponse » pour les QCM (utilisée dans le corrigé)
+\newcommand{\bonne}[1]{\textbf{\color{vert}#1}}
+\newcommand{\horsprog}{\textsuperscript{\color{orange}\,$\star$}}
