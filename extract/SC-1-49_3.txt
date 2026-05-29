@@ -1,0 +1,576 @@
+
+===== PAGE 1 =====
+Séries chronologiques
+Fadoua BADAOUI
+18 février 2025
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+1 / 190
+
+===== PAGE 2 =====
+Overview
+1
+Introduction
+Dénitions et concepts
+Méthodes de décomposition
+2
+Processus Stationnaire au Sens Large (SSL)
+3
+Modèles de processus stochastiques : modèles ARMA
+Processus Moyenne Mobile
+Processus autorégressif
+Modèle ARMA
+4
+Méthode de BOX et Jenkins et Modélisation
+5
+Prévision
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+2 / 190
+
+===== PAGE 3 =====
+Chap 1 :Introduction
+Une série chronologique (SC), ou série temporelle, est une série
+d'observations ordonnées chronologiquement. Elles se rencontrent
+naturellement dans une grande variété de domaines. On peut citer :
+l'économie (taux de chômage, . . .), la nance (cours d'action, taux
+d'intérêt, . . .), l'écologie (pollution à l'ozone, au CO, . . .), le transport
+(avec l'exemple célèbre du trac aérien international), la démographie. . .
+→On étudie une suite de couples de la forme (t, Xt), où Xt est
+l'observation de la variable à l'instant t (qui peut être le mois, l'année . . . ).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+3 / 190
+
+===== PAGE 4 =====
+Dénitions et concepts
+Qu'est-ce qu'une série chronologique ?
+Ensemble d'observations qui se distinguent par le rôle particulier que joue
+l'ordre (la chronologie) dans lequel elles ont été recueillies : ce sont des
+observations eectuées à intervalle xé h, au temps t1, t2, . . . , tN. Une série
+chronologique sera notée
+X(t1), X(t2), . . . , X(tN)
+ou plus simplement
+X1, X2, . . .., XN.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+4 / 190
+
+===== PAGE 5 =====
+Objectifs
+L'étude d'une SC permet d'analyser, de décrire et d'expliquer un
+phénomène au cours du temps et d'en tirer des conséquences pour des
+prises de décision.
+L'un des objectifs principaux de l'étude d'une SC est la prévision qui
+consiste à prévoir les valeurs futures XT+h(h = 1, 2, 3, . . .) de la série
+chronologique à partir de ses valeurs observées jusqu'au temps T.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+5 / 190
+
+===== PAGE 6 =====
+Dénitions et concepts
+Contrairement à l'économétrie traditionnelle, le but de l'analyse des SC
+n'est pas de relier des variables entre elles, mais de s'intéresser à la
+dynamique d'une variable.
+L'analyse des SC est cette partie de la statistique qui a pour but de
+caractériser la dépendance pouvant exister dans une série d'observations.
+L'approche que nous allons considérer consiste à caractériser la dépendance
+via un modèle et une fois que nous aurons ajusté un modèle satisfaisant à
+une SC, nous verrons qu'en plus de nous permettre de mieux comprendre le
+phénomène étudié, il nous servira à prédire les valeurs futures de la série.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+6 / 190
+
+===== PAGE 7 =====
+Les outils à disposition du statisticien trouvent leurs sources dans trois
+phases historiques :
+1 La représentation graphique : les diagrammes apparaissent en
+astronomie, le plus ancien connu remontant au 10ème siècle.
+2 Les techniques temporelles déterministes : elles apparaissent aux
+18ème et 19ème siècles, on distingue deux voies très importantes :
+La décomposition d'une série temporelle en composantes tendancielle,
+cyclique, saisonnière et accidentelle.
+La correction des variations saisonnières d'une série temporelle, qu'on
+étudiera, repose sur cette décomposition.
+3 Les méthodes stochastiques : elles émergent au 20ème siècle, et ont
+connu depuis un véritable essor. On étudiera une de ces méthodes : le
+modèle ARMA.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+7 / 190
+
+===== PAGE 8 =====
+Dénitions et concepts
+Exemples de séries chronologiques :
+Production annuelle de blé au cours des années,
+Taux d'ination au Maroc en fonction du temps,
+Suite des températures horaires en un point précis,
+Nombre annuel de passagers sur les lignes aériennes internationales,
+Production et vente d'un produit
+Nombre mensuel d'abonnement et de résiliation à un service
+téléphonique
+→Tout ce qui est chirable et varie en fonction du temps
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+8 / 190
+
+===== PAGE 9 =====
+Population des USA : Le graphique suivant représente la population des
+Etats Unis, uspop, en millions, au pas de temps décennal de 1790 à 1990.
+On constate que son niveau s'accroît avec le temps, de manière
+quasi-exponentielle : on parle volontiers de tendance (exponentielle) pour
+décrire ce phénomène.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+9 / 190
+
+===== PAGE 10 =====
+Passagers aériens : Le graphique suivant représente le nombre mensuel de
+passagers aériens, en milliers, de janvier 1949 à décembre 1960.
+On constate que son niveau moyen s'accrot avec le temps, de manière
+quasi-exponentielle ou polynomiale : on traduit encore cette évolution sous
+le terme de tendance. On observe par ailleurs qu'il y a des variations
+régulières autour du niveau moyen, de période 12 : on nomme cela l'eet
+saisonnier.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+10 / 190
+
+===== PAGE 11 =====
+Logarithme de la série des Passagers aériens
+Si on représente cette fois le logarithme de cette série, on obtient :
+On constate que la tendance est croissante, linéaire ici.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+11 / 190
+
+===== PAGE 12 =====
+Production de bière :Le graphique suivant représente la production
+mensuelle de bière en Australie, en mégalitres, de janvier 1956 à août 1995.
+On peut parler ici d'une tendance : fortement stable jusqu'à 1964,
+fortement croissante ensuite jusqu'à 1978, puis stable, etc. Il ne faut pas
+considérer la série complète pour prévoir à court terme : il y a sans doute
+eu un changement de régime. Présence aussi d'une saisonnalité annuelle.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+12 / 190
+
+===== PAGE 13 =====
+Lynx capturés au Canada : Le graphique suivant représente le nombre
+annuel de lynx capturés au Canada de 1821 à 1934.
+Cette série présente une tendance stable mais une double saisonnalité une
+autour de 10 ans et une autre autour de 40 ans (saisonnalité et cycle).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+13 / 190
+
+===== PAGE 14 =====
+Introduction : Lancement d'une analyse de s.c.
+Représentation graphique : L'analyse d'une série chronologique débute
+toujours par sa représentation graphique.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+14 / 190
+
+===== PAGE 15 =====
+Introduction : Lancement d'une analyse de s.c.
+Représentation graphique
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+15 / 190
+
+===== PAGE 16 =====
+Introduction : Lancement d'une analyse de s.c.
+Comment dater une série chronologique ?
+Cliquer : Données > Déni des dates. . .
+La procédure permet de créer 3 (ou 4) nouvelles variables correspondant
+aux types de dates sélectionnées.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+16 / 190
+
+===== PAGE 17 =====
+Introduction : Lancement d'une analyse de s.c.
+Représentation graphique
+Données > Dénir des dates. . .
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+17 / 190
+
+===== PAGE 18 =====
+Introduction : Traitement des données manquantes.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+18 / 190
+
+===== PAGE 19 =====
+Introduction : Traitement des données manquantes.
+Plusieurs procédures d'analyse de SC s'accommodent mal de
+l'existence de données manquantes.
+Plusieurs procédures permettent d'estimer et remplacer les valeurs
+manquantes.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+19 / 190
+
+===== PAGE 20 =====
+Introduction : Traitement des données manquantes.
+Chronogramme de la série après traitement des valeurs manquantes en
+utilisant la moyenne des valeurs voisines.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+20 / 190
+
+===== PAGE 21 =====
+Table of Content
+1
+Introduction
+Dénitions et concepts
+Méthodes de décomposition
+2
+Processus Stationnaire au Sens Large (SSL)
+3
+Modèles de processus stochastiques : modèles ARMA
+Processus Moyenne Mobile
+Processus autorégressif
+Modèle ARMA
+4
+Méthode de BOX et Jenkins et Modélisation
+5
+Prévision
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+21 / 190
+
+===== PAGE 22 =====
+Méthodes de décomposition :
+En général, une série chronologique s'étudie à l'aide de trois composantes :
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+22 / 190
+
+===== PAGE 23 =====
+Méthodes de décomposition :
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+23 / 190
+
+===== PAGE 24 =====
+Méthodes de décomposition :
+La tendance T :
+Représente l'évolution  moyenne  à long terme de la variable étudiée.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+24 / 190
+
+===== PAGE 25 =====
+Méthodes de décomposition :
+La composante saisonnière S :
+supposée périodique, de période généralement dépendante de notre
+environnement naturel (hiver, printemps, été,. . .) mode d'organisation de la
+société (fêtes, jours fériés, . . .), etc.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+25 / 190
+
+===== PAGE 26 =====
+Méthodes de décomposition :
+La composante résiduelle E :
+Regroupe tout ce qui n'est pas pris en compte par les composantes
+précédentes.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+26 / 190
+
+===== PAGE 27 =====
+Méthodes de décomposition :
+But de l'analyse empirique
+L'analyse descriptive d'une S.C. consiste à isoler (et estimer) les
+composantes de la série observée, en particulier la tendance et la
+composante saisonnière.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+27 / 190
+
+===== PAGE 28 =====
+Analyse de la tendance
+Il existe plusieurs méthodes pouvant exprimer le mouvement tendanciel.
+Estimation de la tendance (Lissage par MM ou régression linéaire)
+Ajustement par une fonction analytique du type T = f (t) ;
+⇒Élimination de la tendance.
+Sur la série temporelle relative aux passagers aériens, nous obtiendrons la
+série corrigé des variations saisonnières CVS (en rouge), à l'aide de la
+régression linéaire ou de moyennes mobiles (MM).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+28 / 190
+
+===== PAGE 29 =====
+Analyse de la tendance : Estimation de la Tendance par MM
+Les moyennes mobiles sont destinées à lisser une série chronologique.
+C'est un outil simple mais ecace, qui permet de mettre en évidence
+la tendance de la série en supprimant la composante saisonnière et en
+atténuant l'amplitude des uctuations irrégulières.
+La moyenne mobile (centrée) d'ordre k, MMk(t) consiste à calculer, pour
+chaque instant d'observation t, la moyenne empirique des k observations
+voisines de celle correspondant à la date t.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+29 / 190
+
+===== PAGE 30 =====
+Analyse de la tendance : Estimation de la Tendance par MM
+Sous SPSS : Transformer > Créer une série Chronologique
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+30 / 190
+
+===== PAGE 31 =====
+Analyse de la tendance : Ajustement de fonctions
+Cette approche repose sur l'hypothèse que la tendance peut être
+représentée par une courbe supposée dénie a priori : y = f (t).
+Sous SPSS : Analyse > Régression > Ajustement de fonctions
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+31 / 190
+
+===== PAGE 32 =====
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+32 / 190
+
+===== PAGE 33 =====
+:
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+33 / 190
+
+===== PAGE 34 =====
+Exemple : Ajustement de la tendance obtenu par une fonction de type
+linéaire, cubique, MM6 et MM12.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+34 / 190
+
+===== PAGE 35 =====
+Analyse de la tendance : Élimination de la tendance
+Détermination puis élimination
+Maintenant qu'un ajustement de tendance est déni, il ne reste plus qu'à
+en déduire S (le Saisonnier) et E (Résidu). Mais avant cela il faut dénir le
+type de modèle pour la série X.
+Le modèle peut être multiplicatif ou additif (mais il n'est pas toujours
+évident de dénir à quel type de modèle appartient la série.)
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+35 / 190
+
+===== PAGE 36 =====
+Méthodes de décomposition :
+On utilise le graphe de la série et la droite passant par les minima et celle
+passant par les maxima.
+Si ces 2 droites sont à peu près parallèles : le modèle est additif.
+Si ces 2 droites ne sont pas parallèles : le modèle est multiplicatif.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+36 / 190
+
+===== PAGE 37 =====
+Le tableau de Buys-Ballot
+Le tableau de Buys-Ballot est un tableau complet à deux entrées dans
+lequel sont consignées les valeurs de Xt. Il est constitué en ligne par les
+années et en colonne par le facteur à analyser ( mois, trimestre, ). Les
+moyennes et les écarts types des années et des trimestres sont calculés ainsi
+que pour l'ensemble des observations de la chronique.
+Figure  tableau de Buys-Ballot
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+37 / 190
+
+===== PAGE 38 =====
+Remarque : Le test de Buys-Ballot
+Le test de Buys-Ballot est fondé sur les résultats du tableau de
+Buys-Ballot. Le schéma est additif si l'écart type et la moyenne sont
+indépendants ; il est multiplicatif dans le cas contraire. Lorsque le nombre
+d'années est susant, nous pouvons estimer par la méthode des MCO les
+paramètres a1 et a0 de l'équation σi = a1xi + a0 + ϵi. Dans le cas, où le
+coecient a1 n'est pas signicativement diérent de 0 (test de Student)
+alors on accepte un schéma additif, dans le cas contraire, nous retenons un
+schéma multiplicatif.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+38 / 190
+
+===== PAGE 39 =====
+Analyse de la tendance : Élimination de la tendance
+Détermination puis élimination :
+Supposons que la série chronologique présente les caractéristiques d'un
+modèle additif :
+Xt = Tt + St + Et.
+Les séries S et E peuvent être obtenues à partir de la formule suivante :
+Série sans tendance = Xt - Série Ajustée = St + Et.
+Pour un modèle multiplicatif,
+Xt = Tt.St.Et
+Série sans tendance = Xt/Série Ajustée = St.Et.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+39 / 190
+
+===== PAGE 40 =====
+Analyse de la tendance : Élimination de la tendance
+Élimination par diérenciation :
+Elle repose sur l'hypothèse suivante : tout élément d'une S.C. peut se
+décomposer en une partie structurelle et une partie accidentelle :
+Xt = ft + et
+En calculant les diérences successives :
+∆Xt = Xt −Xt−1,
+∆2Xt = ∆(∆Xt), . . .
+On constate que la variance des séries a tendance à décroître jusqu'à une
+limite représentant la variance de la partie accidentelle.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+40 / 190
+
+===== PAGE 41 =====
+Analyse de la tendance : Élimination de la tendance
+Élimination par diérenciation : Illustration
+ Si la tendance est linéaire, Tt = a + bt + et, alors :
+∆Xt = Xt −Xt−1 = b + ∆et.
+ Si la tendance est quadratique Tt = a + bt + ct2 alors :
+∆Xt = ∆(Xt −Xt−1) = 2c + ∆2et.
+Exemple : Reprendre la série du PIB en y appliquant les diérences d'ordre
+1 et 2.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+41 / 190
+
+===== PAGE 42 =====
+Analyse de la tendance : Élimination de la tendance
+Exemple : Élimination par diérenciation
+Dans SPSS, la diérenciation d'une série se fait par le menu :
+Transformer > Créer la série chronologique
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+42 / 190
+
+===== PAGE 43 =====
+Analyse de la composante saisonnière
+Étude de la périodicité de la série
+Remarque : On peux déterminer si la saisonnalité est additive ou
+multiplicative.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+43 / 190
+
+===== PAGE 44 =====
+Analyse de la composante saisonnière
+Étude de la périodicité de la série
+Graphes > Générateur de Diagrammes . . ..
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+44 / 190
+
+===== PAGE 45 =====
+Analyse de la composante saisonnière
+Étude de la périodicité de la série
+Autocorrélation ρk : fonction qui mesure la corrélation de la série avec
+elle même mais décalée de k périodes.
+ρk =
+Pn
+t=k+1(yt−y)(yt−k−y)
+Pn
+t=1(yt−y)2
+ρkest appelée fonction d'autocorrélation échantillonnale ACF de délai
+k.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+45 / 190
+
+===== PAGE 46 =====
+Analyse de la composante saisonnière
+Visualiser la fonction d'autocorrélation sous SPSS
+Analyse > Séries chronologiques -> Autocorrélations. . .
+Le graphe, dit auto-corrélogramme, de ρk, pour k = 1, 2, . . . , 36, se
+présente ainsi :
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+46 / 190
+
+===== PAGE 47 =====
+Analyse de la composante saisonnière
+Identication de la composante saisonnière
+La méthode utilisée dans SPSS pour estimer St sont :
+1 Lissage de la série par une moyenne mobile ; la série lissée représente la
+composante Tendance.
+2 Suppression de la composante Tendance par division (modèle
+multiplicatif) ou par soustraction (modèle additif).
+3 Isolement de la saisonnalité par une médiane mobile.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+47 / 190
+
+===== PAGE 48 =====
+Analyse de la composante saisonnière
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+48 / 190
+
+===== PAGE 49 =====
+Analyse de la de la composante saisonnière
+Voir le complément de cours :
+VARIATIONS SAISONNIERS
+Comment tenir compte de la composante saisonnières dans une série
+chronologique
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+49 / 190

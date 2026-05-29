@@ -1,0 +1,334 @@
+
+===== PAGE 1 =====
+Table of Content
+1
+Introduction
+Dénitions et concepts
+Méthodes de décomposition
+2
+Processus Stationnaire au Sens Large (SSL)
+3
+Modèles de processus stochastiques : modèles ARMA
+Processus Moyenne Mobile
+Processus autorégressif
+Modèle ARMA
+4
+Méthode de BOX et Jenkins et Modélisation
+5
+Prévision
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+161 / 172
+
+===== PAGE 2 =====
+Prédiction d'un processus SSL
+La prévision consiste à prévoir les valeurs futures de la série chronologique
+à partir des valeurs observées jusqu'au temps n : (X1, . . . , Xn)
+La prédiction de la série chronologique au temps n + h est notée bXn+h.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+162 / 172
+
+===== PAGE 3 =====
+Cadre conceptuel de prévision
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+163 / 172
+
+===== PAGE 4 =====
+Prédiction d'un processus autorégressif
+Soit Xt un processus autorégressif AR(p) :
+Xt = ϕ1Xt−1 + . . . + ϕpXt−p + at
+On observe les réalisations (X1, . . . , Xn). On cherche à prédire la valeur de
+Xn+1 à partir d'une combinaison linéaire des observations :
+bXn+1 = α0 + α1Xn + . . . + αnX1
+avec (α0, α1, . . . , αn) sont qui minimisent
+E(Pp
+j=1 ϕjXn+1−j + an+1 −α0 −α1Xn −. . . −αnX1)2
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+164 / 172
+
+===== PAGE 5 =====
+Prévisions d'un processus autorégressif AR(p)
+Corollaire
+La prévision optimale d'un processus autorégressif AR(p)
+Xt = ϕ1Xt−1 + . . . + ϕpXt−p + µ + at = Pp
+j=1 ϕjXt−j + µ + at
+à la date n + 1, faite à la date n, bXn+1, est
+bXn+1 = ϕ1Xn + . . . + ϕpXn−p+1 + µ = Pp
+j=1 ϕjXn+1−j + µ
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+165 / 172
+
+===== PAGE 6 =====
+Exemple
+On vous donne les valeurs suivantes d'une série Xt ,
+t
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+Xt
+1
+3
+0
+3
+2
+5
+3
+2
+-1
+3
+Après analyse, le modèle suivant est jugé adéquat pour cette série
+Xt = 1.4Xt−1 + 0.2Xt−2 −0.6Xt−3 + at
+avec at ∼BB(0, 5)
+1 Calculer la meilleure prévision de bX11
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+166 / 172
+
+===== PAGE 7 =====
+Prévisions d'un processus autorégressif AR(1) à horizon 1
+Pour un processus AR(1) :
+Xt = ϕXt−1 + µ + at
+La prévision optimale à la date n + 1, bXn+1, est
+bXn+1 = ϕXn + µ
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+167 / 172
+
+===== PAGE 8 =====
+Prévisions d'un processus autorégressif AR(1) à horizon k
+Pour un processus AR(1) :
+Xt = ϕXt−1 + µ + at, |ϕ| < 1
+La prévision optimale à la date n + k, bXn+k, est
+bXn+k = ϕkXn + µ(Pk−1
+j=0 ϕj)
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+168 / 172
+
+===== PAGE 9 =====
+Prévisions d'un processus autorégressif AR(2) à horizon k
+Pour un processus AR(2) :
+Xt = ϕ1Xt−1 + ϕ2Xt−2 + µ + at,
+La prévision optimale à la date n + 1, bXn+1, est
+bXn+1 = ϕ1Xn + ϕ2Xn−1 + µ
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+169 / 172
+
+===== PAGE 10 =====
+Prévisions d'un processus autorégressif AR(p)
+Pour un processus AR(p) :
+Xt = ϕ1Xt−1 + . . . + ϕpXt−p + µ + at,
+La prévision optimale à la date n + 1, bXn+1, est
+bXn+1 = ϕ1Xn + . . . + ϕpXn−p+1 + µ
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+170 / 172
+
+===== PAGE 11 =====
+Prévisions d'un processus autorégressif AR(p) à horizon k
+Corollaire
+Pour un processus AR(p) :
+Xt = ϕ1Xt−1 + . . . + ϕpXt−p + µ + at,
+Pour k ≤p, la prévision optimale à la date n + k, bXn+k, est
+bXn+k = ϕ1Xn+k−1 + ϕ2Xn+k−2 + . . . + ϕk−1Xn+1 + Pp
+j=k ϕjXn−j+k + µ
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+171 / 172
+
+===== PAGE 12 =====
+Prévisions d'un processus Moyenne Mobile MA(1)
+Corollaire
+La prévision optimale d'un processus Moyenne Mobile MA(1)
+Xt = θ1at−1 + µ + at
+à la date n + 1, faite à la date n, bXn+1 est bXn+1 = θ1an + µ
+Pour k ≥2, la prévision optimale à la date n + k, bXn+k, est
+bXn+k = µ
+C'est à dire qu'à partir d'un horizon 2, la meilleure prévision pour un
+processus Moyenne Mobile MA(1) est la moyenne du processus.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+172 / 172
+
+===== PAGE 13 =====
+Exemple
+Soit Tt le taux de croissance du PIBt et PIBt = Pt
+où Tt = Pt−Pt−1
+Pt−1
+est un processus autorégressif MA(2)
+La prévision du taux de croissance à la date n + k, est bTn+k = µ, ∀k ≥3
+d'où
+Pn+3 = (1 + Tn+3)Pn+2 = (1 + µ)Pn+2
+Pn+4 = (1 + Tn+4)Pn+3 = (1 + µ)2Pn+2
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+173 / 172
+
+===== PAGE 14 =====
+Intervalle de conance de la prévision
+L'erreur de prévision à horizon k est donnée par :
+∆k = Xn+k −bXn+k
+L'erreur de prévision à horizon k pour un processus AR (1)
+L'erreur de prévision à horizon k, pour un processus autorégressif AR (1) ;
+Xt = ϕXt−1 + µ + at, est :
+∆k = Xn+k −bXn+k = Pk−1
+j=0 ϕjan+k−j
+Var(∆k) = (1 + ϕ2 + ϕ4 + . . . + ϕ2k−2)σ2
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+174 / 172
+
+===== PAGE 15 =====
+Démonstration :
+Xt = µ + ϕXt−1 + at
+bXn+k = ϕkXn + µ Pk−1
+j=0 ϕj
+Xn+k = µ + ϕXn+k−1 + an+k
+=µ + ϕ[µ + ϕXn+k−2 + an+k−1] + an+k
+=µ(1 + ϕ) + ϕ2Xn+k−2 + ϕan+k−1] + an+k
+=
+...
+...
+...
+=µ Pk−1
+j=0 ϕj + ϕkXn + Pk−1
+j=0 ϕjan+k−j
+d'où Xn+k −bXn+k = Pk−1
+j=0 ϕjan+k−j
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+175 / 172
+
+===== PAGE 16 =====
+Intervalle de conance de la prévision
+L'erreur de prévision à horizon k pour un processus AR (1)
+Xt = ϕXt−1 + µ + at
+Sous l'hypothèse de normalité des résidus, at ∼N(0, σ2), i.i.d., alors :
+∆k = Xn+k −bXn+k ∼N(0, σ2 Pk−1
+j=0 ϕ2j)
+Un intervalle de conance pour Xn+k au niveau 1 −α est donc :
+[ bXn+k ± z1−α
+2 σ
+qPk−1
+j=0 ϕ2j]
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+176 / 172
+
+===== PAGE 17 =====
+Intervalle de conance de la prévision
+L'erreur de prévision à horizon k pour un processus MA (1)
+L'erreur de prévision à horizon k, pour un processus MA (1) ;
+Xt = µ + θat−1 + at, est :
+∆1 = Xn+1 −bXn+1 = an+1
+Var(∆1) = σ2
+∆k = Xn+k −bXn+k = an+k + θan+k−1, k ≥2
+Var(∆k) = (1 + θ2)σ2, k ≥2
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+177 / 172
+
+===== PAGE 18 =====
+Démonstration :
+Xt = µ + θat−1 + at
+bXn+1 = µ + θan
+Xn+1 −bXn+1 = µ + θan + an+1 −µ −θan = an+1
+Xn+k −bXn+k = Xn+k −µ = µ + θan+k−1 + an+k −µ = θan+k−1 + an+k
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+178 / 172
+
+===== PAGE 19 =====
+Intervalle de conance de la prévision
+L'erreur de prévision à horizon k pour un processus MA (1)
+Xt = µ + θat−1 + at
+Sous l'hypothèse de normalité des résidus, at ∼N(0, σ2), i.i.d., alors :
+∆1 = Xn+1 −bXn+1 ∼N(0, σ2)
+∆k = Xn+k −bXn+k ∼N(0, (1 + θ2)σ2) , k ≥2
+Un intervalle de conance pour Xn+k au niveau 1 −α est donc :
+[ bXn+1 ± z1−α
+2 σ]
+[ bXn+k ± z1−α
+2 σ
+p
+(1 + θ2)], k ≥2
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+179 / 172
+
+===== PAGE 20 =====
+Évaluation des prévisions :
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+180 / 172
+
+===== PAGE 21 =====
+Mesures des performances de la prévision :
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+181 / 172
+
+===== PAGE 22 =====
+Mesures des performances de la prévision :
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+182 / 172
+
+===== PAGE 23 =====
+Mesures des performances de la prévision :
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+183 / 172
+
+===== PAGE 24 =====
+Critères de choix d'une méthode de prévision : Le choix dépend de
+plusieurs facteurs :
+Le contexte de la prévision : son objet, son inuence, les facteurs qui
+entrent dans la prévision ; leurs actions et réaction ;
+La qualité et la quantité des données disponibles : ce facteur est l'un des
+obstacles majeurs à la prévision ;
+Le degré d'urgence de la prévision : dans certains domaines, les prévisions
+sont nécessaires par heure. Dans ce cas, il est clair que seules les
+procédures automatisées restent applicables ;
+Les ressources nancières, matérielles et humaines disponibles : les
+techniques sophistiquées peuvent fournir des précisions très précises, mais
+exigent d'avantage de données, de compétences, de machines et de temps.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+183 / 172

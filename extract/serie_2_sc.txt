@@ -1,0 +1,100 @@
+
+===== PAGE 1 =====
+ 
+ 
+Série chronologique 
+Série 2 
+Exercice 1 : Considérons le processus ARMA(1,1) :   (1 −𝜙𝐵)𝑋𝑡= (1 −𝜃𝐵)𝑎𝑡 
+avec 𝜙 et 𝜃 sont deux réels ; |𝜃| < 1, |𝜙| < 1, 𝑎𝑡 est un bruit blanc (0, 𝜎2) 
+ 
+1. Montrer qu’il existe une série absolument convergente ∑
+𝑏𝑘
+∞
+𝑘=1
+, telle que la prévision 
+optimale du processus 𝑋𝑡 à la date 𝑡 +  1, est 𝑋̂𝑡+1 = ∑
+𝑏𝑘𝑋̂𝑡+1−𝑘
+𝑡+1
+𝑘=1
+ 
+2 On vous donne les cinq dernières observations annuelles suivantes d’une série 𝑋𝑡 : 
+ 
+t 
+2007 
+2008 
+2009 
+2010 
+2011 
+𝑋𝑡 
+1.5 
+1.9 
+3.2 
+2.2 
+2.4 
+Après analyse, le modèle suivant est jugé adéquat pour cette série : 
+ 
+𝑣𝑎𝑟𝑖𝑎𝑏𝑙𝑒 
+Coefficient 
+Std Error 
+t-Statistic 
+Prob 
+𝐴𝑅(1) 
+0.495639 
+0.011520 
+43.02579 
+0.00000 
+𝑀𝐴(1) 
+0.413047 
+0.012079 
+34.19510 
+0.00000 
+ 
+2. Calculer la meilleure prévision pour 𝑋2012, 𝑋2013? 
+Exercice 2: On vous donne les observations suivantes d’une série 𝑋𝑡. 
+𝑡 
+2008 
+2009 
+2010 
+2011 
+𝑥𝑡 
+11.2 
+13.5 
+11.2 
+10.4 
+Après analyse, le modèle suivant est jugé adéquat pour cette série : 
+𝑣𝑎𝑟𝑖𝑎𝑏𝑙𝑒 
+Coefficient 
+Std Error 
+t-Statistic 
+Prob 
+𝐶 
+7.124608 
+0.014099 
+505.3234 
+0.00000 
+𝐴𝑅(1) 
+0.297718 
+0.009525 
+31.25600 
+0.00000 
+avec 𝑎𝑡 i .i .d. ⇠ 𝑁(0, 1) 
+Calculer la meilleure prévision, la variance de l’erreur de prévision, et l’intervalle de 
+confiance (95%) pour chacune des 𝑋2012, 𝑋2013, 𝑋2014. 
+ 
+      Exercice 3 : Soit le processus suivant : 
+𝑥𝑡= 0.4 𝑥𝑡−1 −0.2 𝑥𝑡−2 + 𝑎𝑡 ,        𝑎𝑡∿𝐵𝐵(0, 𝜎𝑎
+2 = 12,8) 
+1. Vérifier que le processus est stationnaire. 
+2. Calculer 𝐸(𝑥𝑡). 
+3. Calculer la variance et les trois premières valeurs des autocorrélations simples et 
+partielles. 
+Exercice 4 : Soit le modèle AR(1) suivant :  
+ 
+𝑌𝑡= 0.8𝑌𝑡−1 + 𝜀𝑡,   𝜎𝜀
+2 = 2 
+On demande :  
+1) Est-il stationnaire ? est-il inversible ? 
+2) Calculer la suite 𝛾0, 𝛾1, … . . , 𝛾5. 
+3) Calculer la suite 𝜌1, … . . , 𝜌5. 
+4) Calculer les coefficients 𝜃1, … . . , 𝜃5 du modèle MA(∞) en lequel, si c’est possible, 
+peut se transformer le modèle AR(1) donné. 

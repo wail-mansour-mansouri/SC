@@ -1,0 +1,61 @@
+
+===== PAGE 1 =====
+                                                                                                                         
+ 
+  
+Série 1 : 
+Exercice 1 : Les ventes trimestrielles d'une entreprise (en milliers de DH) ont suivi l'évolution 
+suivante pendant 4 ans: 
+Date t 
+  1      2      3     4     5     6     7     8 
+   9    10    11  12 
+  13    14   15   16 
+Série Zt 
+235 298 221 340 268  327  242 378 300 368 292 421 
+334  421  322 465 
+ 
+a) Représenter graphiquement l’évolution des ventes.  
+b) Déterminer la tendance (ajustement linéaire).  
+c) Calculer les coefficients saisonniers.  
+d) Etablir des prévisions sur 1 an.  
+e) Corriger la série des variations saisonnières. 
+ f) Reporter tous les résultats de l'étude sur le même graphique et préciser la signification de 
+chaque coefficient. 
+Exercice 2 : Un chanteur célèbre est inondé de courrier par ses admiratrices. Son Manager a 
+établi la statistique du nombre de lettres reçues chaque trimestre pour la période des 4 
+dernières années:  
+ 
+Année 
+1 
+2 
+3 
+4 
+ 
+Trimestre 
+1 
+1000 
+1200 
+1500 
+1400 
+2 
+1500 
+1800 
+2000 
+1800 
+3 
+1400 
+1700 
+1800 
+1600 
+4 
+800 
+1200 
+1300 
+1100 
+ 
+a) Faire un graphique de la série. Que remarque-t-on ? 
+ b) Déterminer la tendance en utilisant la méthode des moyennes mobiles d’ordre 4. Reporter 
+les valeurs sur le graphique.  
+c) Calculer les coefficients saisonniers. Expliquer ce qu’ils signifient.  
+d) Etablir la série C.V.S. Reporter les valeurs sur le graphique. Commenter les résultats. 
+Série chronologique 

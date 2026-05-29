@@ -1,0 +1,295 @@
+
+===== PAGE 1 =====
+Prolongement du modèle ARMA
+Les séries temporelles "brutes" sont rarement stationnaires et l'on peut
+parfois "stationnariser" en eectuant des diérentiations convenables. Les
+modèles ARIMA et SARIMA sont conçus en ce sens ; les processus de type
+ARIMA sont adaptés à des séries sans saisonnalité ; ceux du type SARIMA
+peuvent s'utiliser pour les séries les plus générales.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+127 / 172
+
+===== PAGE 2 =====
+Identication des modèles
+Les modèles intégrés sont très présents dans les séries économiques, par
+exemple les séries d'indices boursiers, de production, de prix.... Les modèles
+SARIMA sont également très présents dès lors que les séries sont très
+saisonnières (avec une forte périodicité trimestrielle, annuelle...etc).
+Parmi les transformations usuel, la transformation par (1 −B) est la plus
+utilisée : on ne considère plus la série brute (Xt) mais la variation (brute)
+Yt = Xt −Xt−1. Dans le cas où Xt est un prix (par exemple un indice
+boursier, CAC40 ou S&P500), on considère souvent la diérence des
+logarithmes des prix Zt = logXt −logXt−1, qui est alors le rendement ou le
+taux de croissance (généralement log pour stabiliser la variance).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+128 / 172
+
+===== PAGE 3 =====
+Tests de racine unitaire : les tests de Dickey-Fuller
+Un test de non stationnarité largement utilisé et répandu est le test de
+racine unitaire proposé par Dickey et Fuller en 1979. L'hypothèse nulle du
+test est la présence de racine unitaire, soit la non stationnarité de type
+stochastique.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+129 / 172
+
+===== PAGE 4 =====
+Tests de racine unitaire : les tests de Dickey-Fuller
+Le test de Dickey & Fuller propose de tester 3 situations
+1 H0 : Xt est une marche aléatoire (RW) avec tendance et dérivé
+Xt −ϕXt−1 = α + βt + at H0 : β = 0
+2 H0 : Xt est une marche aléatoire (RW) avec dérivé
+Xt −ϕXt−1 = α + at H0 : α = 0
+3 H0 : Xt est une marche aléatoire (RW)
+Xt −ϕXt−1 = at H0 : ϕ = 1
+L'hypothèse alternative H1 : ϕ < 1 correspond au cas d'un modèle AR(1)
+stationnaire
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+130 / 172
+
+===== PAGE 5 =====
+Tests de racine unitaire : les tests de Dickey-Fuller
+Sous H0 vraie, la statistique de test pour l'estimateur de ϕ est donnée par :
+tϕ =
+bϕ−1
+bσb
+ϕ
+La règle de décision sont les suivantes :
+Si |tϕ| > tDF où tDF désigne la valeur critique donnée par la table de DF
+⇒on accepte H0 : la série est non stationnaire.
+On commence par étudier le modèle (1). On regarde si β est
+signicativement diérente de 0 ou non. Sinon, on passe à l'étude du
+modèle (2) et on cherche à savoir si α est signicativement diérente de 0
+ou non. Sinon, on étudie le modèle (3).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+131 / 172
+
+===== PAGE 6 =====
+Limites du test DF
+Le test DF standard est un test stationnarité qui ne concerne que les
+processus autorégressifs d'ordre un ou processus AR(1). Le test de
+Dickey-Fuller a donc été prolongé par le test de Dickey et Fuller augmenté
+( ADF) an de détecter la présence d'une racine unitaire pour les processus
+de type AR(p).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+132 / 172
+
+===== PAGE 7 =====
+tests de Dickey-Fuller augmenté (ADF)
+Les hypothèses du test de DFA se dénissent de la façon suivante :
+H0 : processus non stationnaire, il correspond à une de ces formes de non
+stationnarité :
+(1) ∆Xt = ρXt−1 −Pp
+j=2 ϕj∆Xt−j+1 + c + βt + at
+(2) ∆Xt = ρXt−1 −Pp
+j=2 ϕj∆Xt−j+1 + c + at
+(3) ∆Xt = ρXt−1 −Pp
+j=2 ϕj∆Xt−j+1 + at
+où ρ = 1 −ϕ = 0, ϕ = 1, at est un BB et p est déterminée à l'aide du
+corrélogramme partiel de la série diérenciée ∆Xt. .
+L'hypothèse alternative H1 : ϕ < 1. La règle de décision est la même que
+pour le DF simple.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+133 / 172
+
+===== PAGE 8 =====
+Stratégie simpliée de Dikkey Fuller
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+134 / 172
+
+===== PAGE 9 =====
+Identication des modèles
+Soit la chronique est stationnaire (propriétés statistiques invariantes au
+cours du temps)
+→modélisation AR / MA / ARMA.
+Soit elle ne l'est pas (tendance stochastique / marche aléatoire, ou
+tendance déterministe)
+→On commence par dériver pour stationnariser.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+135 / 172
+
+===== PAGE 10 =====
+Processus ARIMA
+Soit Xt un processus DS d'ordre d. Ce processus est stationnarisé par
+intégration d'ordre d, Xt ∼I(d).
+Yt = (1 −B)dXt
+Si le processus sortant Yt est un ARMA(p,q), alors le processus entrant Xt
+est un ARIMA(p,d,q). Un ARIMA(p,d,q) s'écrit :
+Φp(B)(1 −B)dXt = Θq(B)at
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+136 / 172
+
+===== PAGE 11 =====
+Processus ARIMA
+Dans la plupart des chroniques économiques, les tests DF indiquent la
+présence d'une seule racine unitaire et les chroniques sont dites intégrées
+d'ordre 1, I(1).
+Si la chronique est stationnaire, on dit qu'il est I(0). en d'autres termes, un
+ARIMA(p,0,q)=ARMA(p,q)
+Parmi les processus ARIMA non stationnaires, on peut citer le processus
+ARIMA(0,1,0) : (1 −B)Xt = at ⇔xt = xt−1 + at, qui est une marche
+aléatoire (RW)(processus DS le plus simple).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+137 / 172
+
+===== PAGE 12 =====
+L'analyse de la saisonnalité
+L'étude de la saisonnalité est un préalable au traitement d'une série
+chronologique. Dans ce qui suit, nous allons, présenter les techniques
+permettant de tester l'existence d'une composante saisonnière, puis nous
+examinons les méthodes de désaisonnalisation. Pour la détection de la
+saisonnalité, nous utilisons :
+La représentation graphique et le tableau de Buys-Ballot ;
+Analyse de la variance et test de Fisher ;
+La fonction d'autocorrélation.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+138 / 172
+
+===== PAGE 13 =====
+La représentation graphique et le tableau de Buys-Ballot
+La représentation graphique d'une chronique sut, parfois, pour mettre en
+évidence une saisonnalité. Néanmoins, si cet examen n'est pas révélateur ou
+en cas de doute, le tableau de Buys-Ballot permet d'analyser plus nement
+l'historique.
+Figure  Ventes trimestrielles en milliers d'unités
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+139 / 172
+
+===== PAGE 14 =====
+Le tableau de Buys-Ballot
+Le tableau de Buys-Ballot est un tableau complet à deux entrées dans
+lequel sont consignées les valeurs de Xt. Il est constitué en ligne par les
+années et en colonne par le facteur à analyser ( mois, trimestre, ). Les
+moyennes et les écarts types des années et des trimestres sont calculés ainsi
+que pour l'ensemble des observations de la chronique.
+Figure  tableau de Buys-Ballot
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+140 / 172
+
+===== PAGE 15 =====
+Le tableau de Buys-Ballot
+Nous pouvons alors classer les trimestres pour chaque année par valeurs
+décroissantes. On remarque que le T4 se classe en première position quelles
+que soient l'année et la position de "creux" occupé par le T1, ce qui
+conduit à retenir l'existence d'une saisonnalité rigide. Cette technique très
+simple permet la détection de la saisonnalité et aussi d'en préciser la nature.
+Figure  Classement des trimestres en fonction de leurs valeurs
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+141 / 172
+
+===== PAGE 16 =====
+Analyse de la variance et test de Fisher
+Le test de Fisher à partir de l'analyse de la variance suppose la chronique
+sans tendance. Dans le cas contraire cette composante est éliminée par une
+régression sur le temps.
+Soit N le nombre d'années et p le nombre d'observations dans l'année
+(trimestre p = 4, mois p = 12, etc.)
+Deux eets sont testés :
+Si l'eet période (ici trimestre) est signicatif, la série est saisonnière.
+Si l'eet année est signicatif, des changements de tendance existent dans
+la chronique.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+142 / 172
+
+===== PAGE 17 =====
+1) Calcul de la variance totale du tableau. Nous utilisons les résultats
+du tableau pour eectuer l'analyse de la série.
+Figure  Calculs des moyennes par année et période
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+143 / 172
+
+===== PAGE 18 =====
+Analyse de la variance et test de Fisher
+Figure  Analyse de la variance pour détecter une saisonnalité et/ou une tendance.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+144 / 172
+
+===== PAGE 19 =====
+2) Test de l'inuence du facteur colonne, la période (mois ou
+trimestre : H0 : pas d'inuence).
+Calcul du Fisher empirique Fc = VP
+VR que l'on compare au Fisher lu dans la
+table F α
+v1,v2 à v1 = p −1,v2 = (N −1)(p −1) degré de liberté.
+Si le Fisher empirique est supérieur au Fisher lu dans la table, on rejette
+l'hypothèse H0, la série est donc saisonnière.
+3) Test de l'inuence du facteur ligne, la tendance (H0 : pas
+d'inuence du facteur année).
+Calcul du Fisher empirique Fc = VA
+VR que l'on compare au Fisher lu dans la
+table F α
+v3,v2 à v3 = N −1,v2 = (N −1)(p −1) degré de liberté.
+Si le Fisher empirique est supérieur au Fisher lu dans la table, on rejette
+l'hypothèse H0, la série est donc aectée d'une tendance.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+145 / 172
+
+===== PAGE 20 =====
+La fonction d'autocorrélation
+La FAC joue bien le rôle de décomposition temporelle de la chronique. Soit
+les 4 processus X1, X2, X3 et X4 générés articiellement et dont les
+représentations sont :
+X1 = Rt ; X2 = a1t + a0 + Rt ; X3 = St + Rt et X4 = a1t + a0 + St + Rt
+Les termes du corrélogramme de X1, sont tous faible à l'exception d'un
+seul, ceci est caractéristique d'une variable aléatoire de type bruit blanc. Le
+corrélogramme de X2, avec une décroissance lente de ses termes est
+spécique d'une série aectée d'une tendance. Les termes très élevées
+(4,8,12 et 16) du corrélogramme de X3 révèlent la saisonnalité de 4
+périodes. Enn, le corrélogramme de X4 est une combinaison des trois
+précédents
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+146 / 172
+
+===== PAGE 21 =====
+Figure  Représentation des processus analysés.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+147 / 172
+
+===== PAGE 22 =====
+Figure  Corrélogramme des quatres processus.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+29 avril 2025
+148 / 172

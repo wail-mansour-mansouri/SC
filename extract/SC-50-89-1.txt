@@ -1,0 +1,734 @@
+
+===== PAGE 1 =====
+Table of Content
+1
+Introduction
+Dénitions et concepts
+Méthodes de décomposition
+2
+Processus Stationnaire au Sens Large (SSL)
+3
+Modèles de processus stochastiques : modèles ARMA
+Processus Moyenne Mobile
+Processus autorégressif
+Modèle ARMA
+4
+Méthode de BOX et Jenkins et Modélisation
+5
+Prévision
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+50 / 190
+
+===== PAGE 2 =====
+Processus Stationnaire au Sens Large (SSL)
+Un processus Xt est dit Stationnaire au Sens Large (SSL) ssi :
+1 E(Xt) est constante
+2 E(X 2
+t ) < ∞
+3 La fonction d'auto-covariance
+γ(k) = Cov(Xt, Xt+k) = E(Xt −E(Xt))(Xt+k −E(Xt+k))
+est indépendante de t.
+γ(0) = Cov(Xt, Xt) = Var(Xt)
+La fonction d'autocorrélation ρ d'un processus Xt SSL est :
+ρ(k) = corr(Xt, Xt+k) = Cov(Xt,Xt+k)
+σ(Xt)σ(Xt+k) = γ(k)
+γ(0)
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+51 / 190
+
+===== PAGE 3 =====
+Bruit Blanc
+Bruit Blanc
+On dit que Xt un bruit blanc et on note Xt ∼BB(0, σ2), si
+Xt est centré : E(Xt) = 0
+Var(Xt) = σ2
+γ(k) = Cov(Xt, Xt+k) = 0 pour k ̸= 0
+un Bruit blanc est un processus SSL.
+Bruit Blanc Gaussien
+On dit que Xt un bruit blanc Gaussien BBG(0, σ2), si Xt ∼iid N(0, σ2).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+52 / 190
+
+===== PAGE 4 =====
+Exemple :
+Le processus Xt = at −at−1 avec at ∼BB(0, σ2) est-il SSL ?
+E(Xt) = 0
+γ(k) = Cov(Xt, Xt+k) =
+
+
+
+
+
+
+
+
+
+2σ2 si k = 0
+−σ2 si k = 1
+0 si k ≥2
+Xt →est un processus SSL.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+53 / 190
+
+===== PAGE 5 =====
+Exemple :
+Le processus Xt = α + βat + γat−1 avec at ∼BB(0, σ2) et (α, β, γ) ∈R3
+est-il SSL ?
+E(Xt) = α
+γ(k) = Cov(Xt, Xt+k) =
+
+
+
+
+
+
+
+
+
+(β2 + γ2)σ2 si k = 0
+βγσ2 si k = 1
+0 si k ≥2
+Xt →est un processus SSL.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+54 / 190
+
+===== PAGE 6 =====
+Exercice :
+Soient Xt et Yt deux processus SSL tel que
+Cov(Xt, Ys) = 0, ∀(t, s) ∈Z2,
+Montrer que Xt + Yt est un processus SSL.
+Exercice :
+Soit Xt un processus SSL tel que E(Xt) = 0.
+Considérons le processus Yt = (−1)tXt ,
+Montrer que Yt est un processus SSL.
+Xt + Yt est-il un processus SSL ?
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+55 / 190
+
+===== PAGE 7 =====
+Dénition de la non stationnarité
+La plupart des séries économiques sont non stationnaires, c'est-à-dire que
+le processus qui les décrit ne vérie pas au moins une des conditions de la
+dénition d'un processus stationnaire.
+Ceci nous conduit à dénir deux types de non stationnarité selon que c'est
+plutot la condition portant sur le moment d'ordre 1 qui n'est pas vériée
+(non stationnarité déterministe) ou les conditions portant sur les
+moments du second ordre qui ne sont pas vériées (non stationnarité
+stochastique).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+56 / 190
+
+===== PAGE 8 =====
+Dénition de la non stationnarité
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+57 / 190
+
+===== PAGE 9 =====
+Non stationnarité déterministe : Processus TS.
+On dit que le processus Xt est caractérisé par une non stationnarité
+déterministe, ou encore que le processus Xt est TS (Trend stationary) s'il
+peut s'écrire :
+Xt = f (t) + Zt
+où f (t) est une fonction déterministe qui dépend du temps, par exemple
+f (t) = a + bt (cas le plus couramment retenu) et Zt est un processus
+stationnaire.
+Ainsi, ce processus est rendu stationnaire en lui enlevant sa tendance
+déterministe : Xt −f (t) = Zt stationnaire.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+58 / 190
+
+===== PAGE 10 =====
+Non stationnarité stochastique : Processus DS
+On dit que le processus Xt est caractérisé par une non stationnarité
+stochastique, ou encore que le processus Xt est DS (Dierence stationnary)
+si le processus diérencié une fois (1 −B)Xt est stationnaire. On parle
+aussi de processus intégré d'ordre 1, on note Xt ∼I(1) :
+(1 −B)Xt = Zt stationnaire ⇒Xt = Xt−1 + Zt
+De manière générale, on dit que le processus Xt est un processus intégré
+d'ordre d, avec d le degré d'intégration, si le processus diérencié d fois
+(1 −B)dXt est stationnaire. On note Xt ∼I(d) :
+(1 −B)dXt = Zt
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+59 / 190
+
+===== PAGE 11 =====
+Détection de la non stationnarité et de sa nature :
+Il existe plusieurs méthodes pour vérier la stationnarité :
+Examen visuel de la série
+Calculs de la moyenne et de la variance sur des sous ensembles de la
+série et tests d'égalité
+Analyse visuelle de la décroissance de la fonction d'autocorrélation
+Tests de racine unité (Dickey-Fuller, . . .)
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+60 / 190
+
+===== PAGE 12 =====
+Détection de la non stationnarité et de sa nature :
+La représentation graphique de la série peut (dans certains cas) nous
+indiquer que la série n'est pas stationnaire, mais elle ne nous permet
+pas de discriminer entre les deux types de non stationnarité.
+Quand la série est non stationnaire (que ce soit DS ou TS), le
+coecient d'autocorrélation d'ordre 1 (empirique) est très élevé
+(proche de 1), l'autocorrélogramme simple décroit alors lentement.
+Rappelons que l'autocorrélogramme d'un processus stationnaire
+présente une décroissance rapide, puisque les autocorrélations
+simples ρ(h) →0 quand h →∞.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+61 / 190
+
+===== PAGE 13 =====
+Détection de la non stationnarité et de sa nature :
+Les deux types de non stationnarité, DS et TS, n'ayant pas les mêmes
+conséquences statistiques sur la nature du processus, et nécessitant des
+méthodes diérentes pour rendre le processus stationnaire, on peut mettre
+en oeuvre une méthode, que l'on peut qualier de méthode heuristique,
+pour se donner une idée de la nature de la non stationnarité. Il s'agit de
+stationnariser la série, d'une part par diérenciation, d'autre part par retrait
+d'une composante déterministe, et d'observer, à l'aide de la représentation
+graphique et de l'autocorrélogramme, les résultats obtenus.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+62 / 190
+
+===== PAGE 14 =====
+Table of Content
+1
+Introduction
+Dénitions et concepts
+Méthodes de décomposition
+2
+Processus Stationnaire au Sens Large (SSL)
+3
+Modèles de processus stochastiques : modèles ARMA
+Processus Moyenne Mobile
+Processus autorégressif
+Modèle ARMA
+4
+Méthode de BOX et Jenkins et Modélisation
+5
+Prévision
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+63 / 190
+
+===== PAGE 15 =====
+Introduction
+On se propose ici d'expliquer le mouvement de la v. X à travers le temps
+Par les valeurs passées de cette même variable
+Par les chocs qui ont aecté cette variable par le passé.
+Ceci revient à dire qu'on s'intéresse à la catégorie des modèles :
+Xt = F(Xt−1, Xt−2, . . . , Xt−p, at, at−1, . . . , at−q)
+C'est ce qu'on appelle un modèle univarié. Pour l'instant, on ne s'intéresse
+qu'au sous-ensemble des modèles de type linéaire, c'est à dire à ceux qui
+sont de la forme :
+Xt = µ + ϕ1Xt−1 + ϕ2Xt−2 + . . . + ϕpXt−p + at −θ1at−1 −. . . −θqat−q
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+64 / 190
+
+===== PAGE 16 =====
+Introduction
+En partant de la seule chronique des valeurs passées de X, il s'agit de
+1 Identier parmi l'ensemble des formes structurelles décrites par
+l'équation précédente la forme la mieux adaptée à l'explication de X.
+2 Estimer les paramètres de cette forme structurelle particulière
+3 Réaliser, éventuellement des prévisions
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+65 / 190
+
+===== PAGE 17 =====
+Introduction
+Plusieurs cas de gure peuvent se présenter à l'identication de la forme
+structurelle :
+La valeur prise par X à la date t est fonction linéaire des valeurs
+antérieures de X et d'une perturbation aléatoires at :
+Xt = µ + ϕ1Xt−1 + ϕ2Xt−2 + . . . + ϕpXt−p + at
+On a ici aaire à un processus autorégressif d'ordre (p) (AR(p))
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+66 / 190
+
+===== PAGE 18 =====
+Introduction
+La valeur prise par X à la date t ne dépend absolument pas des
+valeurs prises en t −1, t −2, . . .. Elle est déterminée par des chocs
+aléatoires at, at−1, . . . , at−q de telle sorte que Xt s'écrit :
+Xt = µ + at −θ1at−1 −. . . −θqat−q
+On dit alors que X est engendrée par un processus moyenne mobile
+d'ordre q (MA(q)).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+67 / 190
+
+===== PAGE 19 =====
+Introduction
+X est la résultante à la fois d'un processus AR(p) et d'un processus
+(MA(q)). On dit alors qu'on a aaire à un processus ARMA(p,q) :
+Xt = µ+ϕ1Xt−1 +ϕ2Xt−2 +. . .+ϕpXt−p +at −θ1at−1 −. . .−θqat−q
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+68 / 190
+
+===== PAGE 20 =====
+Introduction
+Toute la diculté consiste bien sur à identier :
+1 la nature du processus qui engendre X
+2 le degré de ce processus
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+69 / 190
+
+===== PAGE 21 =====
+Processus Moyenne Mobile
+Processus Moyenne Mobile d'ordre 1 : MA(1)
+On appelle processus moyenne mobile d'ordre 1, un processus Xt déni
+par : Xt = µ + at + θat−1 où at ∼BB(0, σ2) et θ ∈R.
+E(Xt) = µ
+Var(Xt) = (1 + θ2)σ2
+γ(k) = Cov(Xt, Xt+k) =
+
+
+
+
+
+
+
+
+
+(1 + θ2)σ2 si k = 0
+θσ2 si k = 1
+0 si k ≥2
+Tout processus MA(1) est un processus SSL.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+70 / 190
+
+===== PAGE 22 =====
+Processus Moyenne Mobile
+Processus Moyenne Mobile d'ordre 1 : MA(1)
+Soit Xt un processus moyenne mobile d'ordre 1, déni par :
+Xt = µ + at + θat−1 où at ∼BB(0, σ2) et θ ∈R.
+γ(k) = Cov(Xt, Xt+k) =
+
+
+
+
+
+
+
+
+
+(1 + θ2)σ2 si k = 0
+θσ2 si k = 1
+0 si k ≥2
+ρ(k) = Corr(Xt, Xt+k) =
+
+
+
+
+
+
+
+
+
+1 si k = 0
+θ
+1+θ2 si k = 1
+0 si k ≥2
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+71 / 190
+
+===== PAGE 23 =====
+Processus moyenne mobile MA(2)
+On appelle processus moyenne mobile d'ordre 2, un processus Xt déni par :
+Xt = µ + at + θ1at−1 + θ2at−2
+avec at ∼BB(0, σ2) et θ1 et θ2 sont des réels.
+E(Xt) = µ
+Var(Xt) = (1 + P2
+j=1 θ2
+j )σ2
+γ(k) =
+
+
+
+
+
+
+
+
+
+(1 + θ2
+1 + θ2
+2)σ2 si k = 0
+σ2(θ1 + θ2 + θ1θ2) si 1 ≤k ≤2
+0 si k ≻2
+⇒Tout processus MA(2) est un processus SSL.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+72 / 190
+
+===== PAGE 24 =====
+Exercices
+Calculer les termes de la FAC d'un processus MA(2) théorique
+Xt = at + θ1at−1 + θ2at−2 avec at ∼BB(0, σ2)
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+73 / 190
+
+===== PAGE 25 =====
+Processus Moyenne Mobile d'ordre q : MA(q)
+On appelle processus moyenne mobile d'ordre q, un processus Xt déni par :
+Xt = µ + at + θ1at−1 + . . . + θqat−q = µ + at + Pq
+j=1 θjat−j
+avec at ∼BB(0, σ2) et les θj sont des réels.
+E(Xt) = µ
+Var(Xt) = (1 + Pq
+j=1 θ2
+j )σ2
+γ(k) =
+
+
+
+
+
+
+
+
+
+(1 + θ2
+1 + . . . + θ2
+q)σ2 si k = 0
+σ2(θk + Pq−K
+j=1 θjθk+j) si 1 ≤k ≤q
+0 si k ≻q
+⇒Tout processus MA(q) est un processus SSL.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+74 / 190
+
+===== PAGE 26 =====
+Fonction d'autocorrélation
+Pour modéliser des SC avec des données réelles, une question
+d'importance est le choix de l'ordres q pour un processus MA(q).
+L'examen de la fonction d'autocorrélation ρ(k) peut nous indiquer si
+la série est un MA(q).
+Fonction d'autocorrélation
+Si Xt un processus MA(q) alors
+ρ(k) ̸= 0, si 0 ≤k ≤q
+ρ(k) = 0, si k ≥q + 1
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+75 / 190
+
+===== PAGE 27 =====
+Estimation de la fonction d'autocovariance γ(k) d'un
+processus SSL
+Soit x1, . . . , xT une suite de T observations et soit :
+xT = 1
+T
+PT
+j=1 xj la moyenne empirique pour les T observations.
+Un estimateur de la fonction d'autocovariance γ(k)
+γ(k) = E(Xt −E(Xt))(Xt+k −E(Xt+k))
+est bγ(k) = 1
+T
+PT−k
+j=1 (xj −xT)(xj+k −xT)
+Un estimateur de la fonction d'autocorrélation ρ(k) est
+bρ(k) = bγ(k)
+bγ(0)
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+76 / 190
+
+===== PAGE 28 =====
+Estimation de la fonction d'autocovariance γ(k)
+Corrélogramme = Le graphe de bρ(k) en fonction k
+k →bρ(k) = bγ(k)
+bγ(0) =
+PT−k
+j=1 (xj−xT )(xj+k−xT )
+PT
+j=1(xj−xT )2
+bρ(1) =
+PT−1
+j=1 (xj−xT )(xj+1−xT )
+PT
+j=1(xj−xT )2
+étudie la corrélation entre (x1, . . . , xT−1) et (x2, . . . , xT).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+77 / 190
+
+===== PAGE 29 =====
+Corrélogramme sous SPSS
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+78 / 190
+
+===== PAGE 30 =====
+Table of Content
+1
+Introduction
+Dénitions et concepts
+Méthodes de décomposition
+2
+Processus Stationnaire au Sens Large (SSL)
+3
+Modèles de processus stochastiques : modèles ARMA
+Processus Moyenne Mobile
+Processus autorégressif
+Modèle ARMA
+4
+Méthode de BOX et Jenkins et Modélisation
+5
+Prévision
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+79 / 190
+
+===== PAGE 31 =====
+Processus autorégressif d'ordre 1 : AR(1)
+On appelle processus autorégressif d'ordre 1, un processus Xt déni par :
+Xt = µ + ϕXt−1 + at
+où :
+at ∼BB(0, σ2),
+µ, ϕ ∈R2 : représentent les paramètres inconnus du modèle que l'on
+cherche à estimer.
+ϕ ̸= 0.
+L'inuence du passé se manifeste par une régression linéaire sur la
+dernière valeur.
+Le processus ainsi déni est-t-il SSL ? Quelle est sa forme explicite ?
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+80 / 190
+
+===== PAGE 32 =====
+Processus autorégressif d'ordre 1 : AR(1)
+Théorème
+Si ϕ = 1 alors le processus Xt = µ + ϕXt−1 + at n'est pas SSL
+Xt = µ + Xt−1 + at
+X1 = µ + X0 + a1 (on suppose que X0estconnue)
+X2 = µ + X1 + a2 = X0 + 2µ + a1 + a2
+X3 = µ + X2 + a3 = X0 + 3µ + a1 + a2 + a3
+d'où Xt = tµ + X0 + Pt
+j=1 aj
+E(Xt) = X0 + tµ et Var(Xt) = tσ2 Donc Xt est non SSL.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+81 / 190
+
+===== PAGE 33 =====
+Processus causal
+Dénition
+Un processus Xt est dit causal lorsqu'il existe une suite de nombres ψj
+telles que P
+j≥0 ψ2
+j ≺∞et
+Xt = µ + P
+j≥0 ψjat−j,
+où at est un bruit blanc BB(0, σ2), et ψ0 = 1.
+Si Xt est causal alors Cov(Xt, at) = Cov(µ + P
+j≥0 ψjat−j, at) = σ2
+et Cov(Xt−k, at) = cov(µ + P
+j≥0 ψjat−k−j, at) =
+P
+j≥0 ψjCov(at−k−j, at) = σ2 P
+j≥0 ψjI{k=−j} = 0, ∀K ≥1.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+82 / 190
+
+===== PAGE 34 =====
+Modèle autorégressif : AR(1)
+Théorème
+Soit Xt un processus autorégressif d'ordre 1, AR(1), Xt = ϕXt−1 + µ + at ,
+avec at un bruit blanc BB(0, σ2), alors :
+Xt est SSL et admet la décomposition
+Xt =
+µ
+1−ϕ + P
+j≥0 ϕjat−j
+si et seulement si |ϕ| ≺1
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+83 / 190
+
+===== PAGE 35 =====
+Modèle autorégressif : AR(1)
+Démonstration
+Si Xt est est SSL et admet la décomposition :
+Xt =
+µ
+1−ϕ + P
+j≥0 ϕjat−j
+alors
+E(Xt) =
+µ
+1−ϕ
+et
+Var(Xt) = σ2 P
+j≥0 ϕ2j =
+σ2
+1−ϕ2 < ∞
+⇒|ϕ| ≺1.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+84 / 190
+
+===== PAGE 36 =====
+Modèle autorégressif : AR(1)
+Démonstration
+Si |ϕ| ≺1, le processus Xt = ϕXt−1 + µ + at peut s'écrire sous la forme
+(1 −ϕB)Xt = µ + at
+avec B est un opérateur déni par
+BXt = Xt−1 ⇒B2Xt = BBXt = BXt−1 = Xt−2 et BkXt = Xt−k
+B(constanteC) = BC = BZt = Zt−1 = c car (c = Zt, ∀t)
+Xt = (1 −ϕB)−1(µ + at) = P
+k≥0(ϕB)k(µ + at) = P
+k≥0 ϕkBkµ +
+P
+k≥0 ϕkBkat = P
+k≥0 ϕkµ + P
+k≥0 ϕkat−k =
+µ
+1−ϕ + P
+j≥0 ϕjat−j
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+85 / 190
+
+===== PAGE 37 =====
+Modèle autorégressif : AR(1)
+Corollaire
+Soit Xt un processus autorégressif d'ordre 1, AR(1), Xt = ϕXt−1 + µ + at
+si |ϕ| ≺1 alors
+E(Xt) =
+µ
+1−ϕ
+Var(Xt) =
+σ2
+1−ϕ2
+γ(k) = σ2
+ϕk
+1−ϕ2 , k = 0, 1, 2, . . .
+ρ(k) = ϕk, k = 0, 1, 2, . . .
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+86 / 190
+
+===== PAGE 38 =====
+Modèle autorégressif : AR(1)
+Var(Xt) = Var(ϕXt−1 + µ + at) =
+ϕ2Var(Xt−1) + Var(at) + 2Cov(at, Xt−1) = ϕ2Var(Xt−1) + σ2 + 0 =
+σ2
+1−ϕ2
+γ(k) = Cov(Xt, Xt+k) = Cov(Xt, ϕXt+k−1 + µ + at+k) =
+ϕCov(Xt, Xt+k−1) + Cov(Xt, at+k) = ϕγ(k −1) + 0 ( car Xt est causal,
+∀k ≥1)
+d'où γ(k) = ϕkγ(0) = ϕkVar(Xt) = σ2
+ϕk
+1−ϕ2
+ρ(k) = γ(k)
+γ(0) = ϕk
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+87 / 190
+
+===== PAGE 39 =====
+Modèle autorégressif
+Remarque :
+L'autocovariance d'ordre k d'un processus autorégressif stationnaire d'ordre
+1 décroit de manière géométrique quand k augmente. Il va donc de même
+pour ce qui concerne l'autocorrélation. Le corrélogramme d'un processus
+AR(1)(c à d la représentation graphique des coecients d'autocorrélation
+en fonction de k) est donc géométriquement décroissant (oscillatoire ou
+asymptotique selon que ϕ est négatif ou positif).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+88 / 190
+
+===== PAGE 40 =====
+Exemple
+On vous donne les valeurs suivantes provenant d'un processus temporel
+SSL, AR(1), Xt = ϕXt−1 + µ + at, avec at ∼BB(0, σ2) :
+t
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+Xt
+1.2
+2
+1.4
+3.6
+2.3
+5
+3
+2
+0.4
+3
+A partir des données ci-dessus, estimer la valeur de ϕ, µ et σ2.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+89 / 190

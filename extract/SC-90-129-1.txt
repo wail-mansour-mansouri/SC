@@ -1,0 +1,1010 @@
+
+===== PAGE 1 =====
+Modèle autorégressif : AR(2)
+On appelle processus autorégressif d'ordre 2, AR(2) si
+Xt = ϕ1Xt−1 + ϕ2Xt−2 + µ + at
+où : at ∼BB(0, σ2), ϕ2 ̸= 0.
+ϕ1, ϕ2, µ ∈R3 : représentent les paramètres inconnus du modèle que
+l'on cherche à estimer.
+l'inuence du passé se manifeste par une régression linéaire sur les
+deux valeurs antérieures.
+Le processus ainsi déni est-t-il SSL ? Quelle est sa forme explicite ?
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+90 / 190
+
+===== PAGE 2 =====
+Modèle autorégressif : AR(2)
+Théorème
+Soit Xt un processus autorégressif d'ordre 2, AR(2) :
+Xt = ϕ1Xt−1 + ϕ2Xt−2 + µ + at
+alors : Xt est SSL et causal si et seulement si les racines du polynôme
+A(z) = 1 −ϕ1Z −ϕ2Z 2 sont de module strictement supérieur à 1.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+91 / 190
+
+===== PAGE 3 =====
+Modèle autorégressif : AR(p)
+On dit que le processus aléatoire temporel Xt est un processus autoregressif
+d'ordre p, AR(p) si
+Xt = µ + ϕ1Xt−1 + . . . + ϕpXt−p + at
+où :
+at ∼BB(0, σ2),
+ϕj ∈R, j = 1 . . . , p, ϕp ̸= 0, µ ∈R et p ∈N∗.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+92 / 190
+
+===== PAGE 4 =====
+Modèle autorégressif : AR(p)
+Le théorème suivant donne les conditions nécessaires et susantes de
+stationnarité au sens large des modèles AR(p).
+Théorème
+Le processus autorégressif Xt déni par
+Xt = µ + ϕ1Xt−1 + . . . + ϕpXt−p + at
+est SSL et causal si et seulement si les racines du polynôme
+A(z) = 1 −ϕ1Z −. . . −ϕpZ p sont de module strictement supérieur à 1.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+93 / 190
+
+===== PAGE 5 =====
+Démonstration
+Le processus Xt = ϕ1Xt−1 + ϕ2Xt−2 + µ + at peut se réécrire sous la forme
+(1 −ϕ1B −ϕ2B2)Xt = µ + at
+avec BXt = Xt−1 et B2Xt = Xt−2
+L'équation d'un AR(2) peut donc s'écrire :
+A(B)Xt = µ + at, où A(B) = 1 −ϕ1B −ϕ2B2
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+94 / 190
+
+===== PAGE 6 =====
+Démonstration
+Soient b1 et b2 les racines du polynôme A(B) :
+A(B) = 1 −ϕ1B −ϕ2B2 = (1 −B
+b1 )(1 −B
+b2 ), ce qui donne
+(1 −B
+b1 )(1 −B
+b2 )Xt = µ + at
+Posons Yt = (1 −B
+b2 )Xt, il s'en suit que (1 −B
+b1 )Yt = µ + at, Yt est un
+processus AR(1) avec paramètre
+1
+b1
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+95 / 190
+
+===== PAGE 7 =====
+Démonstration(Suite)
+Le processus Yt est un SSL et causal ⇐⇒
+ 1
+b1
+ ≺1 (|b1| ≻1).
+|b1| ≻1 ⇔Yt =
+µ
+1 −1
+b1
++
+X
+j≥0
+( 1
+b1
+)jat−j = (1 −B
+b2
+)Xt
+⇒Xt =
+X
+j≥0
+( 1
+b2
+)jBjYt =
+X
+j≥0
+( 1
+b2
+)jYt−j
+=
+µ
+(1 −1
+b1 )(1 −1
+b2 ) +
+X
+j≥0
+( 1
+b2
+)j X
+j≥0
+( 1
+b1
+)jat−j
+⇒Xt =
+µ
+1 −ϕ1 −ϕ2
++
+X
+j≥0
+ψjat−j
+avec ψ0 = 1.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+96 / 190
+
+===== PAGE 8 =====
+Modèle autorégressif : AR(2)
+Remarque
+Soit Xt un processus AR(2) : Xt = ϕ1Xt−1 + ϕ2Xt−2 + µ + at , Si les
+racines du polynôme A(B) = 1 −ϕ1B −ϕ2B2 sont de module strictement
+supérieur à 1 alors :
+Xt est SSL et causal et admet la décomposition
+Xt =
+µ
+1−ϕ1−ϕ2 + P
+k≥0 ψkat−k avec ψ0 = 1
+Cov(Xt, at) = σ2
+Cov(Xt−j, at) = 0, ∀j ≥1
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+97 / 190
+
+===== PAGE 9 =====
+Conditions de stationnarité
+La modèle autorégressif d'ordre p peut être récrit en utilisant l'opérateur de
+retard B :
+(1 −ϕ1B −. . . −ϕpBp)Xt = ϕ(B, p)Xt = at
+Le polynôme en B de degré p, ϕ(B, p), admet r1, r2, . . . , rp solutions de
+ϕ(B, p) = 0. Connaissant ces p racines, on peut factoriser le polynôme
+ϕ(B, p) en écrivant :
+ϕ(B, p) = (1 −r1B)(1 −r2B) . . . (1 −rpB)
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+98 / 190
+
+===== PAGE 10 =====
+Conditions de stationnarité
+et le modèle autorégressif peut alors être exprimé sous la forme :
+(1 −r1B)(1 −r2B) . . . (1 −rpB)Xt = at
+ou même :
+Xt = (1 −r1B)−1(1 −r2B)−1 . . . (1 −rpB)−1at
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+99 / 190
+
+===== PAGE 11 =====
+Conditions de stationnarité
+On voit, ici encore, que dans le cas d'un processus autorégressif d'ordre p,
+la variable Xt peut être exprimée comme une somme innie des innovations
+qui l'ont aecté par le passé puisque :
+Xt = [(1+r1B+r2
+1 B2+. . .)(1+r2B+r2
+2 B2+. . .) . . . (1+rpB+r2
+pB2+. . .)]at
+Xt = at + ψ1at−1 + ψ2at−2 + . . .
+La condition de stationnarité du processus exige que les racines du
+polynôme caractéristique soient toutes situées à l'intérieur du cercle de
+rayon unitaire.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+100 / 190
+
+===== PAGE 12 =====
+Conditions de stationnarité et d'inversibilité
+Considérons le MA(1) : Xt = at −θat−1, le polynôme (1 −θB)−1 est
+inversible ssi |θ| < 1. Dans ce cas, on peut écrire :
+(1 −θB)−1 =
+1
+1−θB = P∞
+i=0 θiBi
+Nous pouvons calculer :
+at = (1 −θB)−1Xt = (1 + θ1B + θ2
+1B2 + . . .)Xt = P∞
+i=0 θiXt−i
+D'où un MA(1) peut s'écrire sous la forme d'un AR(∞) sous la condition
+que |θ| < 1, condition qui permet d'inverser le polynôme (1 −θ1B). Dans
+ce cas, la racine en B du polynôme (1 −θ1B) est B = 1
+θ1 et comme
+|θ| < 1 alors |B| > 1. Ce résultat peut être généralisé pour le polynôme
+θ(B) des processus MA et pour le polynôme ϕ(B) des processus AR.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+101 / 190
+
+===== PAGE 13 =====
+Conditions de stationnarité et d'inversibilité
+Un processus AR est toujours inversible. il est stationnaire lorsque les
+racines de ϕp(B) = 0 sont à l'extérieur du cercle unité du plan complexe.
+(1 −ϕ1B −. . . −ϕpBp) = 0 ⇔ϕp(B) = 0 ⇔Qp
+j=1(1 −µjBj) = 0
+Ces conditions de stationnarité se ramènent à |µj| < 1∀j.
+Un processus MA est toujours stationnaire. il est inversible si les racines de
+θq(B) = 0 sont à l'extérieur du cercle unité du plan complexe.
+(1 −θ1B −. . . −θqBq) = 0 ⇔Θq(B) = 0 ⇔Qq
+j=1(1 −γjBj) = 0
+Ces conditions d'inversibilité se ramènent à |γj| < 1∀j.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+102 / 190
+
+===== PAGE 14 =====
+Modèle autorégressif : AR(2)
+Exercice
+Étudier la stationnarité de ces deux processus :
+Xt = 10 + 0.6Xt−1 + 0.2Xt−2 + at
+Xt = 10 + 0.8Xt−1 + 0.2Xt−2 + at
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+103 / 190
+
+===== PAGE 15 =====
+Les équations de Yule Walker
+Corollaire
+Soit Xt un processus autorégressif AR(2) SSL et causal déni par
+Xt = ϕ1Xt−1 + ϕ2Xt−2 + µ + at, alors : les fonctions d'autocorrélation du
+processus Xt sont données par :
+γ(0) =
+σ2
+1−ϕ1ρ(1)−ϕ2ρ(2)
+ρ(k) = ϕ1ρ(k −1) + ϕ2ρ(k −2), k ≥1
+ρ(1) =
+ϕ1
+1−ϕ2
+ρ(2) = ϕ1ρ(1) + ϕ2
+Cette suite d'équations dénit les équations de Yule Walker AR(2).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+104 / 190
+
+===== PAGE 16 =====
+Démonstration
+γ(0) = Cov(Xt, Xt) = Cov(Xt, ϕ1Xt−1 + ϕ2Xt−2 + µ + at) =
+ϕ1γ(1) + ϕ2γ(2) + σ2
+On a ρ(0) = 1 = ϕ1ρ(1) + ϕ2ρ(2) +
+σ2
+γ(0) d'où γ(0) =
+σ2
+1−ϕ1ρ(1)−ϕ2ρ(2)
+γ(K) = Cov(Xt, Xt+k) = Cov(Xt, ϕ1Xt+k−1 + ϕ2Xt+k−2 + µ + at+k) =
+ϕ1γ(k −1) + ϕ2γ(k −2)
+ρ(k) = ϕ1ρ(k −1) + ϕ2ρ(k −2), k ≥1
+Cov(Xt, Xt−k) = Cov(Xt−k, Xt) = Cov(Xt−k, Xt−k+k) =
+Cov(Xt′, Xt′+k) = γ(k)
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+105 / 190
+
+===== PAGE 17 =====
+Les équations de Yule Walker AR(p)
+Les équations de Yule Walker AR(p)
+Xt = µ + ϕ1Xt−1 + . . . + ϕpXt−p + at
+Corollaire
+Soit Xt un processus autorégressif AR(p), SSL et causal alors : les
+fonctions d'autocorrélation de Xt sont données par :
+ρ(k) = Pp
+j=1 ϕjρ(k −j), ∀k ≥1
+γ(0) =
+σ2
+1−Pp
+j=1 ϕjρ(j)
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+106 / 190
+
+===== PAGE 18 =====
+Modèle autorégressif : AR(p)
+Les équations de Yule Walker AR(p)
+Xt = µ + ϕ1Xt−1 + . . . + ϕpXt−p + at Les équations de Yule-Walker :
+ρ(k) = Pp
+j=1 ϕjρ(k −j), ∀k ≥1
+peuvent s'écrire sous forme matricielle :
+
+
+
+
+
+
+
+
+ρ1
+ρ2
+...
+ρp
+
+
+
+
+
+
+
+
+=
+
+
+
+
+
+
+
+
+1
+ρ1
+. . .
+ρp−1
+ρ1
+1
+. . .
+ρp−2
+...
+. . .
+...
+...
+ρp−1
+ρp−2
+. . .
+1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ϕ1
+ϕ2
+...
+ϕp
+
+
+
+
+
+
+
+
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+107 / 190
+
+===== PAGE 19 =====
+Modèle autorégressif : AR(p)
+Les équations de Yule Walker AR(p)
+Xt = µ + ϕ1Xt−1 + . . . + ϕpXt−p + at
+
+
+
+
+
+
+
+
+ϕ1
+ϕ2
+...
+ϕp
+
+
+
+
+
+
+
+
+=
+
+
+
+
+
+
+
+
+1
+ρ1
+. . .
+ρp−1
+ρ1
+1
+. . .
+ρp−2
+...
+. . .
+...
+...
+ρp−1
+ρp−2
+. . .
+1
+
+
+
+
+
+
+
+
+−1
+
+
+
+
+
+
+
+
+ρ1
+ρ2
+...
+ρp
+
+
+
+
+
+
+
+
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+108 / 190
+
+===== PAGE 20 =====
+Modèle autorégressif : AR(p)
+Remarque
+Les équations de Yule Walker permettent de déterminer les valeurs des
+paramètres du modèle à partir des estimations de la fonction
+d'autocorrélation.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+109 / 190
+
+===== PAGE 21 =====
+Modèle autorégressif : AR(2)
+Utilisons le système d'équation de Yule-Walker pour calculer les premiers
+paramètres des processus AR(1) et AR( 2).
+Processus AR(1) : ϕ1 = ρ1 = P1
+Processus AR(2) :
+
+ρ1
+ρ2
+
+=
+
+1
+ρ1
+ρ1
+1
+
+
+
+ϕ1
+ϕ2
+
+
+⇔
+
+ϕ1
+ϕ2
+
+=
+
+1
+ρ1
+ρ1
+1
+
+
+−1
+
+ρ1
+ρ2
+
+
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+110 / 190
+
+===== PAGE 22 =====
+Modèle autorégressif : AR(2)
+
+ϕ1
+ϕ2
+
+=
+
+1
+−ρ1
+−ρ1
+1
+
+
+
+ρ1
+ρ2
+
+(
+1
+1−ρ2
+1 )
+ϕ1 = ρ1(1−ρ2)
+1−ρ2
+1
+= P1
+ϕ2 = ρ2−ρ2
+1
+1−ρ2
+1 = P2
+Si on procède de la même façon pour un AR(p), on vérie que ϕp = Pp.
+Où Pp est le coecient d'aucorrélation partiel de rang P. C'est d'ailleurs
+ainsi qu'est calculée la FAP empirique d'une chronique-échantillon.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+111 / 190
+
+===== PAGE 23 =====
+Fonction d'autocorrélation partielle : FAP
+Fonction d'autocorrélation partielle : FAP
+La fonction d'autocorrélation partielle d'ordre k d'un processus Xt , SSL,
+notée P(k) est dénie par :
+
+
+
+
+
+
+
+
+
+
+
+.
+.
+...
+...
+Pk
+
+
+
+
+
+
+
+
+
+
+
+=
+
+
+
+
+
+
+
+
+1
+ρ1
+ρ2
+. . .
+ρk−2
+ρk−1
+ρ1
+1
+ρ1
+. . .
+ρk−3
+ρk−2
+...
+...
+. . .
+...
+...
+...
+ρk−1
+ρk−2
+ρk−3
+. . .
+ρ1
+1
+
+
+
+
+
+
+
+
+−1
+
+
+
+
+
+
+
+
+
+
+
+ρ1
+ρ2
+...
+...
+ρp
+
+
+
+
+
+
+
+
+
+
+
+avec
+ρk = ρ(k) = corr(Xt, Xt+k) et P1 = ρ1
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+112 / 190
+
+===== PAGE 24 =====
+Le théorème suivant nous donne une formule explicite de la FAP : La FAP
+d'un processus Xt SSL est :
+Pk =
+
+1
+ρ1
+ρ2
+. . .
+ρk−2
+ρ1
+ρ1
+1
+ρ1
+. . .
+ρk−3
+ρ2
+...
+...
+...
+...
+...
+...
+ρk−2
+ρk−3
+...
+. . .
+1
+ρk−1
+ρk−1
+ρk−2
+ρk−3
+ρk−2
+ρ1
+ρk
+
+
+1
+ρ1
+ρ2
+. . .
+ρk−2
+ρk−1
+ρ1
+1
+ρ1
+. . .
+ρk−3
+ρk−2
+...
+...
+...
+...
+...
+...
+ρk−2
+ρk−3
+...
+. . .
+1
+ρ1
+ρk−1
+ρk−2
+ρk−3
+ρk−2
+ρ1
+1
+
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+113 / 190
+
+===== PAGE 25 =====
+Fonction d'autocorrélation partielle : FAP
+Fonction d'autocorrélation partielle : FAP
+Les deux premières autocorrélations partielles sont donc déterminées par les
+relations suivantes :
+P1 = ρ1
+P2 = ρ2 −ρ2
+1
+1 −ρ2
+1
+=
+
+1
+ρ1
+ρ1
+ρ2
+
+
+1
+ρ1
+ρ1
+1
+
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+114 / 190
+
+===== PAGE 26 =====
+Fonction d'autocorrélation partielle : FAP
+Processus autorégressif AR(1) : Xt = µ + ϕXt−1 + at
+Pour un Processus autorégressif AR(1), on a :
+ρk = ϕk
+P1 = ρ1 = ϕ
+Pk = 0, k ≥2
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+115 / 190
+
+===== PAGE 27 =====
+Modèle autorégressif : AR(1) : Xt = µ + ϕXt−1 + at
+Pour AR(1) : ρk = ϕk, ∀k ≥1
+P1 = ρ1 = ϕ
+P2 =
+
+1
+ρ1
+ρ1
+ρ2
+
+
+1
+ρ1
+ρ1
+1
+
+=
+
+1
+ϕ
+ϕ
+ϕ2
+
+
+1
+ρ1
+ρ1
+1
+
+= 0
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+116 / 190
+
+===== PAGE 28 =====
+Modèle autorégressif : AR(1) : Xt = µ + ϕXt−1 + at
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+117 / 190
+
+===== PAGE 29 =====
+Fonction d'autocorrélation partielle : FAP
+Processus autorégressif AR(2) : Xt = µ + ϕ1Xt−1 + ϕ2Xt−2 + at
+Pour un Processus autorégressif AR(2), on a :
+P1 = ρ1
+P2 = ρ2−ρ2
+1
+1−ρ2
+1 = ϕ2
+Pk = 0, k ≥3
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+118 / 190
+
+===== PAGE 30 =====
+Fonction d'autocorrélation partielle : FAP
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+119 / 190
+
+===== PAGE 31 =====
+Fonction d'autocorrélation partielle : FAP
+Proposition
+Les autocorrélations partielles d'un processus AR(p)
+Xt = µ + ϕ1Xt−1 + . . . + ϕpXt−p + at, sont nulles pour k > p :
+Pk = 0, k > p
+et
+Pp = ϕp
+La fonction d'autocorrélation partielle d'un AR(p) s'annule à l'ordre p + 1.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+120 / 190
+
+===== PAGE 32 =====
+Fonction d'autocorrélation partielle : FAP
+Fonction d'autocorrélation partielle : FAP
+Les autocorrélations partielles empiriques sont obtenues des
+autocorrélations partielles théoriques en remplacant les ρi par leurs
+estimations.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+121 / 190
+
+===== PAGE 33 =====
+Fonction d'autocorrélation partielle : FAP
+Pour modéliser des séries chronologiques avec des données réelles, une
+question d'importance est le choix des ordres p : AR(p)et q : MA(q).
+Deux outils sont fondamentaux à cette n : les autocorrélations (ACF) et
+les autocorrélations partielles (PACF).
+L'examen de la fonction d'autocorrélation partielle peut nous indiquer si la
+série est un AR(p).
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+122 / 190
+
+===== PAGE 34 =====
+Corrélogramme
+Si les conditions d'inversibilté sont satisfaites le processus MA(q) peut être
+récrit sous la forme d'un AR inni de telle sorte que le coecient
+d'autocorrélation partielle d'ordre k devrait être non nul quel que soit
+l'ordre k.
+MA(q)
+AR(p)
+Corrélogramme simple
+Nul au delà de k=q
+Décroissant
+Corrélogramme partiel
+Décroissant
+Nul au delà de k=q
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+123 / 190
+
+===== PAGE 35 =====
+Table of Content
+1
+Introduction
+Dénitions et concepts
+Méthodes de décomposition
+2
+Processus Stationnaire au Sens Large (SSL)
+3
+Modèles de processus stochastiques : modèles ARMA
+Processus Moyenne Mobile
+Processus autorégressif
+Modèle ARMA
+4
+Méthode de BOX et Jenkins et Modélisation
+5
+Prévision
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+124 / 190
+
+===== PAGE 36 =====
+Modèle ARMA(p, q)
+La forme générale d'un modèle ARMA(p, q) est :
+Xt −ϕ1Xt−1 −. . . −ϕpXt−p = µ + at −θ1at−1 −. . . −θqat−q
+où at ∼BB(0, σ2)
+Un modèle ARMA(p, q) peut se réécrire sous la forme
+Φp(B)Xt = µ + Θq(B)at
+où Φp(B) = 1 −ϕ1B −. . . −ϕpBp et Θq(B) = 1 −θ1B −. . . + θqBq
+et B est un opérateur linéaire (opérateur de retard) déni par
+Bk(Xt) = Xt−k, k ≥1
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+125 / 190
+
+===== PAGE 37 =====
+Modèle ARMA(p, q)
+Xt −ϕ1Xt−1 −. . . −ϕpXt−p = µ + at −θ1at−1 −. . . −θqat−q
+ARMA(p,q)=AR(p)+ MA(q)
+La notion de processus ARMA réunit celles de processus autorégressif
+AR(p) et de processus moyenne mobile MA(q).
+ARMA(0, 0) =µ + BB(0, σ2)
+ARMA(p,0)=AR(p)
+ARMA(0,q)=MA(q)
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+126 / 190
+
+===== PAGE 38 =====
+Modèle ARMA(p, q)
+Xt (supposé stationnaire) est engendré par un processus ARMA(p,q) si :
+Xt = ϕ1Xt−1 + . . . + ϕpXt−p + µ + at −θ1at−1 −. . . −θqat−q
+On montre aisément que l'espérence de Xt est égale à :
+E(Xt) =
+µ
+1−ϕ1−...−ϕp
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+127 / 190
+
+===== PAGE 39 =====
+Corrélogramme d'un processus ARMA(p, q) :
+Corrélogramme d'un modèle ARMA = Mélange des corrélogrammes des
+processus AR et MA.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+128 / 190
+
+===== PAGE 40 =====
+Dualité entre processus AR(p) et MA(q)
+Une série est un processus MA(q) si sa fonction d'autocorrélation s'annule
+à partir d'un décalage q.
+Une série est un processus AR(p) si sa fonction d'autocorrélation partielle
+s'annule à partir d'un décalage p.
+AR(p)
+MA(q)
+FA
+= 0 pour tout k > q
+FAP
+= 0pour tout k > P
+Dans le cas d'un processus ARMA,les corrélogrammes simple et partiel
+décroissent quand k augmente à partir d'un certain seuil.
+Fadoua BADAOUI (INSEA)
+Séries chronologiques
+18 février 2025
+129 / 190

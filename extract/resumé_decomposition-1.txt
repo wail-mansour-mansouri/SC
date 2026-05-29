@@ -1,0 +1,93 @@
+
+===== PAGE 1 =====
+ 
+ 
+ 
+Khalid EL HIMDI  
+ 
+  
+ 
+8
+Nous résumons la procédure à suivre dans le cas de la méthode du rapport des données de la 
+série à la tendance, obtenue par régression. 
+ 
+ 
+1. Obtenir les données mensuelles couvrant plusieurs années. 
+ 
+2. Déterminer, par la méthode des moindres carrés, l’équation de 
+régression entre les valeurs yt de la série (variable dépendante) 
+et les mois observés (variable indépendante). Cette équation est 
+également 
+appelée 
+dans 
+la 
+nomenclature 
+des 
+séries 
+chronologiques « équation du Trend». 
+Calcul des estimations ŷt 
+3. Calculer les estimations pour chaque mois à l’aide de l’équation 
+de régression ŷt=bo+b1xt où xt prend les valeurs 1,2,3, …, T 
+périodes considérées. 
+Calcul 
+des 
+coefficients 
+saisonniers spécifiques St 
+pour chaque période t : 
+St=yt/ŷt 
+4. Pour chacune des périodes considérées (ici période mensuelle), 
+on effectue le quotient de la valeur yt (valeur de la série 
+originale pour la période t) par l’estimation ŷt obtenue de la 
+droite de régression pour la même période. On obtient un 
+coefficient saisonnier spécifique St. 
+Calcul 
+des 
+coefficients 
+saisonniers 
+spécifiques 
+moyens :
+k
+S
+S
+t
+t ∑
+=
+ où k 
+est le nombre d’années 
+couvertes. 
+ 
+Calcul 
+des 
+coefficients 
+saisonniers :  
+∑
+=
+t
+t
+t
+S
+S
+S
+12
+1
+1
+ˆ
+ 
+5. Pour obtenir un seul coefficient saisonnier associé à chaque 
+mois de l’année, on calcul d’abord la moyenne (on utilise 
+également la médiane ou encore une moyenne modifiée en 
+éliminant du calcul les valeurs extrêmes) des coefficients 
+saisonniers spécifiques obtenus en 4. et ceci pour chaque mois 
+des années couvertes.  
+On corrige par la suite ces moyennes de telle sorte que la 
+somme des moyennes des coefficients donne 12. Ceci s’obtient 
+en appliquant le facteur de correction suivant à chaque 
+moyenne :  
+12/ Somme des moyennes des coefficients spécifiques 
+On obtient alors les coefficients saisonniers mensuels Ŝt. 
+Données désaisonnalisées : 
+yt/Ŝt  
+6. pour désaisonnaliser la série, on divise chaque valeur yt par son 
+coefficient saisonnier respectif Ŝt. 
+ 
+Appliquons cette procédure à l’exemple suivant. 
