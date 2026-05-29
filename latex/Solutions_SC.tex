@@ -2,28 +2,37 @@
 \input{preamble.tex}
 
 \title{\vspace{-1cm}\textbf{\color{insea}Séries Chronologiques}\\[2mm]
-\large Corrigé détaillé des questions et exercices\\[1mm]
-\normalsize (solutions fondées sur le cours de F.~BADAOUI, INSEA)}
+\large Corrigé \emph{très détaillé} des questions et exercices\\[1mm]
+\normalsize (solutions pas-à-pas fondées sur le cours de F.~BADAOUI, INSEA)}
 \author{Préparation au module}
 \date{\today}
+
+\newtcolorbox{etapes}[1][]{colback=white,colframe=insea!55!black,
+  left=2mm,right=2mm,top=1mm,bottom=1mm,boxrule=0.5pt,
+  fonttitle=\bfseries\small,title={Démarche\ifblank{#1}{}{ --- #1}}}
 
 \begin{document}
 \maketitle
 \thispagestyle{empty}
 
 \begin{tcolorbox}[colback=insealight,colframe=insea,title={Mode d'emploi}]
-Ce document corrige \textbf{toutes} les questions du recueil \emph{Questions\_SC.pdf}, en
-conservant la \textbf{même numérotation} (Q\,A.1, Q\,B.2, \dots). Chaque corrigé est
-\textbf{justifié à partir du cours} (notations de F.~BADAOUI). Les notions \horsprog{}
-dépassant le cours sont traitées dans la dernière section.
+Corrigé \textbf{complet et pas-à-pas} de \emph{Questions\_SC.pdf} (même numérotation
+Q\,A.1, Q\,B.2, \dots). Chaque solution rappelle le \emph{cadre théorique} utilisé, détaille
+\emph{tous les calculs intermédiaires}, et se termine par un encadré \textbf{\color{vert}réponse}.
+Les notions hors-programme \horsprog{} sont en dernière section.
 
-\smallskip\noindent\textbf{Conventions de cours rappelées.}
-Opérateur retard $B$ : $B^kX_t=X_{t-k}$.
-ARMA$(p,q)$ : $\Phi_p(B)X_t=\mu+\Theta_q(B)a_t$ avec
-$\Phi_p(B)=1-\phi_1B-\dots-\phi_pB^p$, $\Theta_q(B)=1-\theta_1B-\dots-\theta_qB^q$,
-$a_t\sim\BB(0,\sigma^2)$.
-\textbf{Stationnarité} (causalité) d'un AR : racines de $\Phi_p(B)=0$ de module $>1$.
-\textbf{Inversibilité} d'un MA : racines de $\Theta_q(B)=0$ de module $>1$.
+\smallskip\noindent\textbf{Boîte à outils (cours BADAOUI).}
+\begin{itemize}[leftmargin=*,nosep]
+\item AR causal $\iff$ racines de $\Phi(B)$ de module $>1$ ; MA inversible $\iff$ racines de
+$\Theta(B)$ de module $>1$.
+\item AR(1) : $\gamma(0)=\frac{\sigma^2}{1-\phi^2}$, $\rho(k)=\phi^k$.
+\item Yule--Walker AR(2) : $\rho_1=\frac{\phi_1}{1-\phi_2}$, $\rho_2=\phi_1\rho_1+\phi_2$,
+$\gamma_0=\frac{\sigma^2}{1-\phi_1\rho_1-\phi_2\rho_2}$.
+\item PACF : $P_1=\rho_1$, $P_2=\frac{\rho_2-\rho_1^2}{1-\rho_1^2}$ ; AR$(p)$ : $P_k=0$, $k>p$.
+\item MA(q) : $\gamma_0=(1+\sum\theta_j^2)\sigma^2$ ; $\rho_k=0$, $k>q$.
+\item Prévision : chocs futurs $\to0$ ; $\Var(\Delta_h)=\sigma^2\sum_{j<h}\psi_j^2$ ;
+IC$_{95\%}=\widehat X\pm1.96\,\sigma\sqrt{\sum_{j<h}\psi_j^2}$.
+\end{itemize}
 \end{tcolorbox}
 
 \tableofcontents
@@ -35,999 +44,662 @@ $a_t\sim\BB(0,\sigma^2)$.
 
 \subsection*{Concepts de base et décomposition}
 
-\textbf{Q\,A.1 --- Processus stationnaire.}
-\begin{reponse}Réponse : \bonne{A}.\end{reponse}
-Un processus SSL a une espérance \emph{constante} et une autocovariance indépendante de $t$.
-Une tendance fait varier $\E(X_t)$ avec $t$ ; une saisonnalité crée une dépendance
-périodique : dans les deux cas la condition de stationnarité est violée. Un processus
-stationnaire modélise donc des séries \emph{sans} tendance ni saisonnalité (c'est pourquoi on
-\og stationnarise \fg{} d'abord par différenciation/désaisonnalisation).
+\textbf{Q\,A.1.} \begin{reponse}\bonne{A}.\end{reponse}
+Un processus SSL a $\E(X_t)=m$ \emph{constante} et $\gamma(k)$ indépendante de $t$. Une
+tendance rend $\E(X_t)$ fonction de $t$ ; une saisonnalité crée une dépendance périodique en
+$t$. Dans les deux cas la stationnarité est violée : un modèle stationnaire ne peut donc
+décrire \emph{ni} tendance \emph{ni} saisonnalité (on stationnarise d'abord).
 
-\textbf{Q\,A.2 --- Moyenne mobile.}
-\begin{reponse}Réponse : \bonne{B} (filtre linéaire, pas forcément centré ou symétrique).\end{reponse}
-Une moyenne mobile est un \emph{filtre linéaire} $M(X)_t=\sum_{i=-m_1}^{m_2}\lambda_i X_{t-i}$
-(combinaison linéaire d'observations). Elle n'est ni nécessairement centrée ($m_1=m_2$) ni
-symétrique ($\lambda_{-i}=\lambda_i$) ni normalisée ($\sum\lambda_i=1$) : ce sont des
-propriétés \emph{supplémentaires} souhaitables, non constitutives de la définition.
+\textbf{Q\,A.2.} \begin{reponse}\bonne{B}.\end{reponse}
+Définition : MM $=$ filtre \emph{linéaire} $\sum_i\lambda_iX_{t-i}$. Être centré ($m_1=m_2$),
+symétrique ($\lambda_{-i}=\lambda_i$) ou normalisé ($\sum\lambda_i=1$) sont des propriétés
+\emph{en plus}, non requises par la définition.
 
-\textbf{Q\,A.3 --- Moyenne mobile MM4.}
-\begin{reponse}Réponse : \bonne{C} (conserve les tendances linéaires, absorbe les
-saisonnalités de période 4).\end{reponse}
-Une moyenne mobile d'ordre $p$ (centrée) \emph{laisse invariante} une tendance affine et
-\emph{annule} (absorbe) une composante saisonnière de période $p$. La MM4 (centrée :
-$\frac12$ aux extrémités) élimine donc la saisonnalité \emph{trimestrielle} (période 4) tout
-en préservant la tendance linéaire ; on l'utilise précisément pour extraire la tendance d'une
-série trimestrielle.
+\textbf{Q\,A.3.} \begin{reponse}\bonne{C} (conserve les tendances linéaires, absorbe la
+saisonnalité de période 4).\end{reponse}
+Théorème du cours : une MM centrée d'ordre $p$ laisse invariante une tendance affine et annule
+une saisonnalité de période $p$. Avec $p=4$ : on garde la tendance, on supprime la composante
+trimestrielle.
 
-\textbf{Q\,A.4 --- Algorithme X11.}
-\begin{reponse}Réponses correctes : \bonne{« contient deux boucles pour évaluer la série
-CVS »} et \bonne{« intègre conjointement régression linéaire et moyenne mobile »}.\end{reponse}
-X11 procède de façon itérative (estimation tendance par MM $\to$ coefficients saisonniers
-$\to$ correction $\to$ ré-estimation) en combinant régressions et moyennes mobiles.
-L'affirmation \og l'algorithme le plus sophistiqué connu \fg{} est \emph{fausse}
-(il existe X-12-ARIMA, X-13ARIMA-SEATS).
+\textbf{Q\,A.4.} \begin{reponse}Correctes : \bonne{A} et \bonne{C}.\end{reponse}
+X11 estime la CVS de façon \emph{itérative} (boucles) en combinant régression et moyennes
+mobiles. « Le plus sophistiqué connu » est faux (X-12-ARIMA, X-13ARIMA-SEATS lui succèdent).
 
-\textbf{Q\,A.5 --- Décomposition $=$ enlever la saisonnalité ?}
-\begin{reponse}Réponse : \bonne{Faux}.\end{reponse}
-La décomposition vise à \emph{isoler les trois composantes} $T_t$ (tendance), $S_t$
-(saisonnalité) et $E_t$ (résidu). La désaisonnalisation (série CVS) n'en est qu'une
-\emph{application} parmi d'autres (étude de la tendance, prévision, \dots).
+\textbf{Q\,A.5.} \begin{reponse}\bonne{Faux}.\end{reponse}
+La décomposition vise à \emph{isoler les trois composantes} $T_t,S_t,E_t$. Retirer la seule
+saisonnalité (désaisonnalisation/CVS) n'en est qu'une application.
 
-\textbf{Q\,A.6 --- Première moyenne mobile.}
-\begin{reponse}Réponse : \bonne{Vrai}.\end{reponse}
-La MM employée pour extraire la tendance doit \emph{conserver} la tendance, \emph{absorber}
-la saisonnalité et \emph{réduire} la variance du bruit (effet de lissage). C'est exactement le
-rôle d'une MM d'ordre égal à la période.
+\textbf{Q\,A.6.} \begin{reponse}\bonne{Vrai}.\end{reponse}
+Une bonne première MM doit \emph{conserver} la tendance, \emph{absorber} la saisonnalité et
+\emph{atténuer} la variance du bruit ($\Var/p$) : c'est le rôle de la MM d'ordre $p$.
 
-\textbf{Q\,A.7 --- Lissage exponentiel simple.}
-\begin{reponse}Réponse : \bonne{Vrai}.\end{reponse}
-Le lissage exponentiel simple ajuste \emph{localement une constante} : il ne modélise ni
-tendance ni saisonnalité. Pour la tendance on utilise le lissage double (Holt), pour la
-saisonnalité le lissage de Holt--Winters.
+\textbf{Q\,A.7.} \begin{reponse}\bonne{Vrai}.\end{reponse}
+Le lissage exponentiel simple ajuste localement une \emph{constante} : aucune composante de
+tendance ni de saisonnalité.
 
-\textbf{Q\,A.8 --- Holt--Winters.}
-\begin{reponse}Réponses correctes : \bonne{A} et \bonne{C}.\end{reponse}
-Holt--Winters généralise les lissages simple/double (donc plus complet/efficace) et prend en
-compte \emph{à la fois} une tendance \emph{et} une saisonnalité. L'item B est faux.
+\textbf{Q\,A.8.} \begin{reponse}Correctes : \bonne{A} et \bonne{C}.\end{reponse}
+Holt--Winters généralise les lissages simple/double et intègre \emph{tendance ET saisonnalité}
+(item B faux : il prend bien en compte la tendance).
 
 \subsection*{Caractérisation AR / MA / ARMA / SARIMA}
 
-\textbf{Q\,A.9 --- Processus AR.}
-\begin{reponse}Réponse : \bonne{B}.\end{reponse}
-Pour un AR$(p)$ : la FAC (ACF) \emph{décroît} (exponentiellement / en sinusoïde amortie) et la
-FAP (PACF) \emph{s'annule} pour $k>p$ ($P_p=\phi_p\ne0$, $P_k=0$, $k>p$). C'est la dualité du
-cours.
+\textbf{Q\,A.9.} \begin{reponse}\bonne{B}.\end{reponse}
+AR$(p)$ : ACF \emph{décroît} (exponentielle/sinus amortie), PACF \emph{s'annule} pour $k>p$.
 
-\textbf{Q\,A.10 --- Processus ARMA.}
-\begin{reponse}Réponse : \bonne{D} (aucune des propriétés précédentes).\end{reponse}
-Pour un ARMA$(p,q)$ \emph{ni} l'ACF \emph{ni} la PACF ne s'annulent à partir d'un rang : les
-\emph{deux} décroissent (mélange des comportements AR et MA). Aucune coupure nette.
+\textbf{Q\,A.10.} \begin{reponse}\bonne{D}.\end{reponse}
+ARMA : \emph{ni} l'ACF \emph{ni} la PACF ne coupent ; les deux décroissent (mélange AR+MA).
 
-\textbf{Q\,A.11 --- Processus SARIMA.}
-\begin{reponse}Réponse : \bonne{D} (tendance et/ou saisonnalité).\end{reponse}
-Le SARIMA généralise l'ARIMA en ajoutant une partie saisonnière
-$\Phi(B)\Phi_S(B^s)(1-B)^d(1-B^s)^D X_t=\Theta(B)\Theta_S(B^s)a_t$ : il traite à la fois
-tendance (via $(1-B)^d$) et saisonnalité (via $(1-B^s)^D$). Il n'est pas stationnaire en
-général (item A faux).
+\textbf{Q\,A.11.} \begin{reponse}\bonne{D} (tendance et/ou saisonnalité).\end{reponse}
+SARIMA $=$ ARIMA $\times$ partie saisonnière : $(1-B)^d$ gère la tendance, $(1-B^s)^D$ la
+saisonnalité. Il n'est pas stationnaire en général (A faux).
 
-\textbf{Q\,A.12 --- Tout MA stationnaire possède une représentation AR.}
-\begin{reponse}Réponse : \bonne{Faux}.\end{reponse}
-Un MA$(q)$ est \emph{toujours} stationnaire, mais il n'admet une représentation
-$\mathrm{AR}(\infty)$ que s'il est \emph{inversible} (racines de $\Theta_q(B)=0$ de module
-$>1$). Contre-exemple : $X_t=a_t-a_{t-1}$, racine $B=1$, non inversible.
+\textbf{Q\,A.12.} \begin{reponse}\bonne{Faux}.\end{reponse}
+Un MA est toujours stationnaire mais n'a une représentation AR que s'il est \emph{inversible}.
+Contre-exemple : $X_t=a_t-a_{t-1}$ (racine $B=1$).
 
-\textbf{Q\,A.13 --- Validation d'un modèle ARMA.}
-\begin{reponse}Réponse essentielle : \bonne{B} (blancheur du résidu) ; en pratique on
-vérifie aussi \bonne{A} (significativité des paramètres) et \bonne{C} (normalité des
-résidus).\end{reponse}
-Le c\oe ur de la validation est que le résidu estimé soit un \emph{bruit blanc} (test de
-Ljung--Box / examen ACF-PACF des résidus). On contrôle en complément la significativité des
-coefficients (tests de Student) et la normalité (Jarque--Bera) pour les intervalles de
-prévision.
+\textbf{Q\,A.13.} \begin{reponse}Essentiel : \bonne{B} ; en pratique \bonne{A} et \bonne{C}
+aussi.\end{reponse}
+Le c\oe ur est la \emph{blancheur des résidus} (Ljung--Box). On contrôle en complément la
+significativité (Student) et la normalité (Jarque--Bera, pour les IC).
 
-\textbf{Q\,A.14 --- Ljung--Box sur une série stationnaire.}
-\begin{reponse}Réponse : \bonne{Faux}.\end{reponse}
-\emph{Stationnaire} $\ne$ \emph{bruit blanc}. Un AR(1) stationnaire a des autocorrélations non
-nulles : la statistique de Ljung--Box (dont $H_0$ : \og toutes les autocorrélations sont
-nulles \fg) y serait \emph{rejetée}. Le test de Ljung--Box s'applique aux \emph{résidus} d'un
-modèle ajusté, pas à la série brute.
+\textbf{Q\,A.14.} \begin{reponse}\bonne{Faux}.\end{reponse}
+Stationnaire $\ne$ bruit blanc : un AR(1) stationnaire a $\rho(k)=\phi^k\ne0$, donc Ljung--Box
+\emph{rejette} $H_0$. Ce test s'applique aux \emph{résidus} d'un modèle, pas à la série brute.
 
 \subsection*{Questions de cours}
 
-\textbf{Q\,A.15 --- Deux types de stationnarité.}
-\emph{Stationnarité stricte (forte)} : la loi de $(X_{t_1},\dots,X_{t_n})$ est invariante par
-translation temporelle. \emph{Stationnarité au sens large (SSL, second ordre)} : $\E(X_t)$
-constante, $\E(X_t^2)<\infty$ et $\gamma(k)=\Cov(X_t,X_{t+k})$ indépendante de $t$.
-La SSL est \emph{plus pratique} car elle ne porte que sur les deux premiers moments
-(vérifiable empiriquement), alors que la stationnarité stricte porte sur toute la loi.
+\textbf{Q\,A.15.} \emph{Strict} (loi invariante par translation) vs \emph{SSL} ($\E(X_t)$
+constante, $\gamma(k)$ indépendante de $t$). La SSL est plus \emph{pratique} : elle ne porte
+que sur les deux premiers moments, estimables empiriquement, alors que la stationnarité stricte
+porte sur toute la loi jointe.
 
-\textbf{Q\,A.16 --- Strict $\Rightarrow$ second ordre.}
-Si $(X_t)$ est strictement stationnaire \emph{et} de carré intégrable ($\E(X_t^2)<\infty$),
-alors il est SSL : la stationnarité stricte impose l'invariance de toute la loi, donc en
-particulier de $\E(X_t)$ et de $\gamma(k)$, dès que ces moments existent.
+\textbf{Q\,A.16.} Si $(X_t)$ est strictement stationnaire \emph{et} $\E(X_t^2)<\infty$, alors
+il est SSL : l'invariance de la loi entraîne celle de $\E(X_t)$ et de $\gamma(k)$ (qui existent
+grâce au carré intégrable).
 
-\textbf{Q\,A.17 --- Corrélogramme.}
-Le corrélogramme (graphe de $\rhohat(k)$) permet d'\emph{identifier la structure de
-dépendance} : détecter une non-stationnarité (décroissance lente $\approx1$), une saisonnalité
-(pics aux multiples de la période), et l'ordre $q$ d'un MA (l'ACF s'annule après $q$).
+\textbf{Q\,A.17.} Le corrélogramme (ACF empirique) identifie : la \emph{non-stationnarité}
+(décroissance lente $\approx1$), la \emph{saisonnalité} (pics aux multiples de la période),
+l'\emph{ordre $q$ d'un MA} (coupure après $q$).
 
-\textbf{Q\,A.18 --- AR$(p)$ par la FAP.}
-Un AR$(p)$ est caractérisé par une \emph{fonction d'autocorrélation partielle qui s'annule
-pour $k>p$} : $P_k=0,\ \forall k>p$ et $P_p=\phi_p\ne0$. La FAP \og coupe \fg{} à l'ordre $p$.
+\textbf{Q\,A.18.} Un AR$(p)$ est caractérisé par une FAP qui \emph{s'annule pour $k>p$}
+($P_p=\phi_p\ne0$) : la PACF « coupe » à l'ordre $p$.
 
-\textbf{Q\,A.19 --- Deux tests de validation ARMA gaussien.}
-(i) \emph{Test de Ljung--Box} sur les résidus : $H_0$ \og résidus = bruit blanc \fg, statistique
-$\mathrm{LB}=n(n+2)\sum_{k=1}^{K}\frac{\rhohat_k^2}{n-k}\sim\chi^2_{K-p-q}$ sous $H_0$.
-(ii) \emph{Test de normalité de Jarque--Bera} (ou test de Student sur la significativité des
-paramètres). On peut aussi citer le test du Portmanteau (Box--Pierce).
+\textbf{Q\,A.19.} (i) \emph{Ljung--Box} sur les résidus :
+$\mathrm{LB}=n(n+2)\sum_{k=1}^K\frac{\rhohat_k^2}{n-k}\sim\chi^2_{K-p-q}$, $H_0$ : bruit blanc.
+(ii) \emph{Jarque--Bera} (normalité) ou test de Student (significativité des paramètres).
 
-\textbf{Q\,A.20 --- Qualité prédictive.}
-Critères d'erreur de prévision \emph{hors échantillon} : RMSE $=\sqrt{\frac1h\sum(X_{n+i}-\Xhat_{n+i})^2}$,
-MAE, MAPE ; ou critère in-sample comme le $R^2$ ajusté. (Les critères AIC/BIC servent surtout
-à la sélection.)
+\textbf{Q\,A.20.} Critères d'erreur hors échantillon : RMSE, MAE, MAPE (ou $R^2$ ajusté). Ils
+mesurent l'écart entre $X_{n+i}$ et $\widehat X_{n+i}$.
 
-\textbf{Q\,A.21 --- Deux critères de sélection AR$(p)$ gaussien.}
-\emph{AIC} $=-2\ln L+2k$ et \emph{BIC} (Schwarz) $=-2\ln L+k\ln n$, où $k$ est le nombre de
-paramètres. On retient le modèle qui \emph{minimise} le critère ; le BIC pénalise davantage la
-complexité (modèles plus parcimonieux).
+\textbf{Q\,A.21.} \emph{AIC}$=-2\ln L+2k$ et \emph{BIC}$=-2\ln L+k\ln n$ : on \emph{minimise} ;
+le BIC pénalise plus la complexité (modèles plus parcimonieux).
 
 % =====================================================================
 \section{Stationnarité, causalité et inversibilité}
 \markboth{Stationnarité, causalité, inversibilité}{}
 
-\textbf{Q\,B.1 --- $X_t=(-1)^tz$, $\E(z)=0$, $\Var(z)=1$.}
-\[
-\E(X_t)=(-1)^t\E(z)=0,\qquad
-\gamma(k)=\Cov(X_t,X_{t+k})=(-1)^t(-1)^{t+k}\E(z^2)=(-1)^{2t+k}=(-1)^k .
-\]
-$\E(X_t)=0$ (constante) et $\gamma(k)=(-1)^k$ \emph{ne dépend pas de $t$}. Donc
-\begin{reponse}\bonne{$X_t$ est stationnaire au sens large} (et même $\gamma(0)=1$,
-$\rho(k)=(-1)^k$).\end{reponse}
-C'est cohérent avec l'exercice du cours : si $X$ est SSL centré, $(-1)^tX_t$ l'est aussi.
-\begin{remarque}
-Ce processus n'est \emph{pas} ergodique (une seule réalisation de $z$ détermine toute la
-trajectoire), mais la stationnarité SSL ne concerne que les deux premiers moments : elle est
-bien vérifiée.
-\end{remarque}
+\textbf{Q\,B.1 --- $X_t=(-1)^tz$.}
+\begin{etapes}
+$\E(X_t)=(-1)^t\E(z)=0$. Puis
+$\gamma(k)=\Cov(X_t,X_{t+k})=\E[X_tX_{t+k}]=(-1)^t(-1)^{t+k}\E(z^2)=(-1)^{2t+k}\cdot1=(-1)^k$.
+Comme $2t$ est pair, $(-1)^{2t+k}=(-1)^k$ : indépendant de $t$.
+\end{etapes}
+\begin{reponse}$\E(X_t)=0$, $\gamma(k)=(-1)^k$ (donc $\gamma(0)=1$, $\rho(k)=(-1)^k$) :
+\bonne{$(X_t)$ est stationnaire au sens large}.\end{reponse}
+\emph{Remarque.} Le processus n'est pas ergodique (toute la trajectoire dépend du seul tirage
+$z$), mais la SSL ne concerne que les deux premiers moments.
 
 \textbf{Q\,B.2 --- $X_t=0.8X_{t-1}-0.15X_{t-2}+a_t-0.3a_{t-1}$.}
-Forme : $\Phi(B)X_t=\Theta(B)a_t$ avec $\Phi(B)=1-0.8B+0.15B^2$, $\Theta(B)=1-0.3B$.
-\emph{Stationnarité} (racines de $\Phi$) : $0.15B^2-0.8B+1=0\Rightarrow
-B=\frac{0.8\pm\sqrt{0.64-0.6}}{0.3}=\frac{0.8\pm0.2}{0.3}\in\{2,\ 3.33\}$, modules $>1$
-$\Rightarrow$ \emph{stationnaire}.
-\emph{Inversibilité} (racine de $\Theta$) : $B=1/0.3=3.33>1\Rightarrow$ \emph{inversible}.
-\begin{reponse}Réponse : \bonne{(a) stationnaire et inversible}.\end{reponse}
+$\Phi(B)=1-0.8B+0.15B^2$, $\Theta(B)=1-0.3B$.
+\begin{etapes}
+\emph{Stationnarité} : racines de $0.15B^2-0.8B+1=0$. Discriminant $0.64-0.6=0.04$,
+$B=\frac{0.8\pm0.2}{0.3}\in\{2,\ 3.33\}$ : modules $>1\Rightarrow$ stationnaire.
+\emph{Inversibilité} : $1-0.3B=0\Rightarrow B=3.33>1\Rightarrow$ inversible.
+\end{etapes}
+\begin{reponse}\bonne{(a) stationnaire et inversible}.\end{reponse}
 
-\textbf{Q\,B.3 --- $(1-1.66B+0.66B^2)X_t=(1-B)a_t$ : représentation AR d'ordre fini ?}
-On factorise : $1-1.66B+0.66B^2=(1-B)(1-0.66B)$. L'équation devient
+\textbf{Q\,B.3 --- $(1-1.66B+0.66B^2)X_t=(1-B)a_t$.}
+\begin{etapes}
+Factorisons : $1-1.66B+0.66B^2=(1-B)(1-0.66B)$ (vérif.\ : $(1-B)(1-0.66B)=1-1.66B+0.66B^2$).
+L'équation devient $(1-B)(1-0.66B)X_t=(1-B)a_t$. Le facteur \emph{commun} $(1-B)$ se simplifie :
 \[
-(1-B)(1-0.66B)X_t=(1-B)a_t .
+(1-0.66B)X_t=a_t,\quad\text{soit}\quad X_t=0.66X_{t-1}+a_t.
 \]
-Le facteur commun $(1-B)$ se simplifie, d'où $(1-0.66B)X_t=a_t$, soit un \emph{AR(1)} :
-\begin{reponse}Réponse : \bonne{Vrai} --- après simplification du facteur commun, le processus
-est un AR(1) $X_t=0.66X_{t-1}+a_t$, qui est bien une représentation \emph{AR d'ordre fini}
-(et stationnaire car $0.66<1$).\end{reponse}
-\begin{attention}
-Sans simplifier, $\Theta(B)=1-B$ a une racine $B=1$ (non inversible) : on conclurait à tort
-qu'il n'y a pas de représentation AR. Le facteur commun \emph{racine commune} aux deux
-polynômes est la clef.
-\end{attention}
+\end{etapes}
+\begin{reponse}\bonne{Vrai} : après simplification c'est un AR(1) ($0.66<1$, stationnaire),
+qui est une représentation \emph{AR d'ordre fini}.\end{reponse}
+\begin{attention}Sans repérer la racine commune $B=1$, on conclurait faussement à la
+non-inversibilité.\end{attention}
 
-\textbf{Q\,B.4 --- $X_t=1.6X_{t-1}-0.6X_{t-2}+a_t-0.6a_{t-1}$ stationnaire ?}
-$\Phi(B)=1-1.6B+0.6B^2=(1-B)(1-0.6B)$ : racine $B=1$ (module $=1$, pas $>1$).
-\begin{reponse}Réponse : \bonne{Faux}. La présence d'une racine unité ($B=1$) rend le
-processus \emph{non stationnaire} (intégré).\end{reponse}
-Le facteur $\Theta(B)=1-0.6B$ n'est pas commun avec $(1-B)$ : aucune simplification. On a en
-fait un ARIMA$(1,1,1)$ : $(1-0.6B)\,\Delta X_t=(1-0.6B)a_t$\dots non, plus précisément
-$(1-B)(1-0.6B)X_t=(1-0.6B)a_t$. Le $(1-0.6B)$ se simplifie ! $(1-B)X_t=a_t$ : c'est une
-\textbf{marche aléatoire} $\Rightarrow$ non stationnaire. Conclusion inchangée : \bonne{Faux}.
+\textbf{Q\,B.4 --- $X_t=1.6X_{t-1}-0.6X_{t-2}+a_t-0.6a_{t-1}$.}
+\begin{etapes}
+$\Phi(B)=1-1.6B+0.6B^2=(1-B)(1-0.6B)$ : racine $B=1$ (module $=1$, pas $>1$). De plus
+$\Theta(B)=1-0.6B$ se simplifie avec le facteur $(1-0.6B)$ de $\Phi$, laissant
+$(1-B)X_t=a_t$ : \emph{marche aléatoire}.
+\end{etapes}
+\begin{reponse}\bonne{Faux} : la racine unité $B=1$ rend $X_t$ non stationnaire (intégré
+$I(1)$).\end{reponse}
 
 \textbf{Q\,B.5 --- $(1-0.8B)X_t=(1+0.4B)a_t$.}
-ARMA(1,1) : $\phi_1=0.8$ ($|0.8|<1$ : stationnaire/causal) ;
-$\Theta(B)=1+0.4B$, racine $B=-1/0.4=-2.5$, $|{-2.5}|>1$ : inversible.
-\begin{enumerate}[label=\alph*.]
-\item \textbf{Représentation AR ?} Le MA étant inversible, on peut écrire
-$a_t=\Theta(B)^{-1}\Phi(B)X_t$, soit un \bonne{$\mathrm{AR}(\infty)$ (oui, d'ordre infini)}.
-\item \textbf{Représentation MA ?} L'AR étant stationnaire/causal,
-$X_t=\Phi(B)^{-1}\Theta(B)a_t$, soit un \bonne{$\mathrm{MA}(\infty)$ (oui, d'ordre infini)}.
-\end{enumerate}
-(Les coefficients sont calculés en Q\,C.3.)
-
-\textbf{Q\,B.6 --- $X_t=0.8X_{t-1}+a_t+0.8a_{t-1}$ stationnaire ?}
-ARMA(1,1) avec $\Phi(B)=1-0.8B$ : racine $B=1.25>1$.
-\begin{reponse}\bonne{Oui, stationnaire} (la partie AR détermine la stationnarité ; $|0.8|<1$).
+$\phi_1=0.8$ : racine $B=1.25>1$ (stationnaire/causal). $\Theta(B)=1+0.4B$ : racine
+$B=-2.5$, $|{-2.5}|>1$ (inversible).
+\begin{reponse}
+\emph{(a)} MA inversible $\Rightarrow$ on inverse $\Theta$ : \bonne{représentation
+$\mathrm{AR}(\infty)$ (ordre infini)}.
+\emph{(b)} AR causal $\Rightarrow$ on inverse $\Phi$ : \bonne{représentation
+$\mathrm{MA}(\infty)$ (ordre infini)}. (Coefficients : Q\,C.3.)
 \end{reponse}
-La partie MA ($1+0.8B$, racine $-1.25$) est par ailleurs inversible : le processus est aussi
-inversible.
+
+\textbf{Q\,B.6 --- $X_t=0.8X_{t-1}+a_t+0.8a_{t-1}$.}
+$\Phi(B)=1-0.8B$ : racine $1.25>1$ $\Rightarrow$ \bonne{stationnaire}. $\Theta(B)=1+0.8B$ :
+racine $-1.25$, module $>1$ $\Rightarrow$ \bonne{inversible}.
 
 \textbf{Q\,B.7 --- Nature de quatre processus.}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item $X_t=\eps_t-\eps_{t-3}$ : MA(3) (coefficients $0,0,-1$). $\E=0$ (\bonne{centré}),
-finie $\Rightarrow$ \bonne{stationnaire} ; c'est un ARIMA$(0,0,3)$ \bonne{de type ARMA/MA}
-(non intégré).
+\begin{enumerate}[label=\arabic*),leftmargin=*,nosep]
+\item $X_t=\eps_t-\eps_{t-3}$ : MA(3) ($\theta_1=\theta_2=0,\theta_3=-1$). $\E=0$
+(\bonne{centré}), somme finie de bruits $\Rightarrow$ \bonne{stationnaire} ;
+\bonne{type ARMA/MA}, ARIMA$(0,0,3)$ (non intégré).
 \item $X_t=\sigma^2-\eps_t^2$ : $\E(X_t)=\sigma^2-\E(\eps_t^2)=0$ (\bonne{centré}). Les
-$\eps_t^2$ étant i.i.d., $X_t$ est une suite i.i.d.\ de variance constante et $\gamma(k)=0$
-($k\ne0$) : \bonne{bruit blanc}, donc \bonne{stationnaire} (ARMA$(0,0)$).
-\item $X_t-X_{t-2}=\eps_t$, i.e.\ $(1-B^2)X_t=\eps_t$, $(1-B^2)=(1-B)(1+B)$ : deux racines
-unités $\Rightarrow$ \bonne{non stationnaire, intégré} (type ARIMA/SARIMA).
+$\eps_t^2$ i.i.d.\ $\Rightarrow X_t$ i.i.d., $\gamma(k)=0$ ($k\ne0$) : \bonne{bruit blanc},
+donc \bonne{stationnaire}, ARMA$(0,0)$.
+\item $X_t-X_{t-2}=\eps_t$ : $(1-B^2)X_t=\eps_t$, $(1-B^2)=(1-B)(1+B)$ : racines $\pm1$ sur le
+cercle $\Rightarrow$ \bonne{non stationnaire, intégré}.
 \item $X_t=2t+\eps_t-\eps_{t-2}$ : $\E(X_t)=2t$ dépend de $t$ $\Rightarrow$ \bonne{non centré,
-non stationnaire}. C'est un processus \emph{TS} (tendance déterministe) : $X_t-2t$ est un
-MA(2) stationnaire ; ce n'est pas un ARIMA pur (la non-stationnarité est déterministe, pas
-stochastique).
+non stationnaire} ; processus \emph{TS} ($X_t-2t$ est un MA(2)), pas un ARIMA pur.
 \end{enumerate}
 
 \textbf{Q\,B.8 --- $X_t-aX_{t-1}=\eps_t$, $0<|a|<1$.}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item C'est un \bonne{AR(1)}. Racine de $1-aB=0$ : $B=1/a$, $|1/a|>1$ car $|a|<1$ :
-\bonne{causal et stationnaire}.
-\item $X_t=(1-aB)^{-1}\eps_t=\sum_{j\ge0}a^j\eps_{t-j}$ (forme $\mathrm{MA}(\infty)$, causale).
-\item Si $(\eps_t)$ i.i.d.\ gaussien, alors $(X_t)$, combinaison linéaire de gaussiennes, est
-un \bonne{processus gaussien} (donc strictement stationnaire).
-\end{enumerate}
+\emph{1)} AR(1). Racine de $1-aB$ : $B=1/a$, $|1/a|>1$ $\Rightarrow$ \bonne{causal,
+stationnaire}.
+\emph{2)} $X_t=(1-aB)^{-1}\eps_t=\sum_{j\ge0}a^j\eps_{t-j}$.
+\emph{3)} Si $(\eps_t)$ i.i.d.\ gaussien, $X_t$ (combinaison linéaire de gaussiennes) est un
+\bonne{processus gaussien} (strictement stationnaire).
 
 \textbf{Q\,B.9 --- $X_t-aX_{t-1}=\eps_t-2b\eps_{t-1}+b^2\eps_{t-2}$.}
 $\Theta(B)=1-2bB+b^2B^2=(1-bB)^2$.
-\begin{enumerate}[label=\roman*),leftmargin=*]
-\item ARMA(1,2). Causal/stationnaire $\iff |a|<1$ (racine $1/a$ de $\Phi$).
-\item Inversible $\iff$ racine de $(1-bB)^2=0$, soit $B=1/b$, de module $>1$, i.e.\ $|b|<1$.
-Dans ce cas $\eps_t=\Theta(B)^{-1}\Phi(B)X_t=(1-bB)^{-2}(1-aB)X_t
-=\Big(\sum_{j\ge0}(j+1)b^jB^j\Big)(1-aB)X_t$.
-\end{enumerate}
+\emph{i)} ARMA(1,2) ; causal ssi $|a|<1$.
+\emph{ii)} Inversible ssi racine de $(1-bB)^2=0$, $B=1/b$, de module $>1$, soit $|b|<1$ ; alors
+$\eps_t=(1-bB)^{-2}(1-aB)X_t=\Big(\sum_{j\ge0}(j+1)b^jB^j\Big)(1-aB)X_t$.
 
-\textbf{Q\,B.10 --- $(1-B)(1-B^{12})$ stationnarise.}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item $Z_t=\alpha+\beta t+s_t+X_t$. L'opérateur $(1-B^{12})$ annule la saisonnalité de période
-12 ($s_t=s_{t-12}\Rightarrow(1-B^{12})s_t=0$) et transforme $\alpha+\beta t$ en
-$(1-B^{12})(\alpha+\beta t)=12\beta$ (constante). Puis $(1-B)$ annule cette constante :
-$(1-B)(1-B^{12})(\alpha+\beta t)=0$ et $(1-B)(1-B^{12})s_t=0$. Il reste
-$(1-B)(1-B^{12})X_t$, combinaison linéaire finie de $X$ stationnaire $\Rightarrow$
-stationnaire (moyenne nulle, autocovariance indépendante de $t$).
-\item $Z_t=(\alpha+\beta t)s_t+X_t$. Ici la saisonnalité \emph{module} une tendance :
-$(\alpha+\beta t)s_t$ a une \og tendance saisonnière \fg{} d'ordre 1 multipliée par une
-périodique. $(1-B^{12})\big[(\alpha+\beta t)s_t\big]=\big[(\alpha+\beta t)-(\alpha+\beta(t-12))\big]s_t
-=12\beta s_t$ (car $s_t=s_{t-12}$), qui reste une tendance$\times$saison d'ordre 0. Une seconde
-application $(1-B^{12})$ donne $0$. Donc $(1-B^{12})^2Z_t=(1-B^{12})^2X_t$, stationnaire.
-\end{enumerate}
+\textbf{Q\,B.10 --- Différences saisonnières.}
+\emph{1)} $(1-B^{12})s_t=0$ (car $s_t=s_{t-12}$) et $(1-B^{12})(\alpha+\beta t)=12\beta$
+(constante), puis $(1-B)\cdot12\beta=0$. Donc
+$(1-B)(1-B^{12})Z_t=(1-B)(1-B^{12})X_t$ : combinaison finie de $X$ stationnaire $\Rightarrow$
+stationnaire.
+\emph{2)} $(1-B^{12})[(\alpha+\beta t)s_t]=12\beta s_t$ (car $s_t$ de période 12), puis une
+seconde application $(1-B^{12})[12\beta s_t]=0$. Donc $(1-B^{12})^2Z_t=(1-B^{12})^2X_t$,
+stationnaire.
 
-\textbf{Q\,B.11 --- Sous-échantillonnage d'un AR(1).}
-$X_t=\alpha X_{t-1}+a_t$, $Y_t=X_{2t}$. Alors
+\textbf{Q\,B.11 --- $Y_t=X_{2t}$.}
+\begin{etapes}
 $X_{2t}=\alpha X_{2t-1}+a_{2t}=\alpha(\alpha X_{2t-2}+a_{2t-1})+a_{2t}
-=\alpha^2X_{2t-2}+\alpha a_{2t-1}+a_{2t}$, c'est-à-dire
-\[
-Y_t=\alpha^2 Y_{t-1}+b_t,\qquad b_t=\alpha a_{2t-1}+a_{2t}.
-\]
-$b_t$ est centré, $\Var(b_t)=(\alpha^2+1)\sigma^2$, et $\Cov(b_t,b_{t-1})=
-\Cov(\alpha a_{2t-1}+a_{2t},\ \alpha a_{2t-3}+a_{2t-2})=0$ (indices tous distincts) : $b_t$ est
-un \bonne{bruit blanc}. Donc $Y_t$ est un \bonne{AR(1) de paramètre $\phi=\alpha^2$}, avec
-$|\alpha^2|<1$ : stationnaire et causal.
+=\alpha^2X_{2t-2}+\alpha a_{2t-1}+a_{2t}$, soit $Y_t=\alpha^2Y_{t-1}+b_t$ avec
+$b_t=\alpha a_{2t-1}+a_{2t}$.
+\emph{Blancheur de $b_t$} : $\E(b_t)=0$ ; $\Var(b_t)=(\alpha^2+1)\sigma^2$ ;
+$\Cov(b_t,b_{t-1})=\Cov(\alpha a_{2t-1}+a_{2t},\alpha a_{2t-3}+a_{2t-2})=0$ (indices distincts).
+\end{etapes}
+\begin{reponse}$(Y_t)$ est un \bonne{AR(1) de paramètre $\phi=\alpha^2$}, $|\alpha^2|<1$ :
+stationnaire et causal.\end{reponse}
 
 \textbf{Q\,B.12 --- $(1-\phi B^2)Y_t=\delta+(1+\theta B)a_t$.}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item $Y_t=(1-\phi B^2)^{-1}\delta+(1-\phi B^2)^{-1}(1+\theta B)a_t$. Comme
-$(1-\phi B^2)^{-1}=\sum_{i\ge0}\phi^iB^{2i}$, on a $\frac{\delta}{1-\phi}$ pour la constante et,
-pour la partie aléatoire, $\big(\sum_i\phi^iB^{2i}\big)(1+\theta B)a_t$. D'où les
-$\psi_j$ : pour $j$ pair $j=2i$, $\psi_{2i}=\phi^i$ ; pour $j$ impair $j=2i+1$,
-$\psi_{2i+1}=\theta\phi^i$. (Donc $\psi_0=1,\psi_1=\theta,\psi_2=\phi,\psi_3=\theta\phi,\dots$)
-\item Stationnaire/causal $\iff$ racines de $1-\phi B^2=0$, $B=\pm1/\sqrt{\phi}$, de module
-$>1$, soit \bonne{$|\phi|<1$} (avec $\phi>0$ pour des racines réelles, sinon complexes
-conjuguées de module $1/\sqrt{|\phi|}$). Le terme MA $(1+\theta B)$ ne joue pas sur la
-stationnarité ; l'inversibilité requiert $|\theta|<1$.
-\item Avec $\E(Y)=\frac{\delta}{1-\phi}$ et la forme $\mathrm{MA}(\infty)$ :
-$\gamma(0)=\sigma^2\sum_j\psi_j^2$ et $\gamma(1)=\sigma^2\sum_j\psi_j\psi_{j+1}$.
-Or $\sum_j\psi_j\psi_{j+1}=\sum_i\psi_{2i}\psi_{2i+1}+\psi_{2i+1}\psi_{2i+2}
-=\sum_i\phi^i\theta\phi^i+\theta\phi^i\phi^{i+1}=\theta(1+\phi)\sum_i\phi^{2i}
-=\dfrac{\theta(1+\phi)}{1-\phi^2}=\dfrac{\theta}{1-\phi}$, et
-$\sum_j\psi_j^2=\sum_i(\phi^{2i}+\theta^2\phi^{2i})=\dfrac{1+\theta^2}{1-\phi^2}$. D'où
-\[
-\rho(1)=\frac{\gamma(1)}{\gamma(0)}=\frac{\theta/(1-\phi)}{(1+\theta^2)/(1-\phi^2)}
-=\frac{\theta(1+\phi)}{1+\theta^2}.
-\]
-\end{enumerate}
+\emph{1)} $Y_t=\frac{\delta}{1-\phi}+(\sum_{i\ge0}\phi^iB^{2i})(1+\theta B)a_t$ ; d'où
+$\psi_{2i}=\phi^i$, $\psi_{2i+1}=\theta\phi^i$ (donc $\psi_0=1,\psi_1=\theta,\psi_2=\phi,\dots$).
+\emph{2)} Stationnaire/causal ssi racines de $1-\phi B^2$ de module $>1$, soit $|\phi|<1$
+(inversibilité : $|\theta|<1$).
+\emph{3)} $\sum\psi_j^2=\frac{1+\theta^2}{1-\phi^2}$ et
+$\sum\psi_j\psi_{j+1}=\frac{\theta(1+\phi)}{1-\phi^2}=\frac{\theta}{1-\phi}$, d'où
+$\rho(1)=\dfrac{\theta(1+\phi)}{1+\theta^2}$.
 
 % =====================================================================
-\section{Représentations \texorpdfstring{$\mathrm{MA}(\infty)$ et $\mathrm{AR}(\infty)$}{MA-infini et AR-infini}}
+\section{Représentations \texorpdfstring{$\mathrm{MA}(\infty)$ et $\mathrm{AR}(\infty)$}{MA-inf et AR-inf}}
 \markboth{Représentations MA-infini et AR-infini}{}
 
-\begin{rappel}
-Pour $\Phi(B)X_t=\Theta(B)a_t$ : la forme $\mathrm{MA}(\infty)$ $X_t=\Psi(B)a_t$ a des
-coefficients $\psi_k$ déterminés par $\Phi(B)\Psi(B)=\Theta(B)$, et la forme
-$\mathrm{AR}(\infty)$ $\Pi(B)X_t=a_t$ par $\Theta(B)\Pi(B)=\Phi(B)$ ($\psi_0=\pi_0=1$). On
-identifie les coefficients de $B^k$ de proche en proche.
-\end{rappel}
-
 \textbf{Q\,C.1 --- AR(2) $X_t-0.9X_{t-1}+0.2X_{t-2}=a_t$, coefficients $\psi_k$.}
-$\Phi(B)=1-0.9B+0.2B^2$, $\Theta(B)=1$. La relation $\Phi(B)\Psi(B)=1$ donne, pour $k\ge1$,
+\begin{etapes}
+$\Phi(B)\Psi(B)=1$ avec $\Phi=1-0.9B+0.2B^2$. En identifiant $B^k$ :
+$\psi_k-0.9\psi_{k-1}+0.2\psi_{k-2}=0$, soit
+$\psi_k=0.9\psi_{k-1}-0.2\psi_{k-2}$ ($\psi_0=1,\psi_{-1}=0$) :
 \[
-\psi_k=0.9\,\psi_{k-1}-0.2\,\psi_{k-2}\quad(\psi_0=1,\ \psi_{-1}=0).
+\psi_1=0.9,\ \psi_2=0.9(0.9)-0.2(1)=0.61,\ \psi_3=0.9(0.61)-0.2(0.9)=0.369.
 \]
-\[
-\psi_1=0.9,\quad \psi_2=0.9(0.9)-0.2(1)=0.61,\quad \psi_3=0.9(0.61)-0.2(0.9)=0.369 .
-\]
-\emph{Forme générale.} Racines de $\Phi$ : $0.2B^2-0.9B+1=0\Rightarrow B\in\{2,\ 2.5\}$,
-d'où les inverses $0.5$ et $0.4$. Donc $\psi_k=A(0.5)^k+C(0.4)^k$ avec $\psi_0=A+C=1$,
-$\psi_1=0.5A+0.4C=0.9$ : $A=5,\ C=-4$.
-\begin{reponse}
-$\psi_1=0.9,\ \psi_2=0.61,\ \psi_3=0.369$, et $\boxed{\psi_k=5\,(0.5)^k-4\,(0.4)^k}$.
-\end{reponse}
+\emph{Forme générale.} Racines de $0.2B^2-0.9B+1=0$ : $B=2.5$ et $B=2$, d'inverses $0.4$ et
+$0.5$. Donc $\psi_k=A(0.5)^k+C(0.4)^k$. Avec $\psi_0=A+C=1$ et $\psi_1=0.5A+0.4C=0.9$ :
+$A=5,\ C=-4$.
+\end{etapes}
+\begin{reponse}$\psi_1=0.9,\ \psi_2=0.61,\ \psi_3=0.369$ ;
+$\boxed{\psi_k=5(0.5)^k-4(0.4)^k}$ (vérif.\ $\psi_2=1.25-0.64=0.61$).\end{reponse}
 
-\textbf{Q\,C.2 --- $X_t=0.6X_{t-1}+0.2X_{t-2}+a_t-0.5a_{t-1}$ : 4 premiers $\pi_k$.}
-$\Phi(B)=1-0.6B-0.2B^2$, $\Theta(B)=1-0.5B$. La forme AR$(\infty)$ : $a_t=\Pi(B)X_t$ avec
-$\Theta(B)\Pi(B)=\Phi(B)$. En identifiant $B^k$ ($\pi_0=1$) :
-\[
-\pi_k-0.5\,\pi_{k-1}=\phi_k^{\Phi},\quad\text{où }\phi_1^{\Phi}=-0.6,\ \phi_2^{\Phi}=0.2,\
-\phi_k^{\Phi}=0\ (k\ge3).
-\]
-$\pi_1=-0.6+0.5(1)=-0.1$ ; $\pi_2=0.2+0.5(-0.1)... $ attention au signe :
-$\pi_2-0.5\pi_1=0.2\Rightarrow\pi_2=0.2+0.5(-0.1)$. Or $\phi_2^{\Phi}=-(-0.2)$ ? Reprenons :
-$\Phi(B)=1-0.6B-0.2B^2$ donc le coefficient de $B^2$ est $-0.2$. Ainsi
-$\pi_2-0.5\pi_1=-0.2\Rightarrow\pi_2=-0.2+0.5(-0.1)=-0.25$ ;
-$\pi_3-0.5\pi_2=0\Rightarrow\pi_3=0.5(-0.25)=-0.125$.
-\begin{reponse}
-$\pi_0=1,\ \pi_1=-0.1,\ \pi_2=-0.25,\ \pi_3=-0.125$.\\
-Représentation : $a_t=X_t-0.1X_{t-1}-0.25X_{t-2}-0.125X_{t-3}-\dots$, soit
-$X_t=0.1X_{t-1}+0.25X_{t-2}+0.125X_{t-3}+\dots+a_t$.
-\end{reponse}
+\textbf{Q\,C.2 --- $X_t=0.6X_{t-1}+0.2X_{t-2}+a_t-0.5a_{t-1}$, coefficients $\pi_k$.}
+$\Phi(B)=1-0.6B-0.2B^2$ (donc $\phi^\Phi_1=-0.6,\ \phi^\Phi_2=-0.2$), $\Theta(B)=1-0.5B$
+($\theta^\Theta_1=-0.5$).
+\begin{etapes}
+$\Theta(B)\Pi(B)=\Phi(B)$ donne, pour le coefficient de $B^k$ : $\pi_k-0.5\pi_{k-1}=\phi^\Phi_k$.
+\begin{align*}
+k=1:&\ \pi_1-0.5(1)=-0.6\Rightarrow \pi_1=-0.1.\\
+k=2:&\ \pi_2-0.5(-0.1)=-0.2\Rightarrow \pi_2=-0.2-0.05=-0.25.\\
+k=3:&\ \pi_3-0.5(-0.25)=0\Rightarrow \pi_3=-0.125.
+\end{align*}
+\end{etapes}
+\begin{reponse}$\pi_0=1,\ \pi_1=-0.1,\ \pi_2=-0.25,\ \pi_3=-0.125$ ; soit
+$a_t=X_t-0.1X_{t-1}-0.25X_{t-2}-0.125X_{t-3}-\dots$\end{reponse}
 
-\textbf{Q\,C.3 --- $(1-0.8B)X_t=(1+0.4B)a_t$ : coefficients AR et MA.}
-\emph{AR$(\infty)$} : $\Theta(B)\Pi(B)=\Phi(B)$ avec $\Theta=1+0.4B$, $\Phi=1-0.8B$ :
-$\pi_k+0.4\pi_{k-1}=\phi_k^{\Phi}$ où $\phi_1^{\Phi}=-0.8$, $\phi_k^{\Phi}=0$ ($k\ge2$).
-$\pi_1=-0.8-0.4(1)=-1.2$ ; $\pi_2=-0.4(-1.2)=0.48$ ; $\pi_3=-0.4(0.48)=-0.192$.
-\begin{reponse}AR : $\pi_1=-1.2,\ \pi_2=0.48,\ \pi_3=-0.192$
-(d'où $a_t=X_t-1.2X_{t-1}+0.48X_{t-2}-0.192X_{t-3}+\dots$).\end{reponse}
-\emph{MA$(\infty)$} : $\Phi(B)\Psi(B)=\Theta(B)$ : $\psi_k-0.8\psi_{k-1}=\theta_k^{\Theta}$ où
-$\theta_1^{\Theta}=0.4$, $\theta_k^{\Theta}=0$ ($k\ge2$).
+\textbf{Q\,C.3 --- $(1-0.8B)X_t=(1+0.4B)a_t$.}
+\begin{etapes}
+\emph{AR$(\infty)$} : $\Theta(B)\Pi(B)=\Phi(B)$, $\Theta=1+0.4B$, $\Phi=1-0.8B$ :
+$\pi_k+0.4\pi_{k-1}=\phi^\Phi_k$ ($\phi^\Phi_1=-0.8$, sinon $0$).
+$\pi_1=-0.8-0.4=-1.2$ ; $\pi_2=-0.4(-1.2)=0.48$ ; $\pi_3=-0.4(0.48)=-0.192$.
+\emph{MA$(\infty)$} : $\Phi(B)\Psi(B)=\Theta(B)$ : $\psi_k-0.8\psi_{k-1}=\theta^\Theta_k$
+($\theta^\Theta_1=0.4$, sinon $0$).
 $\psi_1=0.4+0.8=1.2$ ; $\psi_2=0.8(1.2)=0.96$ ; $\psi_3=0.8(0.96)=0.768$.
-\begin{reponse}MA : $\psi_1=1.2,\ \psi_2=0.96,\ \psi_3=0.768$
-(et $\psi_k=1.2\,(0.8)^{k-1}$ pour $k\ge1$).\end{reponse}
+\end{etapes}
+\begin{reponse}AR : $\pi_1=-1.2,\ \pi_2=0.48,\ \pi_3=-0.192$ ;\quad
+MA : $\psi_1=1.2,\ \psi_2=0.96,\ \psi_3=0.768$ (et $\psi_k=1.2(0.8)^{k-1}$).\end{reponse}
 
-\textbf{Q\,C.4 --- $(1-\Phi_1B^7)x_t=a_t$ (AR saisonnier d'ordre 7).}
-\begin{enumerate}[label=\alph*.]
-\item $x_t=(1-\Phi_1B^7)^{-1}a_t=\sum_{j\ge0}\Phi_1^{\,j}a_{t-7j}$ : seuls les retards
-multiples de 7 apparaissent ($\psi_{7j}=\Phi_1^{j}$, autres $\psi=0$).
-\item $\gamma_0=\Var(x_t)=\sigma^2\sum_{j\ge0}\Phi_1^{2j}=\dfrac{\sigma^2}{1-\Phi_1^2}$
-(stationnaire si $|\Phi_1|<1$).
-\item Par Yule--Walker $\rho(k)=\Phi_1\rho(k-7)$, et $\rho(k)=0$ si $k$ n'est pas multiple
-de 7. Donc $\rho_7=\Phi_1$, $\rho_{14}=\Phi_1^2$, et $\rho_1=0$, $\rho_8=0$ (8 non multiple
-de 7).
-\item La FAP d'un AR \og saisonnier pur \fg{} ne survit qu'aux retards $7,14,\dots$ jusqu'à
-l'ordre du modèle (ici un seul terme) : $P_7=\Phi_1$, puis $P_{14}=0$ ; et $P_1=0$, $P_8=0$.
-\end{enumerate}
+\textbf{Q\,C.4 --- $(1-\Phi_1B^7)x_t=a_t$.}
+\emph{a)} $x_t=\sum_{j\ge0}\Phi_1^{\,j}a_{t-7j}$ ($\psi_{7j}=\Phi_1^j$, autres nuls).
+\emph{b)} $\gamma_0=\sigma^2\sum_{j\ge0}\Phi_1^{2j}=\dfrac{\sigma^2}{1-\Phi_1^2}$.
+\emph{c)} Yule--Walker saisonnier : $\rho(k)=\Phi_1\rho(k-7)$, nul si $7\nmid k$. D'où
+$\rho_7=\Phi_1$, $\rho_{14}=\Phi_1^2$, $\rho_1=\rho_8=0$.
+\emph{d)} FAP : $P_7=\Phi_1$, puis $P_{14}=0$ ; $P_1=P_8=0$.
 
-\textbf{Q\,C.5 --- AR(2) $X_t-0.9X_{t-1}+0.2X_{t-2}=a_t$ (complet).}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item Racines $\{2,2.5\}$ de module $>1$ : \bonne{stationnaire et causal}.
-\item Yule--Walker : $\rho_1=\dfrac{\phi_1}{1-\phi_2}=\dfrac{0.9}{1-(-0.2)}=\dfrac{0.9}{1.2}=0.75$ ;
+\textbf{Q\,C.5 --- AR(2) $X_t-0.9X_{t-1}+0.2X_{t-2}=a_t$.}
+\emph{1)} Racines $\{2,2.5\}$, module $>1$ : \bonne{stationnaire}.
+\emph{2)} $\rho_1=\frac{\phi_1}{1-\phi_2}=\frac{0.9}{1.2}=0.75$ ;
 $\rho_2=\phi_1\rho_1+\phi_2=0.9(0.75)-0.2=0.475$.
-\item $\rho_k=0.9\rho_{k-1}-0.2\rho_{k-2}$ ($k\ge3$) ; forme générale
-$\rho_k=A(0.5)^k+C(0.4)^k$ avec $\rho_0=1,\rho_1=0.75$ : $A+C=1$, $0.5A+0.4C=0.75\Rightarrow
-A=3.5,\ C=-2.5$, soit $\rho_k=3.5(0.5)^k-2.5(0.4)^k$.
-\item $\psi_k=5(0.5)^k-4(0.4)^k$ (cf.\ Q\,C.1).
-\end{enumerate}
+\emph{3)} $\rho_k=0.9\rho_{k-1}-0.2\rho_{k-2}$ ; forme $\rho_k=3.5(0.5)^k-2.5(0.4)^k$
+(constantes via $\rho_0=1,\rho_1=0.75$).
+\emph{4)} $\psi_k=5(0.5)^k-4(0.4)^k$ (Q\,C.1).
 
-\textbf{Q\,C.6 --- Identifier $\phi,\theta$ depuis le début de la suite $\psi_k$.}
-Pour $x_t=\phi x_{t-1}+a_t-\theta a_{t-1}$ (ARMA(1,1)), la $\mathrm{MA}(\infty)$ vérifie
-$\psi_0=1$, $\psi_1=\phi-\theta$, et $\psi_k=\phi\,\psi_{k-1}$ pour $k\ge2$ (le rapport
-$\psi_{k}/\psi_{k-1}=\phi$ devient constant).
-\begin{recette}
-\textbf{Méthode.} (i) Le rapport stabilisé $\psi_{k}/\psi_{k-1}$ pour $k\ge2$ donne
-directement $\boxed{\phi}$. (ii) Puis $\theta=\phi-\psi_1$.
-\end{recette}
-Par exemple, si l'imprimante affiche $\psi_0=1,\ \psi_1=0.3,\ \psi_2=0.15,\ \psi_3=0.075,\dots$,
-alors $\phi=\psi_2/\psi_1=0.5$ et $\theta=\phi-\psi_1=0.5-0.3=0.2$.
-\emph{(Les valeurs numériques exactes dépendent de la suite imprimée sur le sujet ; appliquer
-la méthode encadrée.)}
+\textbf{Q\,C.6 --- Identifier $\phi,\theta$ depuis $\psi_k$.}
+Pour $x_t=\phi x_{t-1}+a_t-\theta a_{t-1}$ : $\psi_0=1$, $\psi_1=\phi-\theta$, et
+$\psi_k=\phi\psi_{k-1}$ ($k\ge2$). La suite donnée est $1,\ 0.3,\ 0.15,\ 0.075,\dots$
+\begin{etapes}
+Rapport stabilisé : $\dfrac{\psi_2}{\psi_1}=\dfrac{0.15}{0.3}=0.5=\phi$
+(et $\psi_3/\psi_2=0.075/0.15=0.5$ : cohérent).
+Puis $\psi_1=\phi-\theta=0.3\Rightarrow\theta=\phi-0.3=0.5-0.3=0.2$.
+\end{etapes}
+\begin{reponse}$\boxed{\phi=0.5,\quad \theta=0.2}$.\end{reponse}
 
 % =====================================================================
-\section{Autocorrélations simples (ACF) et partielles (PACF)}
+\section{Autocorrélations ACF et PACF}
 \markboth{Autocorrélations ACF / PACF}{}
 
-\textbf{Q\,D.1 --- AR(2), $(1-0.85B+0.32B^2)$, $\rho(1)=0.84,\rho(2)=0.69,\rho(3)=0.52$.}
-On lit $\phi_1=0.85$, $\phi_2=-0.32$ (car $\Phi(B)=1-\phi_1B-\phi_2B^2=1-0.85B+0.32B^2$).
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item Pour un AR(2), la FAP s'annule au-delà de 2 et $P_2=\phi_2$. De plus $P_1=\rho_1$.
-\begin{reponse}$\phi_{11}=P_1=\rho(1)=0.84$ \quad et\quad $\phi_{22}=P_2=\phi_2=-0.32$.\end{reponse}
-\item Yule--Walker : $\rho(1)=\dfrac{\phi_1}{1-\phi_2}$ et $\rho(2)=\phi_1\rho(1)+\phi_2$.
-\item Numériquement : $\rho(1)=\dfrac{0.85}{1.32}=0.6439$ et
-$\rho(2)=0.85(0.6439)-0.32=0.2273$.
-\end{enumerate}
-\begin{remarque}
-Les valeurs \emph{empiriques} annoncées ($0.84,0.69$) ne coïncident pas avec les valeurs
-\emph{théoriques} ($0.644,0.227$) issues de l'AR(2) estimé : c'est le sens de la question
-(incohérence entre l'ACF observée et le modèle ajusté).
-\end{remarque}
+\textbf{Q\,D.1 --- AR(2), $\phi_1=0.85,\phi_2=-0.32$.}
+\emph{1)} AR(2) : la FAP coupe à 2, $P_1=\rho_1$, $P_2=\phi_2$. D'où
+\begin{reponse}$\phi_{11}=\rho(1)=0.84$ et $\phi_{22}=\phi_2=-0.32$.\end{reponse}
+\emph{2)} $\rho(1)=\frac{\phi_1}{1-\phi_2}$, $\rho(2)=\phi_1\rho(1)+\phi_2$.
+\emph{3)} $\rho(1)=\frac{0.85}{1.32}=0.6439$ ; $\rho(2)=0.85(0.6439)-0.32=0.2273$.
+\emph{Remarque.} Les valeurs empiriques ($0.84,0.69$) diffèrent des valeurs théoriques
+($0.644,0.227$) : c'est l'incohérence soulignée par l'énoncé.
 
 \textbf{Q\,D.2 --- $(1-0.8B^2)X_t=a_t$.}
-AR(2) avec $\phi_1=0,\ \phi_2=0.8$. Yule--Walker :
-$\rho_1=\dfrac{\phi_1}{1-\phi_2}=0$ ; $\rho_2=\phi_1\rho_1+\phi_2=0.8$.
-FAP : $P_1=\rho_1=0$ ; $P_2=\dfrac{\rho_2-\rho_1^2}{1-\rho_1^2}=0.8=\phi_2$.
+AR(2), $\phi_1=0,\phi_2=0.8$. $\rho_1=\frac{0}{1-0.8}=0$ ; $\rho_2=\phi_1\rho_1+\phi_2=0.8$.
+$P_1=\rho_1=0$ ; $P_2=\frac{\rho_2-\rho_1^2}{1-\rho_1^2}=0.8=\phi_2$.
 \begin{reponse}$\rho_1=0,\ \rho_2=0.8$ ; $P_1=0,\ P_2=0.8$.\end{reponse}
 
-\textbf{Q\,D.3 --- $X_t=0.6X_{t-1}+0.8X_{t-2}-0.3X_{t-3}+a_t$, 3 premières $\rho_k$.}
-AR(3) : $\phi_1=0.6,\phi_2=0.8,\phi_3=-0.3$. Yule--Walker ($\rho_0=1$, $\rho_{-k}=\rho_k$) :
-\begin{align*}
-\rho_1&=\phi_1+\phi_2\rho_1+\phi_3\rho_2,\\
-\rho_2&=\phi_1\rho_1+\phi_2+\phi_3\rho_1,\\
-\rho_3&=\phi_1\rho_2+\phi_2\rho_1+\phi_3 .
-\end{align*}
-Les deux premières donnent le système
-$\begin{cases}(1-\phi_2)\rho_1-\phi_3\rho_2=\phi_1\\(\phi_1+\phi_3)\rho_1-\rho_2=-\phi_2\end{cases}$,
-soit $\begin{cases}0.2\rho_1+0.3\rho_2=0.6\\0.3\rho_1-\rho_2=-0.8\end{cases}$.
-On résout : $\rho_1\approx1.1304$ ?? \emph{Attention} : ce processus n'est pas stationnaire
-(voir ci-dessous), donc les équations de Yule--Walker n'ont pas nécessairement de solution
-admissible $|\rho|\le1$.
+\textbf{Q\,D.3 --- $X_t=0.6X_{t-1}+0.8X_{t-2}-0.3X_{t-3}+a_t$.}
 \begin{attention}
-Vérifions d'abord la stationnarité : $\Phi(B)=1-0.6B-0.8B^2+0.3B^3$. En $B=1$ :
-$1-0.6-0.8+0.3=-0.1\ne0$. Les racines doivent être de module $>1$. Une étude numérique montre
-qu'une racine est de module $<1$ : \textbf{le processus n'est pas stationnaire}, l'ACF
-théorique n'est donc pas définie au sens usuel. Si l'énoncé suppose la stationnarité, on
-applique néanmoins formellement Yule--Walker ; sinon, on conclut à la non-stationnarité.
+$\Phi(B)=1-0.6B-0.8B^2+0.3B^3$. Les racines ont pour modules $2.96,\ 1.22,\ 0.92$ : l'une
+est \emph{$<1$}, donc \textbf{le processus n'est pas stationnaire} et l'ACF théorique n'est pas
+définie au sens usuel.
 \end{attention}
-\emph{Application formelle de Yule--Walker} (si l'on suppose la récurrence valide) :
-$\rho_k=0.6\rho_{k-1}+0.8\rho_{k-2}-0.3\rho_{k-3}$, avec $\rho_0=1$ et la résolution du système
-$2\times2$ ci-dessus pour $(\rho_1,\rho_2)$, puis $\rho_3=0.6\rho_2+0.8\rho_1-0.3$.
+Si l'on suppose néanmoins la récurrence valide, Yule--Walker donne
+$\rho_k=0.6\rho_{k-1}+0.8\rho_{k-2}-0.3\rho_{k-3}$ avec le système des deux premières équations
+$\begin{cases}0.2\rho_1+0.3\rho_2=0.6\\0.3\rho_1-\rho_2=-0.8\end{cases}$, puis
+$\rho_3=0.6\rho_2+0.8\rho_1-0.3$. \emph{(La conclusion attendue est la non-stationnarité.)}
 
-\textbf{Q\,D.4 --- AR(2) $X_t-0.9X_{t-1}+0.2X_{t-2}=a_t$ : $\rho_1,\rho_2,\rho_k$.}
-(Identique à Q\,C.5) : $\rho_1=0.75$, $\rho_2=0.475$, et pour $k\ge3$
-$\rho_k=0.9\rho_{k-1}-0.2\rho_{k-2}=3.5(0.5)^k-2.5(0.4)^k$.
+\textbf{Q\,D.4 --- AR(2) $X_t-0.9X_{t-1}+0.2X_{t-2}=a_t$.}
+Identique à Q\,C.5 : $\rho_1=0.75$, $\rho_2=0.475$, $\rho_k=0.9\rho_{k-1}-0.2\rho_{k-2}
+=3.5(0.5)^k-2.5(0.4)^k$ ($k\ge3$).
 
-\textbf{Q\,D.5 --- Identification ARMA à partir d'un tableau ACF/PACF.}
-\begin{center}\small
-\begin{tabular}{cccccc}
-\toprule $k$&1&2&3&4&5\\\midrule
-$\rho_k$&0.65&0.47&0.35&0.24&0.18\\
-$P_k$&0.65&$-0.31$&$-0.08$&$-0.15$&0.10\\\bottomrule
-\end{tabular}
-\end{center}
-L'ACF \emph{décroît} régulièrement (pas de coupure nette) ; la PACF est \emph{forte en 1}
-($0.65$) puis devient faible/négligeable dès le rang 2 (les $|P_k|\lesssim2/\sqrt{100}=0.2$
-sont à la limite de significativité).
-\begin{reponse}On retient un \bonne{AR(1)} : ACF qui décroît géométriquement
-($\rho_k\approx0.65^{\,k}$ : $0.65,0.42,0.27,\dots$, proche des valeurs observées) et PACF qui
-\og coupe \fg{} après le rang 1.\end{reponse}
+\textbf{Q\,D.5 --- Identification par corrélogrammes.}
+ACF : $0.65,0.47,0.35,0.24,0.18$ \emph{décroît} régulièrement (pas de coupure). PACF :
+$0.65$ puis $|P_k|\lesssim0.2=2/\sqrt{100}$ (non significatifs) : \emph{coupure après le rang 1}.
+\begin{reponse}\bonne{AR(1)} : $\rho_k\approx0.65^k$ ($0.65,0.42,0.27,\dots$, proche de
+l'observé) et PACF qui coupe à 1.\end{reponse}
 
-\textbf{Q\,D.6 --- $z_t=x_t+y_t$, $x_t\sim$AR(1), $y_t\sim$MA(1) indépendants.}
-La somme de deux processus ARMA indépendants ARMA$(p_1,q_1)$ et ARMA$(p_2,q_2)$ est un
-ARMA$(p_1+p_2,\ \max(p_1+q_2,\ p_2+q_1))$. Ici $x_t$ est ARMA(1,0), $y_t$ ARMA(0,1) :
-$p=1+0=1$, $q=\max(1+1,\ 0+0)=2$.
-\begin{reponse}$z_t$ est un \bonne{ARMA$(1,1)$} en général (l'ordre MA \emph{apparent} est $2$,
-mais il se réduit) --- plus précisément, $(1-\phi B)z_t=(1-\phi B)x_t+(1-\phi B)y_t
-=a_t+(1-\phi B)(1+\theta B)b_t$, dont la partie MA est d'ordre $\le2$ : $z_t$ est un
-\bonne{ARMA$(1,2)$} qui, après calcul des autocovariances, est équivalent à un
-\bonne{ARMA$(1,1)$}.\end{reponse}
-Réponse attendue au QCM : \bonne{ARMA$(p,q)$} (ici $p=1$, $q\le2$).
+\textbf{Q\,D.6 --- $z_t=x_t+y_t$, AR(1)+MA(1) indépendants.}
+La somme d'un ARMA$(1,0)$ et d'un ARMA$(0,1)$ indépendants est un ARMA$(1,\max(1+1,0+0))=$ARMA$(1,2)$
+\emph{apparent}, qui se réduit (calcul des autocovariances) à un \bonne{ARMA$(1,1)$}.
+Concrètement $(1-\phi B)z_t=a_t+(1-\phi B)(1+\theta B)b_t$ a une partie MA d'ordre $\le2$ dont
+l'ACF s'annule après le rang 1 après simplification.
 
 % =====================================================================
 \section{Prévision et intervalles de confiance}
 \markboth{Prévision et intervalles de confiance}{}
 
-\begin{rappel}
-Prévision optimale (espérance conditionnelle) : on remplace les chocs \emph{futurs} par $0$,
-les chocs \emph{passés} par les résidus, et les $X$ futurs par leurs prévisions.
-\emph{Erreur de prévision} à horizon $k$ : $\Delta_k=X_{n+k}-\Xhat_{n+k}=\sum_{j=0}^{k-1}
-\psi_j a_{n+k-j}$, $\Var(\Delta_k)=\sigma^2\sum_{j=0}^{k-1}\psi_j^2$.
-IC à $95\%$ : $\Xhat_{n+k}\pm1.96\,\sigma\sqrt{\sum_{j=0}^{k-1}\psi_j^2}$.
-\end{rappel}
+\textbf{Q\,E.1 --- MA(1) $X_t=2+a_t+0.8a_{t-1}$, $\sigma^2=2$.}
+\begin{etapes}
+$\widehat X_{t+1}=2+0.8\,a_t+\underbrace{a_{t+1}}_{\to0}=2+0.8(1.6)=3.28$.
+$\widehat X_{t+2}=2+\underbrace{a_{t+2}}_{0}+0.8\underbrace{a_{t+1}}_{0}=2$.
+$\psi_0=1,\psi_1=0.8$ : $\Var(\Delta_1)=\sigma^2=2$ ;
+$\Var(\Delta_2)=\sigma^2(1+0.8^2)=2(1.64)=3.28$.
+\end{etapes}
+\begin{reponse}$\widehat X_{t+1}=3.28$, IC$=3.28\pm1.96\sqrt2=[0.51,6.05]$ ;
+$\widehat X_{t+2}=2$, IC$=2\pm1.96\sqrt{3.28}=[-1.55,5.55]$.\end{reponse}
 
-\textbf{Q\,E.1 --- MA(1) $X_t=2+a_t+0.8a_{t-1}$, $\sigma^2=2$, $a_t=1.6$, $a_{t-1}=-3.4$.}
-$\Xhat_{t+1}=2+0.8\,a_t=2+0.8(1.6)=\mathbf{3.28}$.
-$\Xhat_{t+2}=2$ (horizon $\ge2$ pour un MA(1) : prévision $=\mu=2$).
-$\Var(\Delta_1)=\sigma^2=2$ ; $\Var(\Delta_2)=(1+\theta^2)\sigma^2=(1+0.64)\cdot2=3.28$.
-\begin{reponse}
-$\Xhat_{t+1}=3.28$, IC$_{95\%}=3.28\pm1.96\sqrt2=[0.51,\ 6.05]$.\\
-$\Xhat_{t+2}=2$, IC$_{95\%}=2\pm1.96\sqrt{3.28}=[-1.55,\ 5.55]$.
-\end{reponse}
+\textbf{Q\,E.2 --- $X_t=2+0.8X_{t-1}+a_t$, $a_T=1.6$, $X_{T-1}=3.0$, $\sigma^2=1$.}
+\begin{etapes}
+$X_T=2+0.8(3.0)+1.6=6.0$.
+$\widehat X_{T+1}=2+0.8X_T=2+4.8=6.8$ ; $\widehat X_{T+2}=2+0.8(6.8)=7.44$.
+AR(1) : $\Var(\Delta_1)=\sigma^2=1$, $\Var(\Delta_2)=(1+\phi^2)\sigma^2=1.64$.
+\end{etapes}
+\begin{reponse}$\widehat X_{T+1}=6.8$, IC$=6.8\pm1.96=[4.84,8.76]$ ;
+$\widehat X_{T+2}=7.44$, IC$=7.44\pm1.96\sqrt{1.64}=[4.93,9.95]$.\end{reponse}
 
-\textbf{Q\,E.2 --- $(1-0.8B)X_t=2+a_t$, $a_T=1.6$, $X_{T-1}=3.0$, $\sigma_a^2=1$.}
-Modèle $X_t=2+0.8X_{t-1}+a_t$. D'abord $X_T=2+0.8(3.0)+1.6=6.0$.
-$\Xhat_{T+1}=2+0.8X_T=2+4.8=\mathbf{6.8}$ ; $\Xhat_{T+2}=2+0.8\Xhat_{T+1}=\mathbf{7.44}$.
-$\Var(\Delta_1)=\sigma^2=1$ ; $\Var(\Delta_2)=(1+\phi^2)\sigma^2=1.64$.
-\begin{reponse}
-$\Xhat_{T+1}=6.8$, IC $=6.8\pm1.96=[4.84,\ 8.76]$.\\
-$\Xhat_{T+2}=7.44$, IC $=7.44\pm1.96\sqrt{1.64}=[4.93,\ 9.95]$.
-\end{reponse}
+\textbf{Q\,E.3 --- MA(2) $Y_t=a_t+0.8a_{t-1}+0.4a_{t-2}$.}
+\begin{etapes}
+$\widehat Y_{101}=0.8a_{100}+0.4a_{99}=0.8(0.6)+0.4(-0.3)=0.36$.
+$\widehat Y_{102}=0.4a_{100}=0.24$. $\widehat Y_{103}=0$ ($h=3>q=2$).
+$\Var(\Delta_1)=1$ ; $\Var(\Delta_2)=1+0.8^2=1.64$ ; $\Var(\Delta_3)=1+0.8^2+0.4^2=1.8$.
+\end{etapes}
+\begin{reponse}IC : $0.36\pm1.96=[-1.60,2.32]$ ; $0.24\pm1.96\sqrt{1.64}=[-2.27,2.75]$ ;
+$0\pm1.96\sqrt{1.8}=[-2.63,2.63]$.\end{reponse}
 
-\textbf{Q\,E.3 --- MA(2) $Y_t=a_t+0.8a_{t-1}+0.4a_{t-2}$, résidus connus.}
-$\Xhat_{101}=0.8a_{100}+0.4a_{99}=0.8(0.6)+0.4(-0.3)=\mathbf{0.36}$.
-$\Xhat_{102}=0.4a_{100}=0.4(0.6)=\mathbf{0.24}$.
-$\Xhat_{103}=0$ (horizon $3>q=2$ : prévision $=\mu=0$).
-$\Var(\Delta_1)=\sigma^2=1$ ; $\Var(\Delta_2)=(1+0.8^2)=1.64$ ;
-$\Var(\Delta_3)=(1+0.8^2+0.4^2)=1.8$.
-\begin{reponse}
-IC : $0.36\pm1.96=[-1.60,2.32]$ ; $0.24\pm1.96\sqrt{1.64}=[-2.27,2.75]$ ;
-$0\pm1.96\sqrt{1.8}=[-2.63,2.63]$.
-\end{reponse}
+\textbf{Q\,E.4 --- MA(1) EViews ($X_t=C+a_t+\theta a_{t-1}$, $C=1.99678$, $\theta=-0.492396$).}
+\begin{etapes}
+On reconstitue les résidus $a_t=X_t-C-\theta a_{t-1}$ (avec $a_{05}=0$) :
+\begin{align*}
+a_{06}&=1.2-1.99678=-0.7968,\\
+a_{07}&=3.5-1.99678-(-0.492396)(-0.7968)=1.1109,\\
+a_{08}&=4.2-1.99678-(-0.492396)(1.1109)=2.7503,\\
+a_{09}&=6.4-1.99678-(-0.492396)(2.7503)=5.7574.
+\end{align*}
+$\widehat X_{10}=C+\theta a_{09}=1.99678-0.492396(5.7574)=-0.838$ ;
+$\widehat X_{11}=\widehat X_{12}=C=1.997$.
+$\Var(\Delta_1)=1$, $\Var(\Delta_{\ge2})=1+\theta^2=1.2425$.
+\end{etapes}
+\begin{reponse}$\widehat X_{10}=-0.838$, IC$=[-2.80,1.12]$ ; $\widehat X_{11}=\widehat
+X_{12}=1.997$, IC$=1.997\pm1.96\sqrt{1.2425}=[-0.19,4.18]$.\end{reponse}
+\begin{attention}La série $1.2,3.5,4.2,6.4$ est nettement croissante : un MA(1) est
+inadapté (prévision aberrante). On illustre la \emph{mécanique} ; en pratique il faudrait
+stationnariser.\end{attention}
 
-\textbf{Q\,E.4 --- MA(1) (sortie EViews), série 06--09/2012.}
-Modèle $X_t=C+a_t+\theta a_{t-1}$ avec $C=1.99678$, $\theta=-0.492396$, $\sigma^2=1$.
-On reconstitue les résidus par $a_t=X_t-C-\theta a_{t-1}$ (en posant $a_{05/2012}=0$) :
-\[
-a_{06}=-0.7968,\quad a_{07}=1.1109,\quad a_{08}=2.7503,\quad a_{09}=5.7574 .
-\]
-$\Xhat_{10}=C+\theta a_{09}=1.99678-0.492396(5.7574)=\mathbf{-0.838}$ ;
-$\Xhat_{11}=\Xhat_{12}=C=1.99678$ (horizon $\ge2$).
-$\Var(\Delta_1)=1$ ; $\Var(\Delta_{k\ge2})=(1+\theta^2)=1.2425$.
-\begin{reponse}
-$\Xhat_{10}=-0.838$, IC $=[-2.80,\,1.12]$ ; $\Xhat_{11}=\Xhat_{12}=1.997$,
-IC $=1.997\pm1.96\sqrt{1.2425}=[-0.19,\,4.18]$.
-\end{reponse}
-\begin{attention}
-La série $1.2;3.5;4.2;6.4$ est nettement \emph{croissante} (tendance) : un MA(1) y est
-inadapté (d'où une prévision aberrante). L'exercice illustre l'importance de stationnariser
-avant de modéliser ; on présente ici l'application mécanique de la formule.
-\end{attention}
+\textbf{Q\,E.5 --- ARMA(1,1) sans constante, $\phi=0.495639,\theta=0.413047$.}
+\begin{etapes}
+Résidus $a_t=X_t-\phi X_{t-1}-\theta a_{t-1}$, $a_{2007}=0$ :
+$a_{08}=1.9-0.4956(1.5)=1.1565$ ; $a_{09}=3.2-0.4956(1.9)-0.413(1.1565)=1.7806$ ;
+$a_{10}=2.2-0.4956(3.2)-0.413(1.7806)=-0.1215$ ;
+$a_{11}=2.4-0.4956(2.2)-0.413(-0.1215)=1.3598$.
+$\widehat X_{2012}=\phi X_{2011}+\theta a_{2011}=0.4956(2.4)+0.413(1.3598)=1.751$.
+$\widehat X_{2013}=\phi\,\widehat X_{2012}=0.868$ (chocs futurs nuls).
+\end{etapes}
+\begin{reponse}$\widehat X_{2012}\approx1.75$, $\widehat X_{2013}\approx0.87$.\end{reponse}
 
-\textbf{Q\,E.5 --- ARMA(1,1) (Série 2, Ex.~1).}
-$X_t=0.495639\,X_{t-1}+a_t+0.413047\,a_{t-1}$ (sans constante). Résidus reconstitués
-($a_{2007}=0$) : $a_{08}=1.1565$, $a_{09}=1.7806$, $a_{10}=-0.1215$, $a_{11}=1.3598$.
-$\Xhat_{2012}=0.495639(2.4)+0.413047(1.3598)=\mathbf{1.751}$ ;
-$\Xhat_{2013}=0.495639\,\Xhat_{2012}=\mathbf{0.868}$ (au-delà de l'horizon 1, $a$ futur $=0$).
-\begin{reponse}$\Xhat_{2012}\approx1.75$, $\Xhat_{2013}\approx0.87$.\end{reponse}
+\textbf{Q\,E.6 --- AR(1) à moyenne, $\mu=7.124608,\phi=0.297718,\sigma^2=1$.}
+\begin{etapes}
+$\widehat X_{n+h}=\mu+\phi^h(X_{2011}-\mu)$, $X_{2011}-\mu=10.4-7.1246=3.2754$ :
+$\widehat X_{2012}=7.1246+0.2977(3.2754)=8.10$ ; $\widehat X_{2013}=7.1246+0.2977^2(3.2754)=7.42$ ;
+$\widehat X_{2014}=7.21$. $\Var(\Delta_k)=\sum_{j=0}^{k-1}\phi^{2j}$ : $1,\ 1.0886,\ 1.0965$.
+\end{etapes}
+\begin{reponse}IC : $8.10\pm1.96=[6.14,10.06]$ ; $7.42\pm1.96\sqrt{1.0886}=[5.37,9.46]$ ;
+$7.21\pm1.96\sqrt{1.0965}=[5.16,9.26]$.\end{reponse}
 
-\textbf{Q\,E.6 --- AR(1) à moyenne (Série 2, Ex.~2).}
-$C=\mu=7.124608$, $\phi=0.297718$, $\sigma^2=1$, $X_{2011}=10.4$. Forme centrée
-$X_t-\mu=\phi(X_{t-1}-\mu)+a_t$ :
-\[
-\Xhat_{2012}=\mu+\phi(X_{2011}-\mu)=\mathbf{8.10},\quad
-\Xhat_{2013}=\mu+\phi(\Xhat_{2012}-\mu)=\mathbf{7.42},\quad
-\Xhat_{2014}=\mathbf{7.21}.
-\]
-$\Var(\Delta_k)=\sigma^2\sum_{j=0}^{k-1}\phi^{2j}$ : $1$ ; $1.0886$ ; $1.0965$.
-\begin{reponse}
-IC : $8.10\pm1.96=[6.14,10.06]$ ; $7.42\pm1.96\sqrt{1.0886}=[5.37,9.46]$ ;
-$7.21\pm1.96\sqrt{1.0965}=[5.16,9.26]$.
-\end{reponse}
-
-\textbf{Q\,E.7 --- AR(1) (brouillon), constante $5.0552$, $\phi=0.29$.}
-On interprète le modèle comme $X_t=5.0552+0.29X_{t-1}+a_t$ (intercept), $\sigma^2=1$ par
-défaut, dernière observation $X_{2011}=7.12$.
-$\Xhat_{2012}=5.0552+0.29(7.12)=7.120$ ; $\Xhat_{2013}=5.0552+0.29(7.120)=7.120$ ;
-$\Xhat_{2014}\approx7.120$ (le processus converge vite vers sa moyenne
-$\mu=5.0552/(1-0.29)=7.12$).
-$\Var(\Delta_k)=\sum_{j=0}^{k-1}0.29^{2j}$ : $1,\ 1.084,\ 1.091$.
-\begin{reponse}
-$\Xhat\approx7.12$ pour les trois horizons ; IC $\approx7.12\pm1.96\sqrt{\Var(\Delta_k)}$.
-\emph{(Énoncé reconstitué : valeurs sous réserve des hypothèses ci-dessus.)}
-\end{reponse}
+\textbf{Q\,E.7 --- AR(1) intercept $5.0552$, $\phi=0.29$.}
+$\mu=\frac{5.0552}{1-0.29}=7.12$. $\widehat X_{2012}=5.0552+0.29(7.12)=7.12$ ; idem
+$\widehat X_{2013}\approx\widehat X_{2014}\approx7.12$ (convergence rapide vers $\mu$).
+$\Var(\Delta_k)=\sum_{j<k}0.29^{2j}$ : $1,\ 1.084,\ 1.091$ ; IC$\approx7.12\pm1.96\sqrt{\cdot}$.
+\emph{(Énoncé reconstitué.)}
 
 % =====================================================================
-\section{Intégration, ARIMA et tests de Dickey--Fuller}
+\section{Intégration, ARIMA, Dickey--Fuller}
 \markboth{Intégration, ARIMA, Dickey--Fuller}{}
 
 \textbf{Q\,F.1 --- $X_t=2.65X_{t-1}-2.3X_{t-2}+0.65X_{t-3}+a_t$.}
-$\Phi(B)=1-2.65B+2.3B^2-0.65B^3$. En $B=1$ : $1-2.65+2.3-0.65=0$ : racine unité. On
-factorise par $(1-B)$ :
-\[
-\Phi(B)=(1-B)(1-1.65B+0.65B^2)=(1-B)(1-B)(1-0.65B)=(1-B)^2(1-0.65B).
-\]
-(Vérification du second facteur en $B=1$ : $1-1.65+0.65=0$, d'où la deuxième racine unité.)
-\begin{enumerate}[label=\alph*.]
-\item \bonne{$X_t$ est intégré d'ordre $d=2$} ($\sim I(2)$).
-\item $(1-B)^2(1-0.65B)X_t=a_t$ ; en posant $W_t=(1-B)^2X_t$ on a $(1-0.65B)W_t=a_t$ (AR(1)
-stationnaire). L'écriture Dickey--Fuller pour $y_t=\Delta x_t$ fait apparaître, après une
-différenciation, une racine unité restante (le processus $\Delta x_t$ est encore $I(1)$).
-\item \begin{reponse}Réponse : \bonne{ARIMA$(1,2,0)$}.\end{reponse}
-(partie AR d'ordre 1 : $1-0.65B$ ; $d=2$ ; pas de partie MA).
-\end{enumerate}
+\begin{etapes}
+$\Phi(B)=1-2.65B+2.3B^2-0.65B^3$. Test $B=1$ : $1-2.65+2.3-0.65=0$ : racine unité.
+Division par $(1-B)$ : $1-1.65B+0.65B^2$ ; à nouveau $B=1$ : $1-1.65+0.65=0$. Donc
+$\Phi(B)=(1-B)^2(1-0.65B)$.
+\end{etapes}
+\emph{a)} \bonne{Intégré d'ordre $d=2$}. \emph{b)} $\Delta x_t$ reste $I(1)$ : sa forme DF
+contient encore une racine unité (il faut différencier une 2\textsuperscript{e} fois).
+\emph{c)} \begin{reponse}\bonne{ARIMA$(1,2,0)$} (AR : $1-0.65B$, $d=2$, pas de MA).\end{reponse}
 
 \textbf{Q\,F.2 --- $x_t=2.7x_{t-1}-2.4x_{t-2}+0.7x_{t-3}+a_t$.}
-$\Phi(B)=1-2.7B+2.4B^2-0.7B^3$. En $B=1$ : $1-2.7+2.4-0.7=0$. Factorisation :
-$\Phi(B)=(1-B)(1-1.7B+0.7B^2)=(1-B)^2(1-0.7B)$ (le facteur $1-1.7B+0.7B^2$ s'annule aussi en
-$B=1$).
-\begin{reponse}\bonne{$x_t\sim I(2)$}, gouverné par un \bonne{ARIMA$(1,2,0)$}
-($\Delta^2x_t=0.7\,\Delta^2x_{t-1}+a_t$).\end{reponse}
+$\Phi(B)=1-2.7B+2.4B^2-0.7B^3$ ; $B=1$ : $1-2.7+2.4-0.7=0$ ; division :
+$1-1.7B+0.7B^2$, $B=1$ : $0$. Donc $(1-B)^2(1-0.7B)$.
+\begin{reponse}\bonne{$x_t\sim I(2)$, ARIMA$(1,2,0)$}.\end{reponse}
 
-\textbf{Q\,F.3 --- $X_t=1.6X_{t-1}-0.3X_{t-2}+0.6X_{t-3}+a_t$ intégré ?}
-$\Phi(B)=1-1.6B+0.3B^2-0.6B^3$. En $B=1$ : $1-1.6+0.3-0.6=-0.9\ne0$ : pas de racine unité.
-\begin{reponse}Réponse : \bonne{Non intégré} (c'est un AR(3) ; sa stationnarité dépend du
-module des racines, mais il n'y a pas de racine $=1$).\end{reponse}
+\textbf{Q\,F.3 --- $X_t=1.6X_{t-1}-0.3X_{t-2}+0.6X_{t-3}+a_t$.}
+$\Phi(1)=1-1.6+0.3-0.6=-0.9\ne0$ : pas de racine unité.
+\begin{reponse}\bonne{Non intégré} (AR(3)).\end{reponse}
 
-\textbf{Q\,F.4 --- Série E : MCO et test de Dickey--Fuller.}
-\begin{enumerate}[label=\alph*.]
-\item MCO sans constante : $\phihat=\dfrac{\sum Y_tY_{t-1}}{\sum Y_{t-1}^2}
-=\dfrac{25\,842.3}{25\,943.8}=\mathbf{0.99609}$.
-\item $\widehat{\sigma}_{\phihat}=\sqrt{\dfrac{\hat\sigma_a^2}{\sum Y_{t-1}^2}}
-=\sqrt{\dfrac{0.954}{25\,943.8}}=\mathbf{0.006064}$.
-\item Statistique DF : $t_\phi=\dfrac{\phihat-1}{\widehat{\sigma}_{\phihat}}
-=\dfrac{0.99609-1}{0.006064}=\mathbf{-0.645}$. Comme $t_\phi=-0.645$ est
-\emph{supérieur} à la valeur critique $-2.89$ (donc \emph{hors} de la région de rejet), on
-\bonne{ne rejette pas $H_0:\phi=1$} : la série possède une racine unité, elle est
-\bonne{non stationnaire ($I(1)$)}.
-\item Après différenciation, $\rhohat(1)=-0.035\approx0$ : $\Delta Y_t$ est un \emph{bruit
-blanc}. Donc $Y_t$ est une \bonne{marche aléatoire}, modèle \bonne{ARIMA$(0,1,0)$}.
-\item $s_{\Delta Y}^2=0.954 < s_Y^2=86.747$ : la différenciation a \emph{fortement réduit} la
-variance (passage d'une série $I(1)$ à un bruit blanc). Mais la différenciation ne réduit
-\emph{pas toujours} la variance : sur une série \emph{déjà stationnaire}, sur-différencier
-\emph{augmente} la variance (introduction d'une racine MA unité). On ne différencie que si un
-test de racine unité le justifie.
-\end{enumerate}
+\textbf{Q\,F.4 --- Série E, MCO et Dickey--Fuller.}
+\emph{a)} $\phihat=\frac{\sum Y_tY_{t-1}}{\sum Y_{t-1}^2}=\frac{25842.3}{25943.8}=0.99609$.
+\emph{b)} $\hat\sigma_{\phihat}=\sqrt{\frac{0.954}{25943.8}}=0.006064$.
+\emph{c)} $t_\phi=\frac{0.99609-1}{0.006064}=-0.645$. Comme $-0.645>-2.89$ (hors région de
+rejet), on \bonne{ne rejette pas $H_0:\phi=1$} : série \bonne{non stationnaire $I(1)$}.
+\emph{d)} $\rhohat(1)=-0.035\approx0$ : $\Delta Y_t$ bruit blanc $\Rightarrow$ \bonne{marche
+aléatoire, ARIMA$(0,1,0)$}.
+\emph{e)} Ici $s^2_{\Delta Y}=0.954\ll s_Y^2=86.747$ : la différenciation a réduit la variance.
+Mais \bonne{non}, elle ne la réduit pas toujours : sur une série \emph{déjà} stationnaire, la
+sur-différenciation introduit une racine MA unité et \emph{augmente} la variance.
 
-\textbf{Q\,F.5 --- Choix du générateur (300 obs.).}
-\begin{itemize}[leftmargin=*]
-\item (a) $Y_t=1.8Y_{t-1}+a_t$ : $|\phi|=1.8>1$ $\Rightarrow$ \emph{explosif} (croissance
-non bornée). À écarter si la trajectoire reste bornée.
-\item (b) $Y_t=0.8Y_{t-1}+10+a_t$ : AR(1) stationnaire de moyenne $\mu=10/(1-0.8)=50$ et de
-variance $\sigma^2/(1-0.64)=2.78$ ($\sigma=1$). Série centrée \emph{autour de 50}.
-\item (c) $Y_t=0.8Y_{t-1}+0.5a_t$ : AR(1) stationnaire, moyenne $0$, écart-type
-$\sqrt{0.25/0.36}=0.83$ : faibles amplitudes autour de 0.
-\item (d) $Y_t=0.8Y_{t-1}+5a_t$ : AR(1) stationnaire, moyenne $0$, écart-type
-$\sqrt{25/0.36}=8.33$ : fortes amplitudes autour de 0.
-\end{itemize}
-\begin{reponse}
-On choisit le modèle dont la \emph{moyenne} et l'\emph{amplitude} correspondent au graphique :
-si la série oscille autour de $50$ $\to$ (b) ; autour de $0$ avec faible amplitude $\to$ (c) ;
-autour de $0$ avec forte amplitude $\to$ (d) ; si elle explose $\to$ (a). On écarte (a) dès que
-la série est bornée, et on tranche entre (b),(c),(d) par le niveau moyen et l'écart-type
-observés.
-\end{reponse}
+\textbf{Q\,F.5 --- Choix du générateur.}
+(a) $|\phi|=1.8>1$ : \emph{explosif} (à écarter si la série reste bornée).
+(b) AR(1) stationnaire de moyenne $10/(1-0.8)=50$, écart-type $\sqrt{1/0.36}=1.67$.
+(c) moyenne $0$, écart-type $\sqrt{0.25/0.36}=0.83$ (faible amplitude).
+(d) moyenne $0$, écart-type $\sqrt{25/0.36}=8.33$ (forte amplitude).
+\begin{reponse}On choisit selon la \emph{moyenne} et l'\emph{amplitude} du graphique : niveau
+$\approx50\to$(b) ; centré faible amplitude $\to$(c) ; centré forte amplitude $\to$(d) ;
+explosif $\to$(a) (écarté si borné).\end{reponse}
 
 % =====================================================================
-\section{Estimation et équations de Yule--Walker}
+\section{Estimation et Yule--Walker}
 \markboth{Estimation et Yule--Walker}{}
 
 \textbf{Q\,G.1 --- $x_t=0.4x_{t-1}-0.2x_{t-2}+a_t$, $\sigma_a^2=12.8$.}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item $\Phi(B)=1-0.4B+0.2B^2$ ; discriminant $0.16-0.8<0$, racines complexes de module
+\emph{1)} $\Phi(B)=1-0.4B+0.2B^2$, discriminant $0.16-0.8<0$, racines complexes de module
 $1/\sqrt{0.2}=2.236>1$ : \bonne{stationnaire}.
-\item $\E(x_t)=\dfrac{\mu}{1-\phi_1-\phi_2}=0$ (pas de constante).
-\item Yule--Walker : $\rho_1=\dfrac{\phi_1}{1-\phi_2}=\dfrac{0.4}{1.2}=0.3333$ ;
-$\rho_2=\phi_1\rho_1+\phi_2=0.4(0.3333)-0.2=-0.0667$ ;
-$\rho_3=\phi_1\rho_2+\phi_2\rho_1=0.4(-0.0667)-0.2(0.3333)=-0.0933$.\\
-Variance : $\gamma_0=\dfrac{\sigma_a^2}{1-\phi_1\rho_1-\phi_2\rho_2}
-=\dfrac{12.8}{1-0.4(0.3333)+0.2(-0.0667)}=\dfrac{12.8}{0.8533}=\mathbf{15.0}$.\\
-FAP : $P_1=\rho_1=0.3333$ ; $P_2=\dfrac{\rho_2-\rho_1^2}{1-\rho_1^2}=\phi_2=-0.2$ ; $P_3=0$
-(AR(2) $\Rightarrow$ FAP nulle au-delà de 2).
-\end{enumerate}
+\emph{2)} $\E(x_t)=\frac{0}{1-0.4+0.2}=0$.
+\emph{3)} $\rho_1=\frac{0.4}{1-(-0.2)}=\frac{0.4}{1.2}=0.3333$ ;
+$\rho_2=0.4(0.3333)-0.2=-0.0667$ ; $\rho_3=0.4\rho_2-0.2\rho_1=0.4(-0.0667)-0.2(0.3333)=-0.0933$.
+$\gamma_0=\frac{12.8}{1-0.4(0.3333)-(-0.2)(-0.0667)}=\frac{12.8}{0.8533}=15.0$.
+$P_1=\rho_1=0.3333$ ; $P_2=\frac{\rho_2-\rho_1^2}{1-\rho_1^2}=\phi_2=-0.2$ ; $P_3=0$ (AR(2)).
 
 \textbf{Q\,G.2 --- AR(1) $Y_t=0.8Y_{t-1}+\eps_t$, $\sigma_\eps^2=2$.}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item $|\phi|=0.8<1$ : \bonne{stationnaire}. Un AR est \emph{toujours inversible} : \bonne{oui}.
-\item $\gamma_0=\dfrac{\sigma^2}{1-\phi^2}=\dfrac{2}{0.36}=5.5556$ ; $\gamma_k=\phi^k\gamma_0$ :
-$\gamma_1=4.444,\ \gamma_2=3.556,\ \gamma_3=2.844,\ \gamma_4=2.276,\ \gamma_5=1.820$.
-\item $\rho_k=\phi^k$ : $0.8,\ 0.64,\ 0.512,\ 0.4096,\ 0.3277$.
-\item $Y_t=\sum_{j\ge0}\phi^j\eps_{t-j}$ donc $\theta_j=\phi^j=0.8^j$ :
-$\theta_1=0.8,\theta_2=0.64,\theta_3=0.512,\theta_4=0.4096,\theta_5=0.32768$.
-\end{enumerate}
+\emph{1)} $|0.8|<1$ : stationnaire ; un AR est toujours inversible.
+\emph{2)} $\gamma_0=\frac{2}{1-0.64}=5.5556$ ; $\gamma_k=0.8^k\gamma_0$ :
+$4.444,\ 3.556,\ 2.844,\ 2.276,\ 1.820$.
+\emph{3)} $\rho_k=0.8^k$ : $0.8,\ 0.64,\ 0.512,\ 0.4096,\ 0.3277$.
+\emph{4)} $Y_t=\sum_j0.8^j\eps_{t-j}$, $\theta_j=0.8^j$ :
+$0.8,\ 0.64,\ 0.512,\ 0.4096,\ 0.32768$.
 
-\textbf{Q\,G.3 --- Estimation de $a$ par Yule--Walker, AR(1).}
-\begin{enumerate}[label=\alph*.]
-\item $\gammahat(k)=\dfrac1n\sum_{j=1}^{n-k}(x_j-\bar x)(x_{j+k}-\bar x)$.
-\item Yule--Walker AR(1) : $\rho(1)=a$, soit $\gamma(1)=a\,\gamma(0)$.
-\item $\hat a=\rhohat(1)=\dfrac{\gammahat(1)}{\gammahat(0)}$.
-\item Sous $(\eps_t)$ i.i.d.$(0,\sigma^2)$, $\hat a$ est \emph{convergent} et asymptotiquement
-normal : $\sqrt n(\hat a-a)\xrightarrow{d}N\big(0,\,1-a^2\big)$.
-\item Pour $a=1/2$ : $\Xhat_{t+1}=\tfrac12X_t$, $\Xhat_{t+2}=\tfrac14X_t$, \dots,
-$\Xhat_{t+h}=(\tfrac12)^hX_t$ (prévision optimale d'un AR(1) causal, qui décroît vers la
-moyenne $0$).
-\end{enumerate}
+\textbf{Q\,G.3 --- Estimation par Yule--Walker, AR(1).}
+\emph{a)} $\gammahat(k)=\frac1n\sum_{j=1}^{n-k}(x_j-\bar x)(x_{j+k}-\bar x)$.
+\emph{b)} $\gamma(1)=a\gamma(0)$ (Yule--Walker AR(1)).
+\emph{c)} $\hat a=\rhohat(1)=\gammahat(1)/\gammahat(0)$.
+\emph{d)} Convergent, asymptotiquement normal : $\sqrt n(\hat a-a)\to N(0,1-a^2)$.
+\emph{e)} $a=1/2$ : $\widehat X_{t+h}=(1/2)^hX_t$ (décroît vers $0$).
 
-\textbf{Q\,G.4 --- Identification à partir d'une sortie EViews.}
-On lit l'ACF et la PACF empiriques (jusqu'au retard 10) : si l'ACF décroît et la PACF coupe à
-l'ordre $p$ $\to$ AR$(p)$ ; si l'ACF coupe à $q$ et la PACF décroît $\to$ MA$(q)$ ; si les deux
-décroissent $\to$ ARMA. On estime ensuite par Yule--Walker (AR) ou maximum de vraisemblance,
-et on \emph{valide} par Ljung--Box sur les résidus. \emph{(Réponse dépendant des graphiques du
-sujet ; appliquer la grille de lecture du chapitre Box--Jenkins.)}
+\textbf{Q\,G.4.} Lire ACF/PACF : ACF décroît + PACF coupe à $p$ $\Rightarrow$ AR$(p)$ ;
+ACF coupe à $q$ + PACF décroît $\Rightarrow$ MA$(q)$ ; deux décroissances $\Rightarrow$ ARMA.
+Estimer (Yule--Walker / MV), puis valider (Ljung--Box). \emph{(Réponse selon les graphiques.)}
 
 % =====================================================================
 \section{Décomposition : tendance et saisonnalité}
 \markboth{Décomposition : tendance, saisonnalité}{}
 
-\textbf{Q\,H.1 --- Cours d'une action sur 5 jours.}
-Régression linéaire $y=at+b$ avec $t=1,\dots,5$, $y=(135,143,140,154,152)$.
-$\bar t=3,\ \bar y=144.8$ ; $\hat a=\dfrac{\sum(t-\bar t)(y-\bar y)}{\sum(t-\bar t)^2}
-=\dfrac{45}{10}=\mathbf{4.5}$ ; $\hat b=\bar y-\hat a\bar t=144.8-13.5=\mathbf{131.3}$.
-\begin{reponse}Tendance : $\hat y_t=4.5\,t+131.3$. Prévision $t=6$ :
-$\hat y_6=4.5(6)+131.3=\mathbf{158.3}$.\end{reponse}
+\textbf{Q\,H.1 --- Action sur 5 jours.}
+$t=1..5$, $y=(135,143,140,154,152)$, $\bar t=3$, $\bar y=144.8$.
+$\hat a=\frac{\sum(t-\bar t)(y-\bar y)}{\sum(t-\bar t)^2}=\frac{45}{10}=4.5$ ;
+$\hat b=144.8-4.5(3)=131.3$.
+\begin{reponse}$\hat y_t=4.5\,t+131.3$ ; prévision $\hat y_6=4.5(6)+131.3=158.3$.\end{reponse}
 
-\textbf{Q\,H.2 --- Ventes trimestrielles (Série 1, Ex.~1).}
-\emph{Méthode (modèle additif, tendance par MCO).}
-\begin{enumerate}[label=\alph*),leftmargin=*]
-\item Tracé : tendance croissante + saisonnalité (pic au T4, creux au T3).
-\item Tendance : régression $Z_t=at+b$ sur $t=1,\dots,16$. Avec $\sum t=136$, $\sum Z=4731$,
-$\sum t^2=1496$, $\sum tZ=44\,330$ : $\hat a=\dfrac{16(44330)-136(4731)}{16(1496)-136^2}
-=\dfrac{709280-643416}{23936-18496}=\dfrac{65864}{5440}=12.11$ ;
-$\hat b=\dfrac{4731-12.11(136)}{16}=193.81$. Donc $\hat Z_t=12.11\,t+193.81$.
-\item Coefficients saisonniers : calculer $e_t=Z_t-\hat Z_t$, moyenner par trimestre, puis
-recentrer (somme nulle en additif). \item Prévisions : $\hat Z_{t}=12.11t+193.81+S_{j(t)}$
-pour $t=17,\dots,20$. \item CVS : $Z_t-S_{j(t)}$.
-\item Interprétation : $S_j$ mesure l'écart systématique du trimestre $j$ à la tendance.
-\end{enumerate}
-\emph{(Le détail numérique complet des 16 valeurs figure dans le cours « décomposition ». La
-démarche est la pièce évaluée.)}
+\textbf{Q\,H.2 --- Ventes trimestrielles (modèle additif).}
+Avec $t=1..16$ : $\sum t=136$, $\sum Z=4731$, $\sum t^2=1496$, $\sum tZ=44330$.
+$\hat a=\frac{16(44330)-136(4731)}{16(1496)-136^2}=\frac{65864}{5440}=12.11$ ;
+$\hat b=\frac{4731-12.11(136)}{16}=193.81$. Tendance $\hat Z_t=12.11t+193.81$.
+Coefficients saisonniers : $e_t=Z_t-\hat Z_t$, moyenne par trimestre, recentrage (somme nulle).
+Prévisions $t=17..20$ : $\hat Z_t+S'_{j}$. CVS : $Z_t-S'_j$. $S'_j$ = écart systématique du
+trimestre $j$ à la tendance.
 
-\textbf{Q\,H.3 --- Lettres reçues (Série 1, Ex.~2), MM d'ordre 4.}
-\emph{Modèle multiplicatif} (amplitude croissant avec le niveau).
-\begin{enumerate}[label=\alph*),leftmargin=*]
-\item Saisonnalité marquée (T2 fort, T4 faible) avec légère tendance.
-\item Tendance par MM4 \emph{centrée} : $T_t=\frac18 X_{t-2}+\frac14(X_{t-1}+X_t+X_{t+1})
-+\frac18X_{t+2}$ (deux valeurs perdues à chaque bord).
-\item Coefficients saisonniers : rapports $X_t/T_t$ moyennés par trimestre puis normalisés
-(somme $=4$).
-\item CVS : $X_t/S_{j(t)}$ ; on commente la disparition des pics saisonniers.
-\end{enumerate}
+\textbf{Q\,H.3 --- Lettres reçues (modèle multiplicatif), MM4.}
+\emph{b)} $T_t=\tfrac18Z_{t-2}+\tfrac14(Z_{t-1}+Z_t+Z_{t+1})+\tfrac18Z_{t+2}$.
+\emph{c)} $S_j$ = moyenne des rapports $Z_t/T_t$ par trimestre, normalisée (somme $=4$).
+\emph{d)} CVS $=Z_t/S'_j$ ; les pics saisonniers disparaissent.
 
-\textbf{Q\,H.4 --- Indice de production industrielle 1976--1982 (MCO).}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item $\hat a=\dfrac{n\sum tY-\sum t\sum Y}{n\sum t^2-(\sum t)^2}
-=\dfrac{28(53500)-406(3647)}{28(7714)-406^2}=\dfrac{1498000-1480682}{215992-164836}
-=\dfrac{17318}{51156}=\mathbf{0.3385}$.\\
-$\hat b=\dfrac{\sum Y-\hat a\sum t}{n}=\dfrac{3647-0.3385(406)}{28}=\mathbf{125.34}$.
-\item Coefficients saisonniers : calculer $\tilde\eps_t=Y_t-\hat Y_t$ ($\hat Y_t=\hat at+\hat b$),
-moyenner par trimestre, recentrer (additif, somme nulle).
-\item Le tableau se complète colonne par colonne : $t$, $Y_t$, $\hat Y_t=0.3385t+125.34$,
-$\tilde\eps_t=Y_t-\hat Y_t$, trimestre.
-\end{enumerate}
+\textbf{Q\,H.4 --- IPI 1976--1982.}
+$\hat a=\frac{28(53500)-406(3647)}{28(7714)-406^2}=\frac{17318}{51156}=0.3385$ ;
+$\hat b=\frac{3647-0.3385(406)}{28}=125.34$. Coefficients saisonniers : moyenner
+$\tilde\eps_t=Y_t-\hat Y_t$ par trimestre, recentrer. Tableau : colonnes $t,Y_t,\hat
+Y_t=0.3385t+125.34,\tilde\eps_t,$ trimestre.
 
 % =====================================================================
 \section{Identification graphique}
 \markboth{Identification graphique}{}
 
-\textbf{Q\,I.1 --- Associer chaque série à son graphique.}
-\begin{itemize}[leftmargin=*]
-\item $y_t=\eps_t$ : bruit pur, oscillations centrées sans structure.
-\item $y_t=s_t+\eps_t$ : oscillations \emph{périodiques} autour de $0$ (saisonnalité additive,
-moyenne nulle).
-\item $y_t=a+s_t+\eps_t$ : saisonnalité périodique autour d'un \emph{niveau $a>0$}.
-\item $y_t=a\,s_t\,\eps_t$ : amplitude \emph{modulée} (multiplicatif), variabilité croissante
-avec le niveau.
-\item $y_t=f_t+\eps_t$ : ondulation lente déterministe (sinusoïde) $+$ bruit additif.
-\item $y_t=f_t\,\eps_t$ : sinusoïde dont l'amplitude du bruit suit $f_t$ (effet multiplicatif).
-\end{itemize}
-On distingue \emph{additif} (amplitude constante) de \emph{multiplicatif} (amplitude
-proportionnelle au niveau), et la présence/absence d'un niveau moyen $a$ et d'une tendance
-lente $f_t$.
+\textbf{Q\,I.1 --- Associer série et graphique.}
+\begin{reponse}
+(1) $\eps_t$ $\to$ panneau bruit pur. (2) $s_t+\eps_t$ $\to$ saison centrée sur 0.
+(3) $a+s_t+\eps_t$ $\to$ saison autour d'un niveau $>0$. (4) $a\,s_t\,\eps_t$ $\to$ amplitude
+\emph{croissante} (multiplicatif). (5) $f_t+\eps_t$ $\to$ ondulation lente $+$ bruit additif.
+(6) $f_t\,\eps_t$ $\to$ bruit dont l'amplitude suit $f_t$ (multiplicatif).
+\end{reponse}
+Critères : présence d'un \emph{niveau} ($a$), d'une \emph{saisonnalité} rapide ($s$) ou d'une
+\emph{ondulation lente} ($f$), et caractère additif (amplitude constante) ou multiplicatif
+(amplitude proportionnelle au niveau).
 
-\textbf{Q\,I.2 --- Identifier les processus derrière les ACF (Séries D, E, F).}
-On utilise la grille du cours :
-\begin{itemize}[leftmargin=*]
-\item ACF qui \emph{décroît géométriquement} (sans coupure) $\to$ AR (le signe alterné
-indique $\phi<0$).
-\item ACF qui \emph{s'annule brutalement} après le retard $q$ $\to$ MA$(q)$.
-\item ACF qui \emph{décroît très lentement} ($\approx1$) $\to$ processus \emph{non
-stationnaire / intégré}.
-\end{itemize}
-\emph{(L'attribution précise D/E/F dépend des trois graphiques ; appliquer cette grille.)}
+\textbf{Q\,I.2 --- Identifier D, E, F par l'ACF.}
+\begin{reponse}
+\textbf{Série D} : ACF qui \emph{décroît géométriquement} $\to$ \bonne{AR(1)}.
+\textbf{Série E} : ACF qui \emph{s'annule après quelques retards} $\to$ \bonne{MA} (ordre $=$
+dernier retard significatif). \textbf{Série F} : ACF qui \emph{décroît très lentement}
+($\approx1$) $\to$ \bonne{processus non stationnaire / intégré}.
+\end{reponse}
 
-\textbf{Q\,I.3 --- Identification ACF/PACF (examen 17/12/2019).}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item PACF coupe à 1, ACF décroît $\to$ \bonne{AR(1)} ; si ACF coupe à 1 et PACF décroît
-$\to$ MA(1) ; deux coupures à 2 $\to$ MA(2)/AR(2) selon laquelle coupe.
-\item ACF qui décroît \emph{très lentement} $\to$ \bonne{ARIMA$(1,1,0)$} (racine unité).
-\item PACF coupe à 2 $\to$ \bonne{AR(2)} ; coupe à 3 $\to$ AR(3) (selon le dernier pic
-significatif).
-\item Pics aux retards saisonniers $\to$ partie SARIMA ; choisir l'ordre saisonnier d'après
-les pics aux multiples de la période $s=10$.
-\item Pic unique au retard saisonnier $\to$ \bonne{SARIMA$(1,0,0)\times(1,0,0)_{12}$} (un
-terme AR régulier $+$ un terme AR saisonnier).
-\end{enumerate}
-\emph{(Réponses indicatives : la justification s'appuie sur la coupure de l'ACF/PACF et la
-position des pics saisonniers.)}
+\textbf{Q\,I.3 --- ACF/PACF (17/12/2019).}
+\emph{1)} PACF coupe à 1, ACF décroît $\to$ AR(1) ; (ACF coupe à 1 $\to$ MA(1), etc.).
+\emph{2)} ACF qui décroît \emph{très lentement} $\to$ ARIMA$(1,1,0)$.
+\emph{3)} PACF coupe à 2 $\to$ AR(2) (à 3 $\to$ AR(3)).
+\emph{4)--5)} Pics aux retards saisonniers (multiples de $s$) $\to$ partie SARIMA ; ex.\ un seul
+pic saisonnier $\to$ $(1,0,0)\times(1,0,0)_{12}$.
 
 % =====================================================================
 \section{Exercices de synthèse}
 \markboth{Exercices de synthèse}{}
 
-\textbf{Q\,J.1 --- AR(1) $X_t=\phi X_{t-1}+\eps_t$.}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item Affirmation \emph{fausse} : \bonne{(D)} \og $X_t$ et $\eps_t$ corrélés \fg{} est
-\emph{l'affirmation correcte} ; la question demande celle qui n'est \emph{pas} correcte. Or
-$\Cov(X_t,\eps_t)=\sigma^2\ne0$ (donc D \emph{est} vraie). Les non corrélations
-$\Cov(\eps_t,X_{t-1})=0$ (A) et $\Cov(\eps_t,\eps_{t-1})=0$ (C) sont vraies ; en revanche
-\bonne{(B) $X_t$ et $\eps_{t-1}$ \emph{sont} corrélés} (car $X_t$ contient $\eps_{t-1}$ via
-$\phi\eps_{t-1}$). L'affirmation \emph{incorrecte} est donc \bonne{(B)}.
-\item Correcte : \bonne{(A) $\cor(X_t,X_{t-1})=\phi$} (pour un AR(1), $\rho(1)=\phi$). (C) est
-fausse car $\cor(X_t,\eps_t)\ne0$.
-\item \bonne{(C) $\Var(X_t)=\dfrac{1}{1-\phi^2}$} (avec $\sigma_\eps^2=1$).
-\item \bonne{(B)} : $Y_t=X_t-X_{t-1}=(1-B)X_t$ est stationnaire (combinaison finie d'un AR(1)
-stationnaire). (A) a une tendance $t$ ; (C) est une marche aléatoire ; (D) a $|\phi^{-1}|>1$
-(explosif).
-\end{enumerate}
+\textbf{Q\,J.1 --- AR(1).}
+\emph{1)} \bonne{(B)} est l'affirmation \emph{incorrecte} : $X_t$ contient $\phi\eps_{t-1}$,
+donc $X_t$ et $\eps_{t-1}$ \emph{sont} corrélés (l'énoncé B les dit non corrélés). [A, C, D
+sont vraies : $\Cov(\eps_t,X_{t-1})=0$, $\Cov(\eps_t,\eps_{t-1})=0$, $\Cov(X_t,\eps_t)=\sigma^2\ne0$.]
+\emph{2)} \bonne{(A)} : $\cor(X_t,X_{t-1})=\rho(1)=\phi$.
+\emph{3)} \bonne{(C)} : $\Var(X_t)=\frac{1}{1-\phi^2}$.
+\emph{4)} \bonne{(B)} : $Y_t=(1-B)X_t$ est stationnaire ; (A) a une tendance, (C) est une
+marche aléatoire, (D) est explosif ($|\phi^{-1}|>1$).
 
-\textbf{Q\,J.2 --- AR(1), observations $-1$ (hier), $+1$ (aujourd'hui).}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item Prévision demain $=\phi\cdot X_{\text{aujourd'hui}}=\phi\cdot(+1)=$ \bonne{(A) $\phi$}.
-\item Variance de l'erreur à 2 jours $=(1+\phi^2)\sigma^2=$ \bonne{(C) $1+\phi^2$} (avec
-$\sigma^2=1$).
-\end{enumerate}
+\textbf{Q\,J.2 --- AR(1), $-1$ hier, $+1$ aujourd'hui.}
+\emph{1)} $\widehat X=\phi(+1)=$ \bonne{(A) $\phi$}.
+\emph{2)} $\Var(\Delta_2)=(1+\phi^2)\sigma^2=$ \bonne{(C) $1+\phi^2$} ($\sigma^2=1$).
 
-\textbf{Q\,J.3 --- ARMA(1,1) $X_t=\phi X_{t-1}+\eta_t+\theta\eta_{t-1}$.}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item Stationnarité : \bonne{$|\phi|<1$} (réponse D). $\theta$ n'intervient que pour
-l'inversibilité.
-\item Vraie : \bonne{(D)} $\rho(h)=\phi\rho(h-1)$ pour $h$ assez grand (au-delà de $q=1$,
-l'ACF d'un ARMA suit la récurrence AR).
-\item Si $\phi+\theta=0$ : $\Theta(B)=1+\theta B=1-\phi B=\Phi(B)$, le facteur se simplifie et
-$X_t=\eta_t$ : \bonne{(B) un bruit blanc}.
-\end{enumerate}
+\textbf{Q\,J.3 --- ARMA(1,1).}
+\emph{1)} stationnaire ssi \bonne{$|\phi|<1$} (D). \emph{2)} \bonne{(D)} $\rho(h)=\phi\rho(h-1)$
+pour $h$ grand. \emph{3)} $\phi+\theta=0\Rightarrow\Theta=\Phi$, simplification $\Rightarrow
+X_t=\eta_t$ : \bonne{bruit blanc} (B).
 
-\textbf{Q\,J.4 --- AR$(p)$, affirmation générale vraie.}
-\bonne{(B)} : la FAP $P(h)=0$ pour $h>p$. (A) concerne un MA ; (C),(D) ne sont pas générales.
+\textbf{Q\,J.4.} \bonne{(B)} : $P(h)=0$ pour $h>p$ (FAP d'un AR).
 
-\textbf{Q\,J.5 --- Marche aléatoire, écart-type de $Y_2$.}
-$Y_2=\eps_1+\eps_2$, $\Var(Y_2)=2\sigma_\eps^2=2(0.18)=0.36$, écart-type $=\mathbf{0.6}$
-(réponse A).
+\textbf{Q\,J.5.} $Y_2=\eps_1+\eps_2$, $\Var=2(0.18)=0.36$, écart-type $=\bonne{0.6}$.
 
-\textbf{Q\,J.6 --- $Y_t=\tfrac12(\eps_t+\eps_{t-1})$, $\sigma_\eps^2=8$.}
-$\Cov(Y_t,Y_{t-1})=\tfrac14\Cov(\eps_t+\eps_{t-1},\eps_{t-1}+\eps_{t-2})
-=\tfrac14\sigma_\eps^2=\mathbf{2}$.
+\textbf{Q\,J.6.} $\Cov(Y_t,Y_{t-1})=\frac14\Cov(\eps_t+\eps_{t-1},\eps_{t-1}+\eps_{t-2})
+=\frac14\sigma_\eps^2=\bonne{2}$.
 
-\textbf{Q\,J.7 --- Moyenne mobile de 8 bruits.}
-$\Var(Y_t)=\tfrac{8}{64}\sigma^2$, $\Cov(Y_t,Y_{t-1})=\tfrac{7}{64}\sigma^2$ (7 termes
-communs), d'où $\Corr=\tfrac{7}{8}=\mathbf{0.875}$ (indépendant de $\sigma^2$).
+\textbf{Q\,J.7.} $\Var(Y)=\frac{8}{64}\sigma^2$, $\Cov(Y_t,Y_{t-1})=\frac{7}{64}\sigma^2$ (7
+termes communs) $\Rightarrow\Corr=\frac78=\bonne{0.875}$.
 
-\textbf{Q\,J.8 --- AR(1), $\gammahat(0)=0.348$, $\Var(\bar Y)=0.006$, $n=200$.}
-Pour un AR(1) : $\Var(\bar Y)\approx\dfrac{\gamma(0)}{n}\cdot\dfrac{1+\phi}{1-\phi}$. D'où
-$\dfrac{1+\phi}{1-\phi}=\dfrac{n\,\Var(\bar Y)}{\gamma(0)}=\dfrac{200(0.006)}{0.348}=3.448$,
-soit $\phi=\dfrac{3.448-1}{3.448+1}=\mathbf{0.55}$ (réponse B).
+\textbf{Q\,J.8.} $\frac{1+\phi}{1-\phi}=\frac{n\Var(\bar Y)}{\gamma(0)}=\frac{200(0.006)}{0.348}
+=3.448\Rightarrow\phi=\frac{3.448-1}{3.448+1}=\bonne{0.55}$.
 
-\textbf{Q\,J.9 --- MA(2) $\theta_1=0.2,\theta_2=-0.7,\sigma^2=1$.}
-$\Var(Y)=1+\theta_1^2+\theta_2^2=\mathbf{1.53}$ ;
-$\rho_1=\dfrac{\theta_1+\theta_1\theta_2}{1.53}=\dfrac{0.06}{1.53}=\mathbf{0.039}$ ;
-$\rho_2=\dfrac{\theta_2}{1.53}=\mathbf{-0.458}$.
+\textbf{Q\,J.9.} MA(2) : $\Var=1+0.2^2+0.7^2=\bonne{1.53}$ ;
+$\rho_1=\frac{\theta_1+\theta_1\theta_2}{1.53}=\frac{0.2-0.14}{1.53}=\bonne{0.039}$ ;
+$\rho_2=\frac{\theta_2}{1.53}=\bonne{-0.458}$.
 
-\textbf{Q\,J.10 --- AR(1) $\phi=-0.5,\sigma_\eps=8.66$.}
-$\gamma_0=\dfrac{\sigma^2}{1-\phi^2}=\dfrac{75}{0.75}=100$ ($\sigma^2=8.66^2=75$).
-$\gamma_1=\phi\gamma_0=\mathbf{-50}$ ; $\gamma_2=\phi^2\gamma_0=\mathbf{25}$.
+\textbf{Q\,J.10.} $\gamma_0=\frac{\sigma^2}{1-\phi^2}=\frac{75}{0.75}=100$ ($\sigma^2=8.66^2=75$) ;
+$\gamma_1=\phi\gamma_0=\bonne{-50}$ ; $\gamma_2=\phi^2\gamma_0=\bonne{25}$.
 
-\textbf{Q\,J.11 --- AR(1) $\phi>0,\sigma_\eps^2=5.333,\gamma(2)=3$.}
-$\gamma(2)=\phi^2\gamma_0=\phi^2\dfrac{\sigma^2}{1-\phi^2}=3$ $\Rightarrow$ $\phi=\mathbf{0.6}$ ;
-$\gamma_0=\dfrac{5.333}{0.64}=8.33$, $\gamma(1)=\phi\gamma_0=\mathbf{5.0}$.
+\textbf{Q\,J.11.} $\gamma(2)=\phi^2\frac{\sigma^2}{1-\phi^2}=3\Rightarrow\phi=\bonne{0.6}$ ;
+$\gamma_0=\frac{5.333}{0.64}=8.33$, $\gamma(1)=\phi\gamma_0=\bonne{5.0}$.
 
-\textbf{Q\,J.12 --- ARMA(1,1) $\phi=-0.5,\theta=-0.6,\sigma_\eps^2=4$.}
-Formules ARMA(1,1) ($X_t=\phi X_{t-1}+\eps_t+\theta\eps_{t-1}$) :
-\[
-\gamma_0=\sigma^2\,\frac{1+2\phi\theta+\theta^2}{1-\phi^2}
-=4\cdot\frac{1+0.6+0.36}{0.75}=\mathbf{10.45} ;\quad
-\gamma_1=\sigma^2\,\frac{(1+\phi\theta)(\phi+\theta)}{1-\phi^2}
-=4\cdot\frac{(1.3)(-1.1)}{0.75}=\mathbf{-7.63}.
-\]
-$\rho_1=\gamma_1/\gamma_0=\mathbf{-0.730}$ ; $\rho_2=\phi\rho_1=\mathbf{0.365}$.
-\begin{remarque}
-Les valeurs proposées dans le QCM d'origine (de l'ordre de $4$--$5$) supposent une convention
-ou des paramètres différents ; le calcul ci-dessus est rigoureux pour les paramètres
-\emph{donnés}.
-\end{remarque}
+\textbf{Q\,J.12.} ARMA(1,1), $\phi=-0.5,\theta=-0.6,\sigma^2=4$ :
+$\gamma_0=4\frac{1+2(-0.5)(-0.6)+0.36}{0.75}=4\frac{1.96}{0.75}=\bonne{10.45}$ ;
+$\gamma_1=4\frac{(1+0.3)(-1.1)}{0.75}=\bonne{-7.63}$ ;
+$\rho_1=\gamma_1/\gamma_0=\bonne{-0.730}$ ; $\rho_2=\phi\rho_1=\bonne{0.365}$.
+\emph{(Calcul rigoureux pour les paramètres donnés.)}
 
-\textbf{Q\,J.13 --- ARIMA(2,1,2).}
-$Y_t=1+1.8Y_{t-1}-1.4Y_{t-2}+0.6Y_{t-3}+\eps_t-0.4\eps_{t-1}+0.1\eps_{t-2}$. La partie AR a
-pour polynôme (sur $Y$) $1-1.8B+1.4B^2-0.6B^3$. Comme $d=1$, on factorise $(1-B)$ :
-$1-1.8B+1.4B^2-0.6B^3=(1-B)(1-0.8B+0.6B^2)$. La partie AR stationnaire est donc
-$1-0.8B+0.6B^2$ : \bonne{$\phi_1=0.8$} (réponse E) et \bonne{$\phi_2=-0.6$} (réponse A).
+\textbf{Q\,J.13.} Partie AR sur $Y$ : $1-1.8B+1.4B^2-0.6B^3=(1-B)(1-0.8B+0.6B^2)$. La partie
+stationnaire est $1-0.8B+0.6B^2$ : \bonne{$\phi_1=0.8$, $\phi_2=-0.6$}.
 
-\textbf{Q\,J.14 --- $Y_t=X_t+\eps_t$, $X_t=X_{t-1}+u_t$.}
-$\Delta Y_t=\Delta X_t+\Delta\eps_t=u_t+\eps_t-\eps_{t-1}$.
-$\Var(\Delta Y_t)=\sigma_u^2+2\sigma_\eps^2=1+4=\mathbf{5}$ ;
-$\Cov(\Delta Y_t,\Delta Y_{t-1})=-\sigma_\eps^2=-2$ ;
-$\Corr=\dfrac{-2}{5}=\mathbf{-0.4}$.
+\textbf{Q\,J.14.} $\Delta Y_t=u_t+\eps_t-\eps_{t-1}$ : $\Var=\sigma_u^2+2\sigma_\eps^2=1+4=\bonne{5}$ ;
+$\Cov(\Delta Y_t,\Delta Y_{t-1})=-\sigma_\eps^2=-2$ ; $\Corr=-2/5=\bonne{-0.4}$.
 
-\textbf{Q\,J.15 --- AR(2) $\phi_1=-0.5,\phi_2=-0.3$.}
-$\rho_1=\dfrac{\phi_1}{1-\phi_2}=\dfrac{-0.5}{1.3}=\mathbf{-0.385}$ ;
-$\rho_2=\phi_1\rho_1+\phi_2=-0.5(-0.385)-0.3=\mathbf{-0.108}$ ;
-$P_2=\phi_2=\mathbf{-0.3}$ (FAP d'un AR(2) à l'ordre 2).
+\textbf{Q\,J.15.} AR(2) $\phi_1=-0.5,\phi_2=-0.3$ :
+$\rho_1=\frac{-0.5}{1.3}=\bonne{-0.385}$ ; $\rho_2=-0.5(-0.385)-0.3=\bonne{-0.108}$ ;
+$P_2=\phi_2=\bonne{-0.3}$.
 
-\textbf{Q\,J.16 --- AR(2), $\gammahat(0)=4,\rhohat(1)=\rhohat(2)=0.5$.}
-Yule--Walker : $\begin{pmatrix}1&0.5\\0.5&1\end{pmatrix}\begin{pmatrix}\phi_1\\\phi_2\end{pmatrix}
-=\begin{pmatrix}0.5\\0.5\end{pmatrix}\Rightarrow\phi_1=\phi_2=\tfrac13$.
-$\hat\sigma_\eps^2=\gamma_0\big(1-\phi_1\rho_1-\phi_2\rho_2\big)=4\big(1-\tfrac13(0.5)-\tfrac13(0.5)\big)
-=4\cdot\tfrac23=\mathbf{2.667}$ (réponse A).
+\textbf{Q\,J.16.} Yule--Walker $\rho_1=\rho_2=0.5\Rightarrow\phi_1=\phi_2=\frac13$ ;
+$\hat\sigma^2=\gamma_0(1-\phi_1\rho_1-\phi_2\rho_2)=4(1-\tfrac13)=4\cdot\tfrac23=\bonne{2.667}$.
 
-\textbf{Q\,J.17 --- AR(2), $\phi_1=0.5,\phi_2=0.3,\mu=5$, $Y_1=5,Y_2=7,Y_3=5$.}
-Forme centrée $Y_t-\mu=\phi_1(Y_{t-1}-\mu)+\phi_2(Y_{t-2}-\mu)+a_t$ :
-$Y_4=\mu+\phi_1(Y_3-\mu)+\phi_2(Y_2-\mu)=5+0.5(0)+0.3(2)=\mathbf{5.6}$.
-\begin{remarque}
-La meilleure prévision de $Y_4$ vaut $5.6$. (Les options négatives du QCM d'origine
-correspondent vraisemblablement à une autre question ; le calcul est rigoureux.)
-\end{remarque}
+\textbf{Q\,J.17.} $Y_4=\mu+\phi_1(Y_3-\mu)+\phi_2(Y_2-\mu)=5+0.5(0)+0.3(2)=\bonne{5.6}$.
 
-\textbf{Q\,J.18 --- $Y_t=X_t+V_t$, $X_t$ AR(1).}
-$X_t=\phi X_{t-1}+a_t$, $\gamma_X(k)=\dfrac{\sigma_a^2}{1-\phi^2}\phi^{|k|}$. Comme $V_t$ est un
-bruit blanc indépendant :
-\[
-\gamma_Y(0)=\frac{\sigma_a^2}{1-\phi^2}+\sigma_v^2,\qquad
-\gamma_Y(k)=\frac{\sigma_a^2}{1-\phi^2}\,\phi^{|k|}\ (k\ne0).
-\]
-$\gamma_Y(k)$ ne dépend que de $|k|$ et $\E(Y_t)=0$ : \bonne{$Y_t$ est stationnaire (SSL)}.
-\begin{remarque}
-$Y_t$ est en fait un ARMA(1,1) (somme AR(1) $+$ bruit blanc) : voir Q\,J.19.
-\end{remarque}
+\textbf{Q\,J.18.} $\gamma_X(k)=\frac{\sigma_a^2}{1-\phi^2}\phi^{|k|}$ ; $V_t$ bruit blanc indép. :
+$\gamma_Y(0)=\frac{\sigma_a^2}{1-\phi^2}+\sigma_v^2$, $\gamma_Y(k)=\frac{\sigma_a^2}{1-\phi^2}\phi^{|k|}$
+($k\ne0$). Indépendant de $t$ : \bonne{stationnaire} (c'est un ARMA(1,1)).
 
-\textbf{Q\,J.19 --- $y_t=x_t+v_t$, $\phi=0.5,\sigma_v^2=0.25,\sigma_u^2=1$.}
-\begin{enumerate}[label=\alph*.]
-\item $\gamma_x(k)=\dfrac{\sigma_u^2}{1-\phi^2}\phi^{|k|}=\dfrac{1}{0.75}(0.5)^{|k|}=\tfrac43(0.5)^{|k|}$.
-D'où $\gamma_y(0)=\tfrac43+0.25=\dfrac{19}{12}\approx1.583$ et
-$\gamma_y(k)=\tfrac43(0.5)^{|k|}$ ($k\ne0$). Indépendant de $t$ : \bonne{stationnaire}.
-\item $z_t=y_t-\phi y_{t-1}=(x_t-\phi x_{t-1})+(v_t-\phi v_{t-1})=u_t+v_t-\phi v_{t-1}$.
-C'est une somme de bruits blancs aux retards $0$ et $1$ :
-$\gamma_z(0)=\sigma_u^2+(1+\phi^2)\sigma_v^2=1+1.25(0.25)=1.3125$ ;
-$\gamma_z(1)=-\phi\sigma_v^2=-0.125$ ; $\gamma_z(k)=0$, $|k|\ge2$.
-Donc $z_t$ est un \bonne{MA(1)} (ARMA$(0,1)$).
-\item On identifie $z_t=e_t-\theta e_{t-1}$ (variance $\sigma_e^2$) :
-$\gamma_z(0)=(1+\theta^2)\sigma_e^2=1.3125$ et $\gamma_z(1)=-\theta\sigma_e^2=-0.125$.
-Le rapport $\rho_z(1)=\dfrac{-0.125}{1.3125}=-0.0952$. On résout
-$\dfrac{-\theta}{1+\theta^2}=-0.0952\Rightarrow\theta^2-10.5\theta+1=0\Rightarrow
-\theta\in\{0.0962,\ 10.40\}$. On retient la racine \bonne{inversible} $\theta\approx0.0962$,
-d'où $\sigma_e^2=\dfrac{0.125}{\theta}\approx1.30$.
-\end{enumerate}
+\textbf{Q\,J.19.} $\phi=0.5,\sigma_v^2=0.25,\sigma_u^2=1$.
+\emph{a)} $\gamma_x(k)=\frac{1}{0.75}(0.5)^{|k|}=\frac43(0.5)^{|k|}$ ;
+$\gamma_y(0)=\frac43+0.25=1.583$, $\gamma_y(k)=\frac43(0.5)^{|k|}$ ($k\ne0$) : stationnaire.
+\emph{b)} $z_t=y_t-0.5y_{t-1}=u_t+v_t-0.5v_{t-1}$ :
+$\gamma_z(0)=\sigma_u^2+(1+0.25)\sigma_v^2=1+1.25(0.25)=1.3125$ ;
+$\gamma_z(1)=-0.5\sigma_v^2=-0.125$ ; $\gamma_z(k)=0$ ($k\ge2$) $\Rightarrow$ \bonne{MA(1)}.
+\emph{c)} $z_t=e_t-\theta e_{t-1}$ : $\frac{-\theta}{1+\theta^2}=\frac{-0.125}{1.3125}=-0.0952
+\Rightarrow\theta^2-10.5\theta+1=0\Rightarrow\theta\in\{0.096,10.40\}$. On retient la racine
+\bonne{inversible $\theta=0.096$}, d'où $\sigma_e^2=\frac{0.125}{\theta}=1.30$.
 
-\textbf{Q\,J.20 --- Variance de la moyenne, $x_t=a_t-0.8a_{t-2}$.}
-$\gamma(0)=(1+\theta^2)\sigma_a^2=1.64$ ; $\gamma(1)=0$ ; $\gamma(2)=-\theta\sigma_a^2=-0.8$ ;
-$\gamma(k)=0$, $|k|\ge3$. Pour $m=\tfrac14\sum_{i=1}^4x_i$ :
-\[
-\Var(m)=\frac1{16}\sum_{i=1}^4\sum_{j=1}^4\gamma(i-j)
-=\frac1{16}\big[4\gamma(0)+2\cdot2\gamma(2)\big]
-=\frac1{16}\big[4(1.64)+4(-0.8)\big]=\frac{3.36}{16}=\mathbf{0.21}.
-\]
-(Les paires d'indices à distance 2 sont $(1,3),(2,4)$ et leurs symétriques, soit
-$2\times2=4$ termes $\gamma(2)$.)
+\textbf{Q\,J.20.} $\gamma(0)=1.64,\gamma(2)=-0.8,$ autres nuls.
+$\Var(m)=\frac1{16}[4\gamma(0)+4\gamma(2)]=\frac1{16}[6.56-3.2]=\frac{3.36}{16}=\bonne{0.21}$.
+(Les paires à distance 2 : $(1,3),(2,4)$ et symétriques $=4$ termes.)
 
-\textbf{Q\,J.21 --- Ljung--Box, ARMA(1,1), $K=14$, $\mathrm{LB}=18.386$.}
-Sous $H_0$ (résidus $=$ bruit blanc), $\mathrm{LB}\sim\chi^2_{K-p-q}=\chi^2_{14-1-1}=\chi^2_{12}$.
-Valeur critique à $5\%$ : $\chi^2_{12,0.95}=21.03$. Comme $18.386<21.03$,
-\begin{reponse}on \bonne{ne rejette pas $H_0$} : les résidus sont compatibles avec un bruit
-blanc, le modèle ARMA(1,1) est \emph{validé} (réponse : \og on ne rejette pas $H_0$ \fg).
-\end{reponse}
+\textbf{Q\,J.21.} ddl $=14-1-1=12$, $\chi^2_{12,0.95}=21.03$. $18.386<21.03$ $\Rightarrow$
+\bonne{on ne rejette pas $H_0$} : résidus $\approx$ bruit blanc, modèle validé.
 
 % =====================================================================
-\section{Hors programme du cours BADAOUI\,\texorpdfstring{\horsprog}{*}}
+\section{Hors programme\,\texorpdfstring{\horsprog}{*}}
 \markboth{Hors programme}{}
-\begin{tcolorbox}[colback=orangelight,colframe=orange,title={Notions au-delà du cours BADAOUI}]
-Ces corrigés mobilisent des notions (bruit blanc fort/faible, stationnarité mutuelle,
-projection orthogonale dans $L^2$, inversion formelle d'opérateurs) qui \emph{dépassent} le
-cours étudié. Ils sont fournis pour complétude.
+\begin{tcolorbox}[colback=orangelight,colframe=orange,title={Au-delà du cours BADAOUI}]
+Notions fournies pour complétude (bruit blanc fort/faible, stationnarité mutuelle, projection
+$L^2$, inverses d'opérateurs).
 \end{tcolorbox}
 
-\textbf{Q\,Z.1 --- $\eps_t=\eta_t\eta_{t-1}\eta_{t-2}$.}
-$\E(\eps_t)=\E(\eta_t)\E(\eta_{t-1})\E(\eta_{t-2})=0$ ; $\Var(\eps_t)=\E(\eta_t^2)^3=1$ ;
-pour $k\ne0$, $\E(\eps_t\eps_{t-k})=0$ (un facteur $\eta$ apparaît à une puissance impaire,
-d'espérance nulle, par indépendance). Donc $(\eps_t)$ est un \bonne{bruit blanc faible}. Il
-n'est \emph{pas} fort (les $\eps_t$ ne sont pas indépendants : $\eps_t$ et $\eps_{t-1}$
-partagent $\eta_{t-1},\eta_{t-2}$). Enfin $\eps_t^2=\eta_t^2\eta_{t-1}^2\eta_{t-2}^2$ est
-stationnaire et son ACF s'annule au-delà du retard 2 : $(\eps_t^2)$ suit un \bonne{MA(2)}.
+\textbf{Q\,Z.1.} $\E(\eps_t)=\E(\eta_t)^3=0$ ; $\Var(\eps_t)=\E(\eta^2)^3=1$ ; pour $k\ne0$,
+$\E(\eps_t\eps_{t-k})=0$ (un $\eta$ apparaît à puissance impaire). Donc \bonne{bruit blanc
+faible} (pas fort : $\eps_t,\eps_{t-1}$ partagent $\eta_{t-1},\eta_{t-2}$, donc dépendants).
+$\eps_t^2=\eta_t^2\eta_{t-1}^2\eta_{t-2}^2$ : ACF nulle après le retard 2 $\Rightarrow$
+\bonne{MA(2)}.
 
-\textbf{Q\,Z.2 --- Stationnarité mutuelle.}
-Deux processus $X,Y$ sont \emph{conjointement} (mutuellement) stationnaires ssi : $X$ est
-stationnaire, $Y$ est stationnaire \emph{et} la covariance croisée
-$\gamma_{XY}(t,s)=\Cov(X_t,Y_s)$ ne dépend que de $t-s$ (invariante par translation).
-\begin{reponse}Cocher : \bonne{$X$ stationnaire}, \bonne{$Y$ stationnaire}, \bonne{covariance
-croisée invariante par translation}.\end{reponse}
+\textbf{Q\,Z.2.} Cocher : \bonne{$X$ stationnaire}, \bonne{$Y$ stationnaire}, \bonne{covariance
+croisée invariante par translation}.
 
-\textbf{Q\,Z.3 --- Inverses d'opérateurs.}
-$(I-\tfrac15B)^{-1}=\sum_{k\ge0}\big(\tfrac15\big)^kB^k$ (converge car $|\tfrac15|<1$).
-$(I+3B)^{-1}$ : la série $\sum(-3)^kB^k$ \emph{diverge} ($|3|>1$) ; on inverse \og vers le
-futur \fg{} : $(I+3B)^{-1}=-\tfrac13B^{-1}\big(I+\tfrac13B^{-1}\big)^{-1}
-=-\sum_{k\ge1}(-\tfrac13)^kB^{-k}$ (développement en puissances de $B^{-1}$).
+\textbf{Q\,Z.3.} $(I-\tfrac15B)^{-1}=\sum_{k\ge0}(\tfrac15)^kB^k$ (converge, $|\tfrac15|<1$).
+$(I+3B)^{-1}$ : développement en $B^{-1}$ (car $|3|>1$) :
+$-\sum_{k\ge1}(-\tfrac13)^kB^{-k}$.
 
-\textbf{Q\,Z.4 --- Projection orthogonale, $\Phi(B)=I-\tfrac16B-\tfrac16B^2$.}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item Racines de $1-\tfrac16z-\tfrac16z^2=0$ : $z=\dfrac{-1\pm\sqrt{1+24}}{2}\cdot(-1)\cdots$
-on résout $z^2+z-6=0$ (en multipliant par $-6$) $\Rightarrow z\in\{2,-3\}$, modules $>1$ :
-\bonne{$\Phi$ inversible}. $\Phi(B)^{-1}=\sum_{k\ge0}c_kB^k$ avec $c_0=1$,
-$c_k=\tfrac16c_{k-1}+\tfrac16c_{k-2}$.
-\item $\Phi(B)X_t=\eps_t$ : \bonne{AR(2)} causal stationnaire, $p=2,q=0$ ;
-$X_t=\Phi(B)^{-1}\eps_t=\sum_{k\ge0}c_k\eps_{t-k}$ (MA$(\infty)$) ; $\E(X_t)=0$ ;
-$\gamma(h)=\sigma^2\sum_{k\ge0}c_kc_{k+|h|}$ ; dans le cas gaussien $(X_t,X_{t+3})$ suit une loi
-normale bivariée $\mathcal N\!\big(0,\,\begin{psmallmatrix}\gamma(0)&\gamma(3)\\\gamma(3)&\gamma(0)\end{psmallmatrix}\big)$.
-\item $\Phi(B)Y_t=\eps_t-\tfrac13\eps_{t-1}$ : \bonne{ARMA(2,1)} ; stationnaire (mêmes racines
-AR) et inversible ($1-\tfrac13B$, racine $3$). La représentation est \emph{minimale} car
-$\Theta(B)=1-\tfrac13B$ ne partage aucune racine avec $\Phi(B)$ (racines $2,-3$). $(\eps_t)$
-\emph{est} le processus des innovations (MA inversible). La forme AR$(\infty)$ s'obtient par
-$\eps_t=\Theta(B)^{-1}\Phi(B)Y_t$ ; la projection orthogonale de $Y_t$ sur le passé
-$\overline{\text{vect}}(Y_{t-1},Y_{t-2},\dots)$ est $\widehat Y_t=Y_t-\eps_t$ (résidu
-d'innovation), soit la partie \og prévisible \fg{} de $Y_t$.
-\end{enumerate}
+\textbf{Q\,Z.4.} $\Phi(B)=1-\tfrac16B-\tfrac16B^2$ : racines de $z^2+z-6=0$ (après
+multiplication), $z\in\{2,-3\}$, modules $>1$ : \bonne{inversible},
+$\Phi^{-1}(B)=\sum_kc_kB^k$ avec $c_k=\tfrac16c_{k-1}+\tfrac16c_{k-2}$.
+\emph{2)} $\Phi(B)X_t=\eps_t$ : \bonne{AR(2)} causal, $X_t=\sum c_k\eps_{t-k}$, $\E(X_t)=0$,
+$\gamma(h)=\sigma^2\sum_kc_kc_{k+|h|}$ ; cas gaussien : $(X_t,X_{t+3})\sim\mathcal N(0,\Sigma)$,
+$\Sigma=\big(\begin{smallmatrix}\gamma(0)&\gamma(3)\\\gamma(3)&\gamma(0)\end{smallmatrix}\big)$.
+\emph{3)} $\Phi(B)Y_t=\eps_t-\tfrac13\eps_{t-1}$ : \bonne{ARMA(2,1)}, stationnaire et inversible
+(racine MA $3$) ; représentation \emph{minimale} (pas de racine commune) ; $(\eps_t)$ est le
+processus des innovations ; AR$(\infty)$ via $\eps_t=\Theta^{-1}\Phi\,Y_t$ ; projection de
+$Y_t$ sur le passé $=Y_t-\eps_t$.
 
-\textbf{Q\,Z.5 --- Lissage et filtres (QCM).}
-\begin{enumerate}[label=\arabic*),leftmargin=*]
-\item \bonne{Vrai} (le lissage exponentiel simple ajuste localement une constante).
-\item \bonne{Vrai} (Holt--Winters intègre une composante saisonnière).
-\item Pour estimer la tendance $m$ en présence de saisonnalité $s$ : filtre qui
-\bonne{absorbe $s$ et laisse invariante $m$} (une MM d'ordre égal à la période).
-\item Pour tester la blancheur des résidus : \bonne{regarder ACF/PACF empiriques} et
-\bonne{utiliser un test de Ljung--Box} (l'AIC sert à la sélection, pas au test de blancheur).
-\end{enumerate}
+\textbf{Q\,Z.5.} \emph{1)} \bonne{Vrai}. \emph{2)} \bonne{Vrai}. \emph{3)} \bonne{absorbe $s$,
+laisse $m$}. \emph{4)} \bonne{ACF/PACF empiriques} et \bonne{Ljung--Box} (l'AIC sert à la
+sélection).
 
 \vfill
 \begin{center}\small\color{gris}
-Fin du corrigé --- document fondé sur le cours de Séries Chronologiques de F.~BADAOUI (INSEA).
+Fin du corrigé --- fondé sur le cours de Séries Chronologiques de F.~BADAOUI (INSEA).
 \end{center}
-
 \end{document}

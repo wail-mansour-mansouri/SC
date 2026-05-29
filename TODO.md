@@ -67,3 +67,14 @@
   `Φ(B)`, `Θ(B)`, `ρ(k)`, `P(k)`/FAP, `γ(k)`, `ψ_k` (MA∞), `π_k` (AR∞).
 - Les QCM sont fournis **avec corrigé** (bonne réponse justifiée).
 - Tout point dépassant le cours BADAOUI est marqué et placé en section « Hors programme ».
+
+## Itération 2 — Refonte demandée (cours démontré/illustré, questions contextualisées, solutions développées)
+- [x] Génération de 10 figures matplotlib (figs/): trajectoires AR, ACF/PACF AR/MA,
+      non-stationnarité, décomposition, MM4, prévision, séries+ACF à identifier.
+- [x] Cours réécrit: tout démontré (preuves AR(1)/AR(2), Yule-Walker, MA(q), ARMA(1,1),
+      représentations infinies, erreur de prévision), figures à interpréter, recentré sur
+      les seules notions évaluées (retrait Buys-Ballot/Fisher/SPSS).
+- [x] Questions reformulées (contexte + correction OCR + autonomes) avec figures intégrées
+      pour l'identification graphique.
+- [x] Solutions développées pas-à-pas (boîtes « Démarche », tous calculs intermédiaires).
+- [x] Recompilation + commit + push.
